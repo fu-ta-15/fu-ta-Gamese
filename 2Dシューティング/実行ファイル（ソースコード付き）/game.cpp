@@ -74,7 +74,7 @@ HRESULT InitGame(MODE mode)
 	//敵オブジェクトの初期化
 	InitEnObjct();
 
-	PlaySound(SOUND_LABEL_BGM001);
+	//PlaySound(SOUND_LABEL_BGM001);
 
 	return S_OK;
 }

@@ -114,7 +114,7 @@ HRESULT InitTutorial(MODE mode)
 	//頂点バッファをアンロック
 	g_pVtxBuffTutorial->Unlock();
 
-	PlaySound(SOUND_LABEL_BGM000);
+	//PlaySound(SOUND_LABEL_BGM000);
 
 	// 処理完了
 	return S_OK;

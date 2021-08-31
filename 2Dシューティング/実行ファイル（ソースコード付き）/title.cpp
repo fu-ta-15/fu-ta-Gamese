@@ -118,7 +118,7 @@ HRESULT InitTitle(void)
 	//頂点バッファをアンロック
 	g_pVtxBuffTitle->Unlock();
 
-	PlaySound(SOUND_LABEL_BGM004);
+	//PlaySound(SOUND_LABEL_BGM004);
 
 	return S_OK;
 }

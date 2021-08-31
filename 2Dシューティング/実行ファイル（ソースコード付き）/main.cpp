@@ -89,7 +89,7 @@ int WINAPI WinMain
 		NULL);
 
 	//‰Šú‰»ˆ—
-	if (FAILED(Init(hInstance, hWnd, FALSE)))
+	if (FAILED(Init(hInstance, hWnd, TRUE)))
 	{
 		return -1;
 	}
