@@ -36,10 +36,10 @@ public:
 	void Update(void);
 	void Draw(void);
 
+private:
 	void PosControl(const D3DXVECTOR3 pos, const D3DXVECTOR3 move);
 	void PlayerAction(const D3DXVECTOR3 pos, const D3DXVECTOR3 move);
 
-private:
 	float						m_fG;			// 重力
 	bool						m_bJunp;		// ジャンプ
 
@@ -50,7 +50,6 @@ private:
 	D3DXCOLOR					m_col;			// 色
 	bool						m_bUse;			// 生存確認
 };
-
 
 
 #endif // !_PLAYER_H_
