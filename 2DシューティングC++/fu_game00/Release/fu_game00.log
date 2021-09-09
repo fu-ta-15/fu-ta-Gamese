@@ -1,39 +1,7 @@
 ﻿  boss.cpp
-  bullet.cpp
-  collision.cpp
-  Dinput.cpp
-  effect.cpp
-  enemy.cpp
-  fade.cpp
-  game.cpp
-  input.cpp
-  keyinput.cpp
-  main.cpp
-  manager.cpp
-  mesh.cpp
-  move.cpp
-  normalenemy.cpp
-  number.cpp
-  particle.cpp
-  pause.cpp
-  player.cpp
-  renderer.cpp
-  コンパイル中...
-  result.cpp
-  scene.cpp
-  scene2D.cpp
-  score.cpp
-  sound.cpp
-  time.cpp
-  title.cpp
-title.cpp(102): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
-  tutorial.cpp
-tutorial.cpp(134): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
-tutorial.cpp(168): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
-  Xinput.cpp
   コード生成しています。
-  285 of 287 functions (99.3%) were compiled, the rest were copied from previous compilation.
-    9 functions were new in current compilation
+  1 of 287 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\fu_game00.exe

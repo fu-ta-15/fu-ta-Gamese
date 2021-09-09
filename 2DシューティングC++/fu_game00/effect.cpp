@@ -112,17 +112,16 @@ void CEffect::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 100);
+	D3D_DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_BOTHSRCALPHA);
+	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_DESTALPHA);
 
 	CScene2D::Draw();
 
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_ALWAYS);
+	D3D_DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 0x00);
 }
 
 //=============================================================================
