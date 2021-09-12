@@ -145,11 +145,9 @@ void CBoss::UpdateBoss(void)
 
 void CBoss::DamageBoss(void)
 {
-	m_nDamageCnt++;
+	m_Effect = new CEffect;
 
-	if ((m_nDamageCnt%))
-	{
 
-	}
+
 
 }

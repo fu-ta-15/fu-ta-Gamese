@@ -100,10 +100,6 @@ void CPlayer::Update(void)
 	// キーボード情報取得
 	CKey *pKey = CManager::GetKey();
 
-	// プレイヤーポリゴン情報を取得
-	m_pos = CScene2D::GetPos();	 // 位置
-	m_col = CScene2D::GetCol();	 // 色
-
 	// プレイヤーのアクション
 	PlayerAction(m_pos,m_move);	 // ジャンプや移動等
 

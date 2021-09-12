@@ -30,6 +30,7 @@ public:
 		OBJ_BULLET,		// バレットオブジェクト
 		OBJ_PLAYER,		// プレイヤーオブジェクト
 		OBJ_ENEMY,		// 敵オブジェクト
+		OBJ_EFFECT,
 		OBJ_MAX
 	}ObjectType;	
 	

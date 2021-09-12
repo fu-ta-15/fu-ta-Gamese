@@ -18,7 +18,7 @@ LPDIRECT3DTEXTURE9 CEffect::m_pTexture;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CEffect::CEffect()
+CEffect::CEffect() : CScene2D(OBJ_EFFECT)
 {
 }
 
@@ -98,8 +98,13 @@ void CEffect::Uninit(void)
 //=============================================================================
 void CEffect::Update(void)
 {
-
 	m_pos += m_move;
+
+	//m_nLife--;
+	//if (m_nLife <= 0)
+	//{
+	//	Uninit();
+	//}
 
 	CScene2D::SetPos(m_pos);
 }
@@ -110,7 +115,7 @@ void CEffect::Update(void)
 void CEffect::Draw(void)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	D3D_DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_BOTHSRCALPHA);

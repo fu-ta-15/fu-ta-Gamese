@@ -49,6 +49,7 @@ public:
 
 private:
 	BOSS_STATE	m_State;
+	CEffect		*m_Effect;
 	static bool m_bBoss_Alive;
 	int m_nDamageCnt = 0;
 	int m_nCnt = 0;

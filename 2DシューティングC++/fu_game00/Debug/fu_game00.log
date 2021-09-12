@@ -1,10 +1,4 @@
-﻿  boss.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\boss.cpp : fatal error C1041: プログラム データベース 'C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\vc140.idb' を開けません。複数の CL.EXE が同じ .PDB ファイルに書き込む場合、/FS を使用してください。
-  コードを生成中...
-cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
-  コンパイル中...
-  enemy.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\enemy.cpp : fatal error C1041: プログラム データベース 'C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\vc140.idb' を開けません。複数の CL.EXE が同じ .PDB ファイルに書き込む場合、/FS を使用してください。
-  game.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\game.cpp : fatal error C1041: プログラム データベース 'C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\vc140.pdb' を開けません。複数の CL.EXE が同じ .PDB ファイルに書き込む場合、/FS を使用してください。
-  コードを生成中...
+﻿  title.cpp
+c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\title.cpp(104): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.exe
+  fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.pdb (Full PDB)
