@@ -10,12 +10,12 @@
 //-----------------------------------------------------------------------------
 // インクルードファイル
 //-----------------------------------------------------------------------------
-#include "scene.h"
 #include "effect.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
+#define MAX_EFFECT_NUM			(256)
 
 //-----------------------------------------------------------------------------
 // クラス
@@ -37,7 +37,7 @@ public:
 	CParticle();
 	~CParticle();
 
-	CParticle *Create(void);
+	CParticle *Create(int EfeectNum, D3DXVECTOR3 pos, D3DXVECTOR3 size);
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -48,7 +48,11 @@ public:
 	void Explosion(void);
 
 private:
-	CEffect	*m_apParticle[256];
+	int				m_EffectNum;
+	D3DXVECTOR3		m_pos;
+	D3DXVECTOR3		m_size;
+	D3DXVECTOR3		m_move;
+	CEffect			*m_apParticle[MAX_EFFECT_NUM];
 };
 
 #endif // !_PARTICLE_H_

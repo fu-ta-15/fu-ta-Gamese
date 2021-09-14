@@ -44,11 +44,12 @@ CBoss::~CBoss()
 CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int nLife)
 {
 	CBoss *pBoss = NULL;
+	
 
 	if (pBoss == NULL)
 	{// NULLチェック
 		pBoss = new CBoss;
-
+		pBoss->m_Effect = NULL;
 		pBoss->SetPos(pos);					  // 位置
 		pBoss->SetSize(size);				  // サイズ
 		pBoss->SetLife(nLife);				  // ライフ
@@ -145,9 +146,20 @@ void CBoss::UpdateBoss(void)
 
 void CBoss::DamageBoss(void)
 {
-	m_Effect = new CEffect;
+	if (m_Effect == NULL)
+	{
+		m_Effect = CEffect::Create(m_pos, m_size);
+		m_Effect->CreateTexture("data/TEXTURE/stateBoss.png");
+	}
 
+	m_nDamageCnt++;
 
+	if ((m_nDamageCnt % 300) == 0)
+	{
+		m_Effect->Uninit();
+		m_Effect = NULL;
+		m_State = STATE_NONE;
+	}
 
 
 }

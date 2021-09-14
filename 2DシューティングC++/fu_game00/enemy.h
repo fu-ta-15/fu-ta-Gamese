@@ -35,6 +35,8 @@
 #define ENEMY_TYPE0		(CEnemy::ENEMY_BLACK)
 #define ENEMY_TYPE1		(CEnemy::ENEMY_WHITE)
 
+#define ENEMY_TEXTURE0	("data/TEXTURE/Enemy0_1.png")	
+
 //-----------------------------------------------------------------------------
 // ƒNƒ‰ƒX
 //-----------------------------------------------------------------------------

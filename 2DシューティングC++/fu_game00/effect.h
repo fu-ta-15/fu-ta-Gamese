@@ -35,8 +35,6 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	void AddMove(D3DXVECTOR3 AddMove);
-
 	// Setä÷êî
 	void SetColor(D3DXCOLOR col);
 	void SetMove(D3DXVECTOR3 move);

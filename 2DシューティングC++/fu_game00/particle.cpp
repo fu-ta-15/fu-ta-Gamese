@@ -26,9 +26,21 @@ CParticle::~CParticle()
 //=============================================================================
 // ƒ|[ƒY‚Ì¶¬
 //=============================================================================
-CParticle * CParticle::Create(void)
+CParticle * CParticle::Create(int EffectNum, D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
-	return nullptr;
+	CParticle	*pParticle = NULL;
+
+	if (pParticle == NULL)
+	{
+		pParticle = new CParticle;
+		pParticle->m_pos = pos;
+		pParticle->m_size = size;
+		pParticle->m_EffectNum = EffectNum;
+		pParticle->m_apParticle[MAX_EFFECT_NUM] = {};
+		pParticle->Init();
+	}
+
+	return pParticle;
 }
 
 //=============================================================================
@@ -36,7 +48,15 @@ CParticle * CParticle::Create(void)
 //=============================================================================
 HRESULT CParticle::Init(void)
 {
-	return E_NOTIMPL;
+	for (int nCnt = 0; nCnt < m_EffectNum; nCnt++)
+	{
+		if (m_apParticle[nCnt] == NULL)
+		{
+			m_apParticle[nCnt] = CEffect::Create(m_pos, m_size);
+		}
+	}
+
+	return S_OK;
 }
 
 //=============================================================================

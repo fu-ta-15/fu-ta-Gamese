@@ -238,6 +238,7 @@ void CPlayer::PlayerAction(const D3DXVECTOR3 pos, const D3DXVECTOR3 move)
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true)	// トリガー・Kが押されたとき
 	{
 		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT, PLAYER_BULLET);	// バレットの生成
+		printf("打ちました。\n");
 	}
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD4) == true)	// トリガー・Kが押されたとき
 	{

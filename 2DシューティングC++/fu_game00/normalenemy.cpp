@@ -61,6 +61,21 @@ CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 siz
 HRESULT CNormalEnemy::Init(void)
 {
 	CEnemy::Init();	// ‰Šú‰»
+	
+	switch (CEnemy::GetEnemyType())
+	{// “G‚Ìí—Ş•Ê‚Ì‰Šú‰»
+		
+	case ENEMY_BLACK:
+		CScene2D::CreateTexture(ENEMY_TEXTURE0);
+		break;
+		
+	case ENEMY_WHITE:
+		
+		break;
+	default:
+		break;
+	}
+
 	return S_OK;
 }
 

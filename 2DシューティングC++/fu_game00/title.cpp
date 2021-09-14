@@ -73,9 +73,7 @@ HRESULT CTitle::Init(void)
 	m_paTitleUI[UI_BG] = CScene2D::Create(CENTER_POS, TITLE_BG_SIZE);
 	m_paTitleUI[UI_BUTTON] = CScene2D::Create(TITLE_BUTTON_POS, TITLE_BUTTON_SIZE);
 	m_pTitleLogo = CMesh::Create(90, 0, TITLE_LOGO_POS, TITLE_LOGO_SIZE);
-	m_Effect = CEffect::Create(CENTER_POS, D3DXVECTOR3(100.0f, 100.0f, 0.0f));
 
-	m_Effect->CreateTexture("data/TEXTURE/stateBoss.png");
 	m_paTitleUI[UI_BG]->CreateTexture("data/TEXTURE/BG.jpg");
 	m_paTitleUI[UI_BUTTON]->CreateTexture("data/TEXTURE/Next_Mode.png");
 	m_pTitleLogo->CreateTexture("data/TEXTURE/TitleUI.png");

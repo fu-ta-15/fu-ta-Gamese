@@ -13,7 +13,6 @@
 #include "scene.h"
 #include "scene2D.h"
 #include "mesh.h"
-#include "effect.h"
 
 
 class CTitle : public CScene
@@ -52,7 +51,6 @@ private:
 	D3DXCOLOR					m_col;					// ƒJƒ‰[
 	D3DXCOLOR					m_ButtonCol;			// Button‚ÌFî•ñ
 
-	CEffect		*m_Effect;
 };
 
 

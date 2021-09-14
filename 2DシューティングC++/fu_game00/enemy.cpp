@@ -58,14 +58,12 @@ HRESULT CEnemy::Init(void)
 	switch (m_type)
 	{
 	case ENEMY_BLACK:	// •‚¢“G
-		CScene2D::CreateTexture("data/TEXTURE/Enemy0_1.png");
 		break;
 
 	case ENEMY_WHITE:	// ”’‚¢“G
 		break;
 
 	case ENEMY_BOSS:	// ƒ{ƒX“G
-		SetLife(BOSS_LIFE);
 		break;
 
 	default:
@@ -108,6 +106,7 @@ void CEnemy::Draw(void)
 //=============================================================================
 void CEnemy::CollisionEnemy(int nID)
 {
+	// “G‚ÌŽí—Þ
 	switch (m_paEnemy[nID]->m_type)
 	{
 	case ENEMY_BLACK:	// •‚¢“G
@@ -125,6 +124,7 @@ void CEnemy::CollisionEnemy(int nID)
 
 	case ENEMY_BOSS:	// ƒ{ƒX“G
 		CGame::GetBoss()->DamegeLife(1);
+		CGame::GetBoss()->SetState(CBoss::STATE_DAMAGE);
 		if (CGame::GetBoss()->GetLife() == 0)
 		{
 			CGame::GetBoss()->SetAlive(false);

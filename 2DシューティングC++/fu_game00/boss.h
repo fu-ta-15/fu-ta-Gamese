@@ -44,6 +44,8 @@ public:
 	void UpdateBoss(void);
 	void DamageBoss(void);
 
+	void SetState(BOSS_STATE state) { m_State = state; }
+
 	static void SetAlive(bool bAlive) { m_bBoss_Alive = bAlive; }
 	static bool GetAlive(void) { return m_bBoss_Alive; }
 
