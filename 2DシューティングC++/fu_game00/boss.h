@@ -42,19 +42,35 @@ public:
 	void Draw(void);
 
 	void UpdateBoss(void);
+	void NoneBoss(void);
 	void DamageBoss(void);
+	void NotDamageBoss(void);
 
-	void SetState(BOSS_STATE state) { m_State = state; }
+	void SetState(BOSS_STATE state)		{ m_State = state; }
+	void SetDamage(bool bDamage)		{ m_bDamage = bDamage; }
+	void SetShield(bool bShield)		{ m_bShield = bShield; }
+	void SetShieldAlpha(float fAlpha)	{ m_nA_Shield = fAlpha; }
 
-	static void SetAlive(bool bAlive) { m_bBoss_Alive = bAlive; }
-	static bool GetAlive(void) { return m_bBoss_Alive; }
+	BOSS_STATE GetState(void)			{ return m_State; }
+	bool GetShield(void)				{ return m_bShield; }
+	static void SetAlive(bool bAlive)	{ m_bBoss_Alive = bAlive; }
+	static bool GetAlive(void)			{ return m_bBoss_Alive; }
 
 private:
-	BOSS_STATE	m_State;
-	CEffect		*m_Effect;
-	static bool m_bBoss_Alive;
-	int m_nDamageCnt = 0;
-	int m_nCnt = 0;
+	static bool			m_bBoss_Alive;
+
+	BOSS_STATE			m_State;
+	CEffect				*m_pDamage;
+	CEffect				*m_pShield;
+	bool				m_bShield;
+	bool				m_bDamage;
+
+	D3DXCOLOR			m_StateCol;
+	D3DXCOLOR			m_ShieldCol;
+	float				m_nA_Damage = 0.0f;
+	float				m_nA_Shield = 0.0f;
+	int					m_nDamageCnt = 0;
+	int					m_nCnt = 0;
 };
 
 #endif // !_BOSS_H_

@@ -19,6 +19,14 @@
 class CEffect : public CScene2D
 {
 public:
+
+	typedef enum EFFECT_TYPE
+	{
+		TYPE_ALPHA = 0,
+		TYPE_RGB,
+		TYPE_MAX
+	}EFFECT_TYPE;
+
 	//-----------------------------------------------------------------------------
 	// ÉÅÉìÉoä÷êî
 	//-----------------------------------------------------------------------------
@@ -26,7 +34,7 @@ public:
 	~CEffect();
 
 	static CEffect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
-	
+
 	void Unload();
 	HRESULT Load(const LPCSTR pSrcFile);
 
@@ -50,7 +58,7 @@ public:
 private:
 	static LPDIRECT3DTEXTURE9	m_pTexture;
 	LPDIRECT3DVERTEXBUFFER9		m_pVtxBuff;
-
+	EFFECT_TYPE					m_type;
 	D3DXVECTOR3					m_pos;
 	D3DXVECTOR3					m_size;
 	D3DXVECTOR3					m_move;

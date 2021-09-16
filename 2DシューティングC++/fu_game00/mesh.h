@@ -36,9 +36,9 @@ public:
 
 	void WaveMove(const float nHeightΘ, const float nAmplitude, const float nCycle, const float nTime);
 
-	//-------------//
-	// セット関数  //
-	//-------------//
+	// セット関数  
+	void SetVtxPos(int nID, D3DXVECTOR3 pos);
+
 	void SetPos(const D3DXVECTOR3 pos)			{ m_pos = pos; }
 	void SetSize(const D3DXVECTOR3 size)		{ m_size = size; }
 	void SetVertical(const int nVertical)		{ m_nVertical = nVertical; }

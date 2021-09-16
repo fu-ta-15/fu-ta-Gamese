@@ -14,10 +14,21 @@
 #include "game.h"
 
 //-----------------------------------------------------------------------------
+// マクロ変数
+//-----------------------------------------------------------------------------
+#define BOSS				(CGame::GetBoss())
+#define BOSS_DAMAGE			(CBoss::STATE_DAMAGE)
+#define BOSS_NOT_DAMAGE		(CBoss::STATE_NOT_DAMAGE)
+#define BOSS_NONE			(CBoss::STATE_NONE)
+#define BOSS_GET_LIFE		(CGame::GetBoss()->GetLife())
+
+#define ENEMY_ID			(m_paEnemy[nID])
+#define ENEMY_CNT			(m_paEnemy[nCnt])
+
+//-----------------------------------------------------------------------------
 // 静的変数
 //-----------------------------------------------------------------------------
 CEnemy *CEnemy::m_paEnemy[MAX_OBJECT] = {};
-CEnemy::ENEMY CEnemy::m_paEnemyType[MAX_OBJECT] = {};
 
 //=============================================================================
 // コンストラクタ
@@ -26,14 +37,9 @@ CEnemy::CEnemy() : CScene2D(OBJ_ENEMY)
 {
 	for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
 	{
-		if (m_paEnemy[nCnt] == NULL)
+		if (ENEMY_CNT == NULL)
 		{// 中身が空っぽの場合
-			m_paEnemy[nCnt] = this;	// 情報代入
-
-			if (m_paEnemyType[nCnt] == ENEMY_NULL)
-			{// タイプがなかったら
-				m_paEnemyType[nCnt] = m_type;	// タイプを設定
-			}
+			ENEMY_CNT = this;	// 情報代入
 			break;
 		}
 	}
@@ -54,21 +60,6 @@ HRESULT CEnemy::Init(void)
 	CScene2D::Init(m_pos, m_size);	// ポリゴンの生成
 	CScene2D::SetSize(m_size);		// サイズの設定
 	CScene2D::SetCol(m_col);		// 色の設定
-
-	switch (m_type)
-	{
-	case ENEMY_BLACK:	// 黒い敵
-		break;
-
-	case ENEMY_WHITE:	// 白い敵
-		break;
-
-	case ENEMY_BOSS:	// ボス敵
-		break;
-
-	default:
-		break;
-	}
 	return S_OK;
 }
 
@@ -79,8 +70,7 @@ void CEnemy::Uninit(void)
 {
 	for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
 	{// 中身をNULLにする
-		m_paEnemy[nCnt] = NULL;
-		m_paEnemyType[nCnt] = ENEMY_NULL;
+		ENEMY_CNT = NULL;
 	}
 	CScene2D::Uninit();	// 終了処理
 }
@@ -107,33 +97,41 @@ void CEnemy::Draw(void)
 void CEnemy::CollisionEnemy(int nID)
 {
 	// 敵の種類
-	switch (m_paEnemy[nID]->m_type)
+	switch (ENEMY_ID->m_type)
 	{
-	case ENEMY_BLACK:	// 黒い敵
-		m_paEnemy[nID]->DamegeLife(1);
-		if (m_paEnemy[nID]->GetLife() == 0)
+	case ENEMY_TYPE0:
+
+		ENEMY_ID->DamegeLife(1);
+
+		if (ENEMY_ID->GetLife() == 0)
 		{
-			m_paEnemy[nID]->m_type = ENEMY_WHITE;
+			ENEMY_ID->m_type = ENEMY_WHITE;
 		}
 		break;
 
-	case ENEMY_WHITE:	// 白い敵
-		CScene::ObjRelease(OBJ_ENEMY, nID);
-		m_paEnemy[nID] = NULL;
+	case ENEMY_TYPE1:
+		//CScene::ObjRelease(OBJ_ENEMY, nID);
+		//ENEMY_ID = NULL;
 		break;
 
-	case ENEMY_BOSS:	// ボス敵
-		CGame::GetBoss()->DamegeLife(1);
-		CGame::GetBoss()->SetState(CBoss::STATE_DAMAGE);
-		if (CGame::GetBoss()->GetLife() == 0)
+	case ENEMY_TYPE2:
+
+		if (BOSS->GetState() == BOSS_NONE && BOSS->GetShield() == false)
 		{
-			CGame::GetBoss()->SetAlive(false);
+			BOSS->DamegeLife(1);
+			BOSS->SetState(BOSS_DAMAGE);
+		}
+		else if (BOSS->GetState() == BOSS_NOT_DAMAGE)
+		{
+			BOSS->SetShield(true);
+		}
+
+		if (BOSS_GET_LIFE == 0)
+		{
+			BOSS->SetAlive(false);
 			CScene::ObjRelease(OBJ_ENEMY, nID);
 			m_paEnemy[nID] = NULL;
 		}
-		break;
-
-	default:
 		break;
 	}
 }

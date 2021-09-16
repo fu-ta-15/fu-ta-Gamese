@@ -34,6 +34,7 @@
 
 #define ENEMY_TYPE0		(CEnemy::ENEMY_BLACK)
 #define ENEMY_TYPE1		(CEnemy::ENEMY_WHITE)
+#define ENEMY_TYPE2		(CEnemy::ENEMY_BOSS)
 
 #define ENEMY_TEXTURE0	("data/TEXTURE/Enemy0_1.png")	
 
@@ -92,7 +93,6 @@ protected:
 
 private:
 	static CEnemy		*m_paEnemy[MAX_OBJECT];
-	static ENEMY		m_paEnemyType[MAX_OBJECT];
 };
 
 

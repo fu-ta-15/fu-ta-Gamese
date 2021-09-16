@@ -48,6 +48,7 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 	return pEffect;
 }
 
+
 //=============================================================================
 // アンロード
 //=============================================================================
@@ -107,6 +108,7 @@ void CEffect::Update(void)
 	//}
 
 	CScene2D::SetPos(m_pos);
+	CScene2D::SetSize(m_size);
 }
 
 //=============================================================================
@@ -117,16 +119,13 @@ void CEffect::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
-	D3D_DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_BOTHSRCALPHA);
-	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_DESTALPHA);
+	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	CScene2D::Draw();
 
-	D3D_DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
 }
 
 //=============================================================================
@@ -135,6 +134,7 @@ void CEffect::Draw(void)
 void CEffect::SetColor(D3DXCOLOR col)
 {
 	m_col = col;
+	CScene2D::SetCol(m_col);
 }
 
 //=============================================================================
