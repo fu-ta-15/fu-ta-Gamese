@@ -101,7 +101,6 @@ void CBoss::Update(void)
 	switch (m_State)
 	{
 	case NONE:
-		NoneBoss();
 		break;
 
 	case DAMAGE:
@@ -151,16 +150,6 @@ void CBoss::UpdateBoss(void)
 }
 
 //=============================================================================
-// ボスの通常状態
-//=============================================================================
-void CBoss::NoneBoss(void)
-{
-
-
-
-}
-
-//=============================================================================
 // ダメージを受けた時
 //=============================================================================
 void CBoss::DamageBoss(void)
@@ -176,25 +165,6 @@ void CBoss::DamageBoss(void)
 			m_StateCol = m_pDamage->GetColor();
 			m_nA_Damage = 0.065f;
 			printf("ダメージ");
-		}
-		if (m_pDamage != NULL)
-		{
-			// カラーの更新
-			m_pDamage->SetColor(m_StateCol);
-
-			m_StateCol.a += m_nA_Damage;
-
-			if (m_StateCol.a >= 0.7f)
-			{
-				m_nA_Damage = -0.005f;
-			}
-			if (m_StateCol.a <= 0.0f)
-			{
-				m_pDamage->Uninit();
-				m_pDamage = NULL;
-				m_State = STATE_NONE;
-				m_bDamage = false;
-			}
 		}
 	}
 }
@@ -214,24 +184,46 @@ void CBoss::NotDamageBoss(void)
 			m_ShieldCol = m_pShield->GetColor();
 			m_nA_Shield = 0.04f;
 		}
+	}
+}
 
-		if (m_pShield != NULL)
+void CBoss::StateUpdate(void)
+{
+	if (m_pShield != NULL)
+	{
+		// カラーの更新
+		m_pShield->SetColor(m_ShieldCol);
+
+		m_ShieldCol.a += m_nA_Shield;
+
+		if (m_ShieldCol.a >= 0.7f)
 		{
-			// カラーの更新
-			m_pShield->SetColor(m_ShieldCol);
+			m_nA_Shield = -0.1f;
+		}
+		if (m_ShieldCol.a < 0.0f)
+		{
+			m_pShield->Uninit();
+			m_pShield = NULL;
+			m_bShield = false;
+		}
+	}
+	if (m_pDamage != NULL)
+	{
+		// カラーの更新
+		m_pDamage->SetColor(m_StateCol);
 
-			m_ShieldCol.a += m_nA_Shield;
+		m_StateCol.a += m_nA_Damage;
 
-			if (m_ShieldCol.a >= 0.7f)
-			{
-				m_nA_Shield = -0.1f;
-			}
-			if (m_ShieldCol.a < 0.0f)
-			{
-				m_pShield->Uninit();
-				m_pShield = NULL;
-				m_bShield = false;
-			}
+		if (m_StateCol.a >= 0.7f)
+		{
+			m_nA_Damage = -0.005f;
+		}
+		if (m_StateCol.a <= 0.0f)
+		{
+			m_pDamage->Uninit();
+			m_pDamage = NULL;
+			m_State = STATE_NONE;
+			m_bDamage = false;
 		}
 	}
 }

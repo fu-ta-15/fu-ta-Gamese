@@ -42,12 +42,12 @@ public:
 	void Draw(void);
 
 	void UpdateBoss(void);
-	void NoneBoss(void);
 	void DamageBoss(void);
 	void NotDamageBoss(void);
 
+	void StateUpdate(void);
+
 	void SetState(BOSS_STATE state)		{ m_State = state; }
-	void SetDamage(bool bDamage)		{ m_bDamage = bDamage; }
 	void SetShield(bool bShield)		{ m_bShield = bShield; }
 	void SetShieldAlpha(float fAlpha)	{ m_nA_Shield = fAlpha; }
 
