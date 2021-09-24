@@ -107,16 +107,6 @@ void CEffect::Update(void)
 	//	Uninit();
 	//}
 
-
-
-
-
-
-
-
-
-
-
 	CScene2D::SetPos(m_pos);
 	CScene2D::SetSize(m_size);
 }
@@ -133,13 +123,14 @@ void CEffect::Draw(void)
 
 	CScene2D::Draw();
 
-	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	D3D_DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			// 合成方法
+	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// ソース（描画元）の合成方法の設定
+	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
 
 	//// 減産合成の設定
 	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
 	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-
 }
 
 //=============================================================================

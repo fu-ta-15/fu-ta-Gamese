@@ -84,8 +84,6 @@ HRESULT CPlayer::Init(void)
 	m_number = D3DXVECTOR2(0.0f, 0.0f);
 	m_nAnimeCnt = 0;
 
-
-
 	// ƒ|ƒŠƒSƒ“‚Ì¶¬
 	CScene2D::Init(m_pos, m_size);
 	CScene2D::CreateTexture("data/TEXTURE/player0.png");

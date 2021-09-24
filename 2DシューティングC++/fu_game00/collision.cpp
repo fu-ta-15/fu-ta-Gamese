@@ -100,8 +100,8 @@ D3DXVECTOR3 CCollision::CrossProduct(const D3DXVECTOR3 v1, const D3DXVECTOR3 v2)
 	VecPZ = VecF.y + VecAZ * VecN;
 
 	// îΩéÀÉxÉNÉgÉãÇãÅÇﬂÇÈ
-	VecWX = VecF.x + (VecPX) * VecN;
-	VecWY = VecF.y + (VecPZ) * VecN;
+	VecWX = VecF.x + (VecPX*2) * VecN;
+	VecWY = VecF.y + (VecPZ*2) * VecN;
 
 	return D3DXVECTOR3(VecWX, VecWY, 0.0f);
 }
