@@ -28,7 +28,7 @@ CParticle::~CParticle()
 //=============================================================================
 CParticle * CParticle::Create(int EffectNum, D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
-	CParticle	*pParticle = NULL;
+	CParticle *pParticle = NULL;
 
 	if (pParticle == NULL)
 	{
@@ -55,7 +55,6 @@ HRESULT CParticle::Init(void)
 			m_apParticle[nCnt] = CEffect::Create(m_pos, m_size);
 		}
 	}
-
 	return S_OK;
 }
 

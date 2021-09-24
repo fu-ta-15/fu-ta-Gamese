@@ -110,8 +110,6 @@ void CEnemy::CollisionEnemy(int nID)
 		break;
 
 	case ENEMY_TYPE1:
-		//CScene::ObjRelease(OBJ_ENEMY, nID);
-		//ENEMY_ID = NULL;
 		break;
 
 	case ENEMY_TYPE2:

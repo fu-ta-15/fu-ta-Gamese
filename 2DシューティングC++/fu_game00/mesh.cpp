@@ -35,6 +35,15 @@ CMesh::CMesh() : CScene(OBJ_NONE)
 	m_pTexture = NULL;
 	m_pIdxBuff = NULL;
 }
+//=============================================================================
+// コンストラクタ
+//=============================================================================
+CMesh::CMesh(ObjType type) : CScene(type)
+{
+	m_pVtxBuff = NULL;
+	m_pTexture = NULL;
+	m_pIdxBuff = NULL;
+}
 
 //=============================================================================
 // デストラクタ
@@ -51,6 +60,23 @@ CMesh * CMesh::Create(const int nVertical, const int nSide, const D3DXVECTOR3 po
 	CMesh *pMesh = NULL;
 
 	pMesh = new CMesh;
+	pMesh->SetPos(pos);
+	pMesh->SetSize(size);
+	pMesh->SetSide(nSide);
+	pMesh->SetVertical(nVertical);
+	pMesh->Init();
+
+	return pMesh;
+}
+
+//=============================================================================
+// メッシュの生成
+//=============================================================================
+CMesh * CMesh::Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, CScene::ObjectType type)
+{
+	CMesh *pMesh = NULL;
+
+	pMesh = new CMesh(type);
 	pMesh->SetPos(pos);
 	pMesh->SetSize(size);
 	pMesh->SetSide(nSide);
@@ -162,7 +188,7 @@ void CMesh::Uninit(void)
 //=============================================================================
 void CMesh::Update(void)
 {
-
+	
 }
 
 //=============================================================================
@@ -187,31 +213,42 @@ void CMesh::Draw(void)
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP,
 		0, 0,
 		m_nVtx, 0, DRAW_INDX);
-
 }
 
 //=============================================================================
-// メッシュポリゴンの波の表現
+// 頂点に座標を代入
 //=============================================================================
-void CMesh::WaveMove(const float nHeightΘ, const float nAmplitude, const float nCycle, const float nTime)
+void CMesh::SetWavePos(int nID, float pos)
 {
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
-		// 各頂点の座標
-		for (int nCnt = 0; nCnt < m_nVtx / 2; nCnt++)
-		{					   /* Θの高さ */											   /* Θからの高さ */
-			m_pVtx[nCnt].pos.y = nHeightΘ + sinf((D3DX_PI * 2) / nCycle * (nTime + nCnt)) * nAmplitude;
-			m_pVtx[m_nVtx / 2 + nCnt].pos.y = nHeightΘ + m_size.y + sinf((D3DX_PI * 2) / nCycle * (nTime + nCnt)) * nAmplitude;
-
-		}
+	m_pVtx[nID].pos.y = pos;
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 }
 
-void CMesh::SetVtxPos(int nID, D3DXVECTOR3 pos)
+void CMesh::SetVtxPosY(int nID, float posy)
 {
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	m_pVtx[nID].pos.y = posy;
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
+}
+
+void CMesh::SetVtxPosX(int nID, float posx)
+{
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	m_pVtx[nID].pos.x = posx;
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
 }
 
 //=============================================================================

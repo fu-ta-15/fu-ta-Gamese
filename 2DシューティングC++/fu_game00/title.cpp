@@ -26,7 +26,7 @@
 #define TITLE_BUTTON_POS	(D3DXVECTOR3(WIDTH_HALF, HEIGHT_HALF+250.0f, 0.0f))
 #define TITLE_BUTTON_SIZE	(D3DXVECTOR3(150.0f, 50.0f, 0.0f))
 
-#define TITLE_LOGO_POS		(D3DXVECTOR3(WIDTH_HALF-300, HEIGHT_HALF-500.0f, 0.0f))
+#define TITLE_LOGO_POS		(D3DXVECTOR3(WIDTH_HALF-300, HEIGHT_HALF-100.0f, 0.0f))
 #define TITLE_LOGO_SIZE		(D3DXVECTOR3(600.0f, 400.0f, 0.0f))
 
 
@@ -97,14 +97,14 @@ void CTitle::Update(void)
 	CKey *pKey = CManager::GetKey();
 
 	m_nCntTime++;
-	char *cC = NULL;
 
-	m_pTitleLogo->WaveMove(50.0f, 10.0f, 100.0f, m_nCntTime);
 
 	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
 	}
+
+	TitleLogo(m_nCntTime);
 	ButtonUI();
 }
 
@@ -113,7 +113,7 @@ void CTitle::Update(void)
 //=============================================================================
 void CTitle::Draw(void)
 {
-	//m_pDamage->Draw();
+	
 }
 
 //=============================================================================
@@ -132,5 +132,22 @@ void CTitle::ButtonUI(void)
 	if (m_ButtonCol.a <= 0.0f)
 	{// ‰ÁŽZ‚³‚¹‚é’l
 		AddCol = 0.02f;
+	}
+}
+
+//=============================================================================
+// TitleLogo‚Ìˆ—
+//=============================================================================
+void CTitle::TitleLogo(int nTime)
+{
+	for (int nVtx = 0; nVtx < m_pTitleLogo->GetVtxNum(); nVtx++)
+	{
+		D3DXVECTOR3 pos = ZeroVector3;
+		pos.y = CMove::SinWave(HEIGHT_HALF - 350.0f, 25.0f, 300.0f, (nTime + nVtx));
+		if (nVtx >= m_pTitleLogo->GetVtxNum() / 2)
+		{
+			pos.y += 400.0f;
+		}
+		m_pTitleLogo->SetWavePos(nVtx, pos.y);
 	}
 }

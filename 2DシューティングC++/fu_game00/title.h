@@ -38,6 +38,7 @@ public:
 
 private:
 	void ButtonUI(void);								// ButtonUIの処理
+	void TitleLogo(int nTime);
 
 	static CScene2D*			m_paTitleUI[UI_MAX];	// タイトルUIポリゴン
 	static CMesh*				m_pTitleLogo;			// メッシュポリゴン

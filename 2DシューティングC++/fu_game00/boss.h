@@ -49,7 +49,7 @@ public:
 
 	void SetState(BOSS_STATE state)		{ m_State = state; }
 	void SetShield(bool bShield)		{ m_bShield = bShield; }
-	void SetShieldAlpha(float fAlpha)	{ m_nA_Shield = fAlpha; }
+	void SetShieldAlpha(float fAlpha)	{ m_fA_Shield = fAlpha; }
 
 	BOSS_STATE GetState(void)			{ return m_State; }
 	bool GetShield(void)				{ return m_bShield; }
@@ -67,8 +67,8 @@ private:
 
 	D3DXCOLOR			m_StateCol;
 	D3DXCOLOR			m_ShieldCol;
-	float				m_nA_Damage = 0.0f;
-	float				m_nA_Shield = 0.0f;
+	float				m_fA_Damage = 0.0f;
+	float				m_fA_Shield = 0.0f;
 	int					m_nDamageCnt = 0;
 	int					m_nCnt = 0;
 };

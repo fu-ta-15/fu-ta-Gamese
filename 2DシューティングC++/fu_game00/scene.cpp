@@ -299,5 +299,8 @@ void CScene::PauseRelease(void)
 		}
 		delete m_pPauseScene;
 		m_pPauseScene = NULL;
+
+
+		
 	}
 }

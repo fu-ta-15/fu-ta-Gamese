@@ -20,13 +20,15 @@
 class CMesh : public CScene
 {
 public:
-	//-----------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	// メンバ関数
-	//-----------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	CMesh();
+	CMesh(ObjType type);
 	~CMesh();
 
 	static CMesh *Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
+	static CMesh *Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, CScene::ObjectType type);
 	HRESULT CreateTexture(const LPCSTR pSrcFile);
 
 	HRESULT Init(void);
@@ -34,11 +36,10 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	void WaveMove(const float nHeightΘ, const float nAmplitude, const float nCycle, const float nTime);
-
 	// セット関数  
-	void SetVtxPos(int nID, D3DXVECTOR3 pos);
-
+	void SetWavePos(int nID, float pos);
+	void SetVtxPosY(int nID, float posy);
+	void SetVtxPosX(int nID, float posx);
 	void SetPos(const D3DXVECTOR3 pos)			{ m_pos = pos; }
 	void SetSize(const D3DXVECTOR3 size)		{ m_size = size; }
 	void SetVertical(const int nVertical)		{ m_nVertical = nVertical; }
@@ -46,9 +47,7 @@ public:
 	void SetCol(const D3DXCOLOR col)			{ m_col = col; }
 	void SetVtx(LPDIRECT3DVERTEXBUFFER9 Vtx)	{ m_pVtxBuff = Vtx; }
 
-	//-------------//
-	// ゲット関数  //
-	//-------------//
+	// ゲット関数 
 	LPDIRECT3DVERTEXBUFFER9 GetVtx()	{ return m_pVtxBuff; }
 	D3DXVECTOR3 GetPos()				{ return m_pos; }
 	D3DXVECTOR3 GetSize()				{ return m_size; }

@@ -55,7 +55,7 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 void CEffect::Unload()
 {
 	if (m_pTexture != NULL)
-	{//頂点バッファの開放
+	{// 頂点バッファの開放
 		m_pTexture->Release();
 		m_pTexture = NULL;
 	}
@@ -107,6 +107,10 @@ void CEffect::Update(void)
 	//	Uninit();
 	//}
 
+
+
+
+
 	CScene2D::SetPos(m_pos);
 	CScene2D::SetSize(m_size);
 }
@@ -119,13 +123,17 @@ void CEffect::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
-	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_BOTHSRCALPHA);
 	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	CScene2D::Draw();
 
-	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	//// 減産合成の設定
+	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
 }
 
 //=============================================================================

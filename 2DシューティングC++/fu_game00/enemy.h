@@ -69,18 +69,19 @@ public:
 	static void CollisionEnemy(int nID);
 
 	// É_ÉÅÅ[ÉW
-	void DamegeLife(int nDamege) { m_nLife -= nDamege; }
+	void DamegeLife(int nDamege)		{ m_nLife -= nDamege; }
 
 	// Setä÷êî
-	void SetPos(D3DXVECTOR3 pos)	{ m_pos = pos; }
-	void SetSize(D3DXVECTOR3 size)	{ m_size = size; }
-	void SetCol(D3DXCOLOR col)		{ m_col = col; }
-	void SetLife(int nLife)			{ m_nLife = nLife; }
-	void SetType(ENEMY type)		{ m_type = type; }
+	void SetPos(D3DXVECTOR3 pos)		{ m_pos = pos; }
+	void SetSize(D3DXVECTOR3 size)		{ m_size = size; }
+	void SetCol(D3DXCOLOR col)			{ m_col = col; }
+	void SetLife(int nLife)				{ m_nLife = nLife; }
+	void SetType(ENEMY type)			{ m_type = type; }
 
 	// Getä÷êî
-	ENEMY GetEnemyType(void)	{ return m_type; }
-	int GetLife(void)			{ return m_nLife; }
+	ENEMY GetEnemyType(void)			{ return m_type; }
+	int GetLife(void)					{ return m_nLife; }
+	static CEnemy **GetEnemy(void)		{ return &m_paEnemy[0]; }
 
 protected:
 

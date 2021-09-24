@@ -99,10 +99,10 @@ HRESULT CScene2D::Init(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 各頂点の座標
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_fAngle, m_pos.y + m_fAngle, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x - m_fAngle, m_pos.y - m_fAngle, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x + m_fAngle, m_pos.y + m_fAngle, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_fAngle, m_pos.y - m_fAngle, 0.0f);
 
 	//rhwの設定		=	1.0f固定
 	pVtx[0].rhw = 1.0f;
@@ -368,11 +368,17 @@ void CScene2D::SetUse(const bool bUse)
 	}
 }
 
+//=============================================================================
+// テクスチャの設定
+//=============================================================================
 void CScene2D::SetTexture(const LPDIRECT3DTEXTURE9 pTex)
 {
 	m_pTex = pTex;
 }
 
+//=============================================================================
+// テクスチャ座標の設定
+//=============================================================================
 void CScene2D::SetTex(const D3DXVECTOR2 tex, const D3DXVECTOR2 fnumber)
 {
 	m_fAnimeX = fnumber.x;
@@ -394,7 +400,6 @@ void CScene2D::SetTex(const D3DXVECTOR2 tex, const D3DXVECTOR2 fnumber)
 	m_pVtxBuff->Unlock();
 }
 
-
 //=============================================================================
 // 位置の取得
 //=============================================================================
@@ -403,6 +408,9 @@ D3DXVECTOR3 CScene2D::GetPos(void)
 	return m_pos;
 }
 
+//=============================================================================
+// 色の取得
+//=============================================================================
 D3DCOLOR CScene2D::GetCol(void)
 {
 	return m_col;

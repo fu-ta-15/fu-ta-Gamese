@@ -47,6 +47,7 @@ public:
 	void SetColor(D3DXCOLOR col);
 	void SetMove(D3DXVECTOR3 move);
 	void SetLife(int nLife);
+	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 
 	// Getä÷êî
 	D3DXCOLOR GetColor(void)	{ return m_col; }
@@ -57,6 +58,8 @@ public:
 
 private:
 	static LPDIRECT3DTEXTURE9	m_pTexture;
+	D3DRENDERSTATETYPE			m_State;
+	DWORD						m_Value;
 	LPDIRECT3DVERTEXBUFFER9		m_pVtxBuff;
 	EFFECT_TYPE					m_type;
 	D3DXVECTOR3					m_pos;

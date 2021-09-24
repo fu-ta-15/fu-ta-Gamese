@@ -23,7 +23,7 @@
 #define BUTTON_COL		(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f))
 #define BUTTON_POS		(D3DXVECTOR3(WIDTH_HALF, HEIGHT_HALF, 0.0f))
 #define BUTTON_SIZE		(D3DXVECTOR3(200.0f, 50.0f, 0.0f))
-#define PAUSE_OBJ_NUM	(MENU_MAX)
+#define PAUSE_OBJ_NUM	(CPause::MENU_MAX)
 #define MENU_SELECTCOL	(D3DXCOLOR(0.4f,0.4f,0.4f,1.0f))
 
 //-----------------------------------------------------------------------------
@@ -130,7 +130,7 @@ void CPause::Update(void)
 	}
 	SelectMenu(m_nMenuID);
 
-	if (pKey->GetState(CKey::STATE_RELEASE, DIK_RETURN))
+	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))
 	{
 		MenuOk(m_nMenuID);
 	}

@@ -44,6 +44,7 @@ CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 siz
 	{// NULLチェック
 		pNormalEnemy = new CNormalEnemy;
 		pNormalEnemy->m_move = ENEMY_TYPE1_MOVE;  // 移動量
+		pNormalEnemy->m_bCollision = false;		  // 当たり判定
 		pNormalEnemy->SetPos(pos);				  // 位置
 		pNormalEnemy->SetSize(size);			  // サイズ
 		pNormalEnemy->SetLife(ENEMY_LIFE);		  // 体力
@@ -71,8 +72,6 @@ HRESULT CNormalEnemy::Init(void)
 		
 	case ENEMY_WHITE:
 		
-		break;
-	default:
 		break;
 	}
 
@@ -121,9 +120,15 @@ void CNormalEnemy::Draw(void)
 //=============================================================================
 void CNormalEnemy::UpdateBlack(void)
 {
+	CGame::GetPlayer();
 	// 位置に移動量を加算
 	m_pos += m_move;
-	m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f);
+	m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f, 6.5f);
+
+	if (CollisionPlayer() == true)
+	{
+		printf("当たりました");
+	}
 
 	CScene2D::SetPos(m_pos);	// 位置の更新
 }
@@ -139,4 +144,16 @@ void CNormalEnemy::UpdateWhite(void)
 
 	CScene2D::SetPos(m_pos);	// 移動量の更新
 	CScene2D::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+}
+
+bool CNormalEnemy::CollisionPlayer(void)
+{
+	bool bCollision = false;
+
+	D3DXVECTOR3 pos = CGame::GetPlayer()->GetPos();
+	D3DXVECTOR3 size = CGame::GetPlayer()->GetSize();
+
+	bCollision = CCollision::CollisionCycle(m_pos, pos, size.x);
+
+	return bCollision;
 }

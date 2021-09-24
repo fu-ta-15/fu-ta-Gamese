@@ -116,7 +116,7 @@ void CTutorial::Update(void)
 {
 	CKey *pKey = CManager::GetKey();
 
-	if (pKey->GetState(CKey::STATE_RELEASE, DIK_RETURN))
+	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))
 	{// RETURNキーが押されたら
 		CManager::GetFade()->SetFade(CManager::MODE_GAME);	// GAME・MODEへ
 	}
@@ -125,13 +125,6 @@ void CTutorial::Update(void)
 	OnKeyOperat(pKey);
 	OperatUpdate();
 
-	if (pKey->GetState(CKey::STATE_PRESSE, DIK_N))
-	{// Nキーが押されたら
-		m_nCntTime++;	// カウントをプラスする
-	}
-
-	// 地面の波の処理
-	m_pField->WaveMove(668.0f, 30.0f, 100.0f, m_nCntTime);
 }
 
 //=============================================================================
@@ -165,7 +158,7 @@ void CTutorial::OperatUpdate(void)
 	{
 		if (m_bButton[nCnt] == true)
 		{// そのキーが押されたことがわかっていたら
-			m_pOperation[nCnt]->WaveMove(100.0f, 20.0f, 40.0f, m_nCntTimeOP);
+			//m_pOperation[nCnt]->WaveMove(100.0f, 20.0f, 40.0f, m_nCntTimeOP);
 		}
 	}
 }

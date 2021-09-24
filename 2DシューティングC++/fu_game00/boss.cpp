@@ -15,15 +15,15 @@
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
-#define DAMAGE			(CBoss::STATE_DAMAGE)
-#define NOT_DAMAGE		(CBoss::STATE_NOT_DAMAGE)
-#define NONE			(CBoss::STATE_NONE)
-
-#define DAMAGE_TEXTUER	("data/TEXTURE/stateBoss.png")
-#define DAMAGE_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))
-
-#define SHILED_TEXTUER	("data/TEXTURE/shield.png")
-#define SHILED_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))
+#define DAMAGE			(CBoss::STATE_DAMAGE)				// ダメージ状態
+#define NOT_DAMAGE		(CBoss::STATE_NOT_DAMAGE)			// ダメージNO!
+#define NONE			(CBoss::STATE_NONE)					// 何もない状態
+															 
+#define DAMAGE_TEXTUER	("data/TEXTURE/stateBoss.png")		// ダメージ状態テクスチャのリンク
+#define DAMAGE_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))	// 色
+															
+#define SHILED_TEXTUER	("data/TEXTURE/shield.png")			// シールドテクスチャのリンク
+#define SHILED_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))	// 色
 
 
 //-----------------------------------------------------------------------------
@@ -99,12 +99,12 @@ void CBoss::Update(void)
 	CScene2D::SetPos(m_pos);	
 
 	switch (m_State)
-	{
+	{// 現在の状態
 	case NONE:
 		break;
 
 	case DAMAGE:
-		m_bDamage = true;
+		m_bDamage = true;	// ダメージ合図
 		break;
 
 	case NOT_DAMAGE:
@@ -112,9 +112,10 @@ void CBoss::Update(void)
 	}
 
 	// ボスの更新
-	UpdateBoss();
-	DamageBoss();
-	NotDamageBoss();
+	UpdateBoss();		// 普通の更新
+	DamageBoss();		// ダメージ状態更新
+	NotDamageBoss();	// ダメージNO！状態更新
+	StateUpdate();		// 状態の公人
 }
 
 //=============================================================================
@@ -155,16 +156,15 @@ void CBoss::UpdateBoss(void)
 void CBoss::DamageBoss(void)
 {
 	if (m_bDamage == true)
-	{
+	{// ダメージ状態
 		if (m_pDamage == NULL)
-		{
-			m_State = STATE_NOT_DAMAGE;
-			m_pDamage = CEffect::Create(m_pos, m_size);
-			m_pDamage->CreateTexture(DAMAGE_TEXTUER);
-			m_pDamage->SetColor(DAMAGE_COLOR);
-			m_StateCol = m_pDamage->GetColor();
-			m_nA_Damage = 0.065f;
-			printf("ダメージ");
+		{// NULLチェック
+			m_State = STATE_NOT_DAMAGE;					   // ダメージ受け付けない状態
+			m_pDamage = CEffect::Create(m_pos, m_size);	   // エフェクト生成
+			m_pDamage->CreateTexture(DAMAGE_TEXTUER);	   // テクスチャの設定
+			m_pDamage->SetColor(DAMAGE_COLOR);			   // 色の設定
+			m_StateCol = m_pDamage->GetColor();			   // 色の取得
+			m_fA_Damage = 0.065f;						   // 透明度加算用
 		}
 	}
 }
@@ -175,18 +175,21 @@ void CBoss::DamageBoss(void)
 void CBoss::NotDamageBoss(void)
 {
 	if (m_bShield == true)
-	{
+	{// シールド展開中
 		if (m_pShield == NULL)
-		{
-			m_pShield = CEffect::Create(m_pos, m_size);
-			m_pShield->CreateTexture(SHILED_TEXTUER);
-			m_pShield->SetColor(SHILED_COLOR);
-			m_ShieldCol = m_pShield->GetColor();
-			m_nA_Shield = 0.04f;
+		{// NULLチェック
+			m_pShield = CEffect::Create(m_pos, m_size);	  // エフェクトの生成
+			m_pShield->CreateTexture(SHILED_TEXTUER);	  // テクスチャ設定
+			m_pShield->SetColor(SHILED_COLOR);			  // 色の設定
+			m_ShieldCol = m_pShield->GetColor();		  // 色の取得
+			m_fA_Shield = 0.04f;						  // 透明度加算用
 		}
 	}
 }
 
+//=============================================================================
+// 状態管理
+//=============================================================================
 void CBoss::StateUpdate(void)
 {
 	if (m_pShield != NULL)
@@ -194,11 +197,11 @@ void CBoss::StateUpdate(void)
 		// カラーの更新
 		m_pShield->SetColor(m_ShieldCol);
 
-		m_ShieldCol.a += m_nA_Shield;
+		m_ShieldCol.a += m_fA_Shield;
 
 		if (m_ShieldCol.a >= 0.7f)
 		{
-			m_nA_Shield = -0.1f;
+			m_fA_Shield = -0.1f;
 		}
 		if (m_ShieldCol.a < 0.0f)
 		{
@@ -212,11 +215,11 @@ void CBoss::StateUpdate(void)
 		// カラーの更新
 		m_pDamage->SetColor(m_StateCol);
 
-		m_StateCol.a += m_nA_Damage;
+		m_StateCol.a += m_fA_Damage;
 
 		if (m_StateCol.a >= 0.7f)
 		{
-			m_nA_Damage = -0.005f;
+			m_fA_Damage = -0.005f;
 		}
 		if (m_StateCol.a <= 0.0f)
 		{

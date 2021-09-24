@@ -20,7 +20,8 @@ CEnemy *CBullet::m_pBoss = NULL;
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
-
+#define BULLET_TEXTURE		("data/TEXTURE/FlowerShot.png")
+#define P_ENEMY				(pEnemy[nCntEnemy])
 
 //=============================================================================
 // コンストラクタ
@@ -44,13 +45,14 @@ CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D
 	/* バレットの要素を設定 */
 	CBullet* pBullet = new CBullet;		// インスタンス生成
 
-	pBullet->m_pos = pos;				// 位置を設定
-	pBullet->m_size = size;				// サイズを設定
-	pBullet->m_move = move;				// 移動量を設定
-	pBullet->m_type = type;				// 弾のタイプ
-	pBullet->m_Collision = false;		// 当たり判定
-	pBullet->m_bUse = true;				// 生存確認
-	pBullet->Init();					// 初期化
+	pBullet->m_pos = pos;					// 位置を設定
+	pBullet->m_size = size;					// サイズを設定
+	pBullet->m_move = move;					// 移動量を設定
+	pBullet->m_type = type;					// 弾のタイプ
+	pBullet->CreateTexture(BULLET_TEXTURE);	// テクスチャ
+	pBullet->m_Collision = false;			// 当たり判定
+	pBullet->m_bUse = true;					// 生存確認
+	pBullet->Init();						// 初期化
 
 	return pBullet;						// バレット情報を返す
 }
@@ -122,6 +124,7 @@ bool CBullet::CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 	D3DXVECTOR3 posEnemy;							// 敵の位置
 	D3DXVECTOR3 sizeEnemy;							// 敵のサイズ
 	int EnemyNum = CScene::GetObjeNum(OBJ_ENEMY);	// 画面にいる敵の数の取得
+	CEnemy **pEnemy = CEnemy::GetEnemy();			// 敵の情報取得
 
 	if (EnemyNum == 0)
 	{/* 画面にいる敵がゼロの場合 */
@@ -134,7 +137,7 @@ bool CBullet::CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 			posEnemy = CScene::GetPos(OBJ_ENEMY, nCntEnemy);	 // 敵の位置を取得
 			sizeEnemy = CScene::GetSize(OBJ_ENEMY, nCntEnemy);	 // 敵のサイズを取得
 
-			if (CCollision::CollisionCycle(m_pos, posEnemy, sizeEnemy.x) == true)
+			if (CCollision::CollisionCycle(m_pos, posEnemy, sizeEnemy.x) == true && P_ENEMY->GetEnemyType() != ENEMY_TYPE1)
 			{/* 敵の範囲に弾が存在したら */
 				CEnemy::CollisionEnemy(nCntEnemy);			// 当たった敵の当たり判定処理へ
 				m_Collision = true;							// 当たり判定は有
@@ -145,7 +148,6 @@ bool CBullet::CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 	if (m_pos.x - m_size.x > SCREEN_WIDTH || m_pos.x + m_size.x < 0.0f)
 	{// 画面外処理
 		m_Collision = true;				// 存在を消す
-		printf("弾が画面外に行きました。\n");
 	}
 
 	return m_Collision;	// 判定結果を返す

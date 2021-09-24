@@ -95,18 +95,19 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	}
 
 	// レンダーステートの設定
-	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);				//1		 /*  1.カリングの設定（　　　,裏面をカリング）
-	m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);				//2		 2.αブレンド（α値の合成）の設定＊重要
-	m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		//3		 3.ソース（描画元）の合成方法の設定
-	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	//4		 4.デスティネーション（描画先）の合成方法の設定/画像の透明度が反映　* /
-	m_pD3DDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);			//5		 5.ゼットテスト
-	m_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);					//6		 6.ゼットバッファ有効
+	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);				// カリングの設定（　　　,裏面をカリング）
+	m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);				// αブレンド（α値の合成）の設定＊重要
+	m_pD3DDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			// 合成方法
+	m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// ソース（描画元）の合成方法の設定
+	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
+	m_pD3DDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);			// ゼットテスト
+	m_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);					// ゼットバッファ有効
 
 																			// サンプラーステートの設定
-	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);	//縮小時　補間
-	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);	//拡大時　補間
-	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);	//U値　繰り返し
-	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);	//V値　繰り返し
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);	// 縮小時　補間
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);	// 拡大時　補間
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);	// U値　繰り返し
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);	// V値　繰り返し
 
 																			// テクスチャステージステートの設定
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);

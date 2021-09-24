@@ -11,6 +11,7 @@
 // インクルードファイル
 //-----------------------------------------------------------------------------
 #include "scene2D.h"
+#include "effect.h"
 
 //-----------------------------------------------------------------------------
 // 前方宣言
@@ -36,19 +37,31 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	D3DXVECTOR3 GetSize(void) { return m_size; }
+
 private:
-	void PosControl(const D3DXVECTOR3 pos, const D3DXVECTOR3 move);
-	void PlayerAction(const D3DXVECTOR3 pos, const D3DXVECTOR3 move);
+	void PosControl(void);
+	void PlayerAction(void);
+	void PlayerMove(void);
+	void PlayerMoveControl(void);
+	void FieldControl(void);
+	void PlayerAnime(void);
 
-	float						m_fG;			// 重力
-	bool						m_bJunp;		// ジャンプ
+	int							m_nAnimeCnt;		// アニメーションカウンター
+	float						m_fStayTime;		// とどまってる時間
+	bool						m_bUse;				// 生存確認
+	bool						m_bJunp;			// ジャンプ
+	bool						m_bStay;			// 止まっているかどうか
+	bool						m_bBound;			// メッシュの反発
+	D3DXVECTOR3					m_pos;				// 位置
+	D3DXVECTOR3					m_move;				// 移動量
+	D3DXVECTOR3					m_size;				// サイズ
+	D3DXVECTOR3					m_moveBullet;		// バレットの移動量
+	D3DXVECTOR2					m_tex;				// テクスチャの分割数
+	D3DXVECTOR2					m_number;			// テクスチャ何番目か
+	D3DXCOLOR					m_col;				// 色
 
-	D3DXVECTOR3					m_pos;			// 位置
-	D3DXVECTOR3					m_move;			// 位置
-	D3DXVECTOR3					m_size;			// サイズ
-	D3DXVECTOR3					m_moveBullet;	// バレットの移動量
-	D3DXCOLOR					m_col;			// 色
-	bool						m_bUse;			// 生存確認
+	CEffect						*m_pShield;
 };
 
 

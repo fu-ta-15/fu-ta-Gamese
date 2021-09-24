@@ -85,7 +85,7 @@ void CResult::Update(void)
 {
 	CKey *pKey = CManager::GetKey();
 
-	if (pKey->GetState(CKey::STATE_RELEASE, DIK_RETURN))
+	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 	}

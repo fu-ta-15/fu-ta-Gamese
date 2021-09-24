@@ -40,16 +40,17 @@ public:
 	void Draw(void);
 
 	static CBoss* GetBoss(void) { return m_pBoss; }
-	static CMesh* GetMesh(void) { return m_pMesh; }
+	static CMesh* GetMesh(void) { return m_pField; }
 	static CPlayer* GetPlayer(void) { return m_pPlayer; }
 
 private:
-	static CPlayer	*m_pPlayer;
-	static CScore	*m_pScore;
-	static CTime	*m_pTime;
-	static CBoss	*m_pBoss;
-	static CScene2D *m_pBg;
-	static CMesh	*m_pMesh;
+	static CPlayer		*m_pPlayer;
+	static CScore		*m_pScore;
+	static CTime		*m_pTime;
+	static CBoss		*m_pBoss;
+	static CScene2D		*m_pBg;
+	static CMesh		*m_pField;
+	float				m_fWaveTime = 0.0f;
 
 };
 
