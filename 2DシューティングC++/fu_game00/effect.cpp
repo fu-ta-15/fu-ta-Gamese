@@ -111,6 +111,9 @@ void CEffect::Update(void)
 
 
 
+
+
+
 	CScene2D::SetPos(m_pos);
 	CScene2D::SetSize(m_size);
 }
