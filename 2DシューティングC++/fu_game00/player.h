@@ -37,6 +37,8 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	void SetCollEnemy(bool bcoll) { m_bCollEnemy = bcoll; }
+
 	D3DXVECTOR3 GetSize(void) { return m_size; }
 
 private:
@@ -53,6 +55,7 @@ private:
 	bool						m_bJunp;			// ジャンプ
 	bool						m_bStay;			// 止まっているかどうか
 	bool						m_bBound;			// メッシュの反発
+	bool						m_bCollEnemy;		// 敵との当たり判定
 	D3DXVECTOR3					m_pos;				// 位置
 	D3DXVECTOR3					m_move;				// 移動量
 	D3DXVECTOR3					m_size;				// サイズ

@@ -120,13 +120,14 @@ void CNormalEnemy::Draw(void)
 //=============================================================================
 void CNormalEnemy::UpdateBlack(void)
 {
-	CGame::GetPlayer();
+	
 	// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
 	m_pos += m_move;
 	m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f, 6.5f);
 
 	if (CollisionPlayer() == true)
 	{
+		CGame::GetPlayer()->SetCollEnemy(true);
 		printf("“–‚½‚è‚Ü‚µ‚½");
 	}
 
