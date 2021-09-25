@@ -151,12 +151,6 @@ void CPlayer::PosControl(void)
 {
 	FieldControl();
 
-	if (m_pos.y + m_size.y > SCREEN_HEIGHT)
-	{// プレイヤーが画面下を越えようとしたら
-		m_move.y = 0.0f;					// 重力ゼロ
-		m_bJunp = false;					// ジャンプ可能
-		m_pos.y = SCREEN_HEIGHT - m_size.y;	// 元の位置の戻す
-	}
 	if (m_pos.x - m_size.x < 0)
 	{// 左画面端上限
 		m_pos.x = 0 + m_size.x;				// 元の位置の戻す

@@ -40,7 +40,16 @@
 #define TIME_SIZE		(D3DXVECTOR3(20.0f, 30.0f, 0.0f))
 #define TIME_SET		(100)
 
+#define BG_POS			(CENTER_POS)
 #define BG_SIZE			(D3DXVECTOR3(WIDTH_HALF,HEIGHT_HALF,0.0f))
+
+#define ADD_WAVETIME	(0.02f)
+
+#define WAVE_POS		(m_WaveInfo.fCenterpos)
+#define WAVE_CYCLE		(m_WaveInfo.fCycle)
+#define WAVE_HEIGHT		(m_WaveInfo.fHeight)
+#define WAVE_TIME		((m_fWaveTime + nVtx))
+
 #define BG_TEXTURE		("data/TEXTURE/BG.png")
 #define BOSS_TEXTURE	("data/TEXTURE/Boss.png")
 #define FIELD_TEXTURE	("data/TEXTURE/Field.png")
@@ -88,8 +97,7 @@ CGame * CGame::Create(void)
 //=============================================================================
 HRESULT CGame::Init(void)
 {
-	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);
-
+	m_pBg = CScene2D::Create(BG_POS, BG_SIZE);
 
 	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE);
 	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);
@@ -102,6 +110,7 @@ HRESULT CGame::Init(void)
 	m_pBg->CreateTexture(BG_TEXTURE);
 	m_pField->CreateTexture(FIELD_TEXTURE);
 
+	WaveInit();
 	return S_OK;
 }
 
@@ -121,14 +130,7 @@ void CGame::Update(void)
 {
 	CKey *pKey = CManager::GetKey();
 
-	m_fWaveTime += 0.02f;
-
-	for (int nVtx = 0; nVtx < m_pField->GetVtxNum()/2; nVtx++)
-	{
-		D3DXVECTOR3 pos = ZeroVector3;
-		pos.y = CMove::SinWave(670.0f, 25.0f, 70.0f, (m_fWaveTime + nVtx));
-		m_pField->SetWavePos(nVtx, pos.y);
-	}
+	WaveUpdate();
 
 	/* フェード処理 */
 	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))
@@ -161,4 +163,37 @@ void CGame::Update(void)
 void CGame::Draw(void)
 {
 	
+}
+
+//=============================================================================
+// ウェーブの情報の初期設定
+//=============================================================================
+void CGame::WaveInit(void)
+{
+	m_WaveInfo.fCenterpos = 670.0f;
+	m_WaveInfo.fCycle = 70.0f;
+	m_WaveInfo.fHeight = 25.0f;
+}
+
+//=============================================================================
+// ウェーブの更新
+//=============================================================================
+void CGame::WaveUpdate(void)
+{
+	m_fWaveTime += ADD_WAVETIME;
+
+	if (m_pPlayer->GetStay() == true)
+	{
+		if (((int)m_fWaveTime % 3) == 0)
+		{
+			WAVE_POS += 0.05f;
+		}
+	}
+
+	for (int nVtx = 0; nVtx < m_pField->GetVtxNum() / 2; nVtx++)
+	{
+		D3DXVECTOR3 pos = ZeroVector3;
+		pos.y = CMove::SinWave(WAVE_POS, WAVE_HEIGHT, WAVE_CYCLE, WAVE_TIME);
+		m_pField->SetWavePos(nVtx, pos.y);
+	}
 }

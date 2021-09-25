@@ -39,7 +39,8 @@ public:
 
 	void SetCollEnemy(bool bcoll) { m_bCollEnemy = bcoll; }
 
-	D3DXVECTOR3 GetSize(void) { return m_size; }
+	D3DXVECTOR3 GetSize(void)	{ return m_size; }
+	bool GetStay(void)			{ return m_bStay; }
 
 private:
 	void PosControl(void);

@@ -31,6 +31,12 @@ public:
 	static float CosWave(const float CenterPos, const float nHeight, const float nCycle, const float nTime);
 
 
+	typedef struct
+	{
+		float fCenterpos;
+		float fHeight;
+		float fCycle;
+	}WaveInfo;
 
 private:
 

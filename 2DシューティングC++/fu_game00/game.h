@@ -11,6 +11,7 @@
 // インクルードファイル
 //-----------------------------------------------------------------------------
 #include "scene.h"
+#include "move.h"
 
 //-----------------------------------------------------------------------------
 //前方宣言
@@ -44,6 +45,10 @@ public:
 	static CPlayer* GetPlayer(void) { return m_pPlayer; }
 
 private:
+
+	void WaveInit(void);
+	void WaveUpdate(void);
+
 	static CPlayer		*m_pPlayer;
 	static CScore		*m_pScore;
 	static CTime		*m_pTime;
@@ -51,7 +56,7 @@ private:
 	static CScene2D		*m_pBg;
 	static CMesh		*m_pField;
 	float				m_fWaveTime = 0.0f;
-
+	CMove::WaveInfo		m_WaveInfo;
 };
 
 
