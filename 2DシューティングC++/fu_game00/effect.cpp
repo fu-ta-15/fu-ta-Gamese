@@ -107,8 +107,8 @@ void CEffect::Update(void)
 		Uninit();
 	}
 
-	CScene2D::SetPos(m_pos);
-	CScene2D::SetSize(m_size);
+	//CScene2D::SetPos(m_pos);
+	//CScene2D::SetSize(m_size);
 }
 
 //=============================================================================
