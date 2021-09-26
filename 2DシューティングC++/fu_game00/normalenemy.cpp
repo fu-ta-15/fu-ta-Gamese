@@ -141,7 +141,8 @@ void CNormalEnemy::UpdateWhite(void)
 {
 	CPlayer *pPlayer = CGame::GetPlayer();
 
-	m_pos = CMove::TargetPosMove(pPlayer->GetPos(), m_pos, 0.026f);
+	m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 200.0f, 500.0f, 6.5f);
+	m_pos.y += m_move.y;
 
 	CScene2D::SetPos(m_pos);	// ˆÚ“®—Ê‚ÌXV
 	CScene2D::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

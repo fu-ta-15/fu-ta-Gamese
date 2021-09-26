@@ -55,12 +55,12 @@ CTime * CTime::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 HRESULT CTime::Init()
 {
 	/* ナンバーポリゴンの生成とテクスチャの設定 */
-	for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
-	{// 右に位置を進める　＝　左か 100・10・1 という桁 
-		m_apNumber[nCnt] = CNumber::Create(m_pos, m_size, POLYGON_SPLIT); // ナンバー生成
-		m_apNumber[nCnt]->Load("data/TEXTURE/NumFont.png");				  // テクスチャ
-		m_pos.x += POS_DICETANCE;										  // 位置
-	}
+	//for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
+	//{// 右に位置を進める　＝　左か 100・10・1 という桁 
+	//	m_apNumber[nCnt] = CNumber::Create(m_pos, m_size, POLYGON_SPLIT); // ナンバー生成
+	//	m_apNumber[nCnt]->Load("data/TEXTURE/NumFont.png");				  // テクスチャ
+	//	m_pos.x += POS_DICETANCE;										  // 位置
+	//}
 
 	SetTime(TIME);	// 時間の設定
 
@@ -72,15 +72,15 @@ HRESULT CTime::Init()
 //=============================================================================
 void CTime::Uninit()
 {
-	for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
-	{
-		if (m_apNumber[nCnt] != NULL)
-		{// NULLチェック
-			m_apNumber[nCnt]->Uninit();
-			delete m_apNumber[nCnt];
-			m_apNumber[nCnt] = NULL;
-		}
-	}
+	//for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
+	//{
+	//	if (m_apNumber[nCnt] != NULL)
+	//	{// NULLチェック
+	//		m_apNumber[nCnt]->Uninit();
+	//		delete m_apNumber[nCnt];
+	//		m_apNumber[nCnt] = NULL;
+	//	}
+	//}
 
 	//オブジェクトの破棄
 	Release();
@@ -91,13 +91,13 @@ void CTime::Uninit()
 //=============================================================================
 void CTime::Update()
 {
-	for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
-	{
-		if (m_apNumber[nCnt] != NULL)
-		{// NULLチェック
-			m_apNumber[nCnt]->Update();
-		}
-	}
+	//for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
+	//{
+	//	if (m_apNumber[nCnt] != NULL)
+	//	{// NULLチェック
+	//		m_apNumber[nCnt]->Update();
+	//	}
+	//}
 }
 
 //=============================================================================
@@ -105,13 +105,13 @@ void CTime::Update()
 //=============================================================================
 void CTime::Draw()
 {
-	for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
-	{
-		if (m_apNumber[nCnt] != NULL)
-		{// NULLチェック
-			m_apNumber[nCnt]->Draw();
-		}
-	}
+	//for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
+	//{
+	//	if (m_apNumber[nCnt] != NULL)
+	//	{// NULLチェック
+	//		m_apNumber[nCnt]->Draw();
+	//	}
+	//}
 }
 
 //=============================================================================
@@ -122,12 +122,12 @@ void CTime::SetTime(int nTime)
 	int aNumber[MAX_TIME];	// 桁ごとの計算用
 	int nMath = 1000;		// 時間計算用
 
-	for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
-	{
-		aNumber[nCnt] = (nTime % nMath / (nMath / 10));	 // 現在の桁の数字を算出
-		m_apNumber[nCnt]->SetNumber(aNumber[nCnt]);		 // 現在の桁の数字にTEX座標更新
-		nMath /= 10;									 // 桁を更新
-	}
+	//for (int nCnt = 0; nCnt < MAX_TIME; nCnt++)
+	//{
+	//	aNumber[nCnt] = (nTime % nMath / (nMath / 10));	 // 現在の桁の数字を算出
+	//	m_apNumber[nCnt]->SetNumber(aNumber[nCnt]);		 // 現在の桁の数字にTEX座標更新
+	//	nMath /= 10;									 // 桁を更新
+	//}
 }
 
 //=============================================================================
@@ -136,6 +136,7 @@ void CTime::SetTime(int nTime)
 void CTime::AddTime(int nValue)
 {
 	m_nTime += nValue;	// 時間の変更
+	printf("時間：%d\n", m_nTime);
 	SetTime(m_nTime);	// 時間設定
 }
 
