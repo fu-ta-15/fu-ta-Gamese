@@ -24,12 +24,14 @@ class CParticle
 {
 public:
 	// ParticleéÌóﬁ
-	typedef enum Particle
+	typedef enum ParticleType
 	{
 		TYPE_NONE = 0,
 		TYPE_EXPLOSION,
+		TYPE_RIGHT_FAN,
+		TYPE_LEFT_FAN,
 		PARTICLE_MAX
-	}Particle;
+	}ParticleType;
 
 	//-----------------------------------------------------------------------------
 	// ÉÅÉìÉoä÷êî
@@ -37,7 +39,7 @@ public:
 	CParticle();
 	~CParticle();
 
-	CParticle *Create(int EfeectNum, D3DXVECTOR3 pos, D3DXVECTOR3 size);
+	CParticle *Create(int EfeectNum, D3DXVECTOR3 pos, D3DXVECTOR3 size, ParticleType type);
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -52,6 +54,9 @@ private:
 	D3DXVECTOR3		m_pos;
 	D3DXVECTOR3		m_size;
 	D3DXVECTOR3		m_move;
+
+	ParticleType	m_type;
+
 	CEffect			*m_apParticle[MAX_EFFECT_NUM];
 };
 

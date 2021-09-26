@@ -128,7 +128,7 @@ void CPlayer::Update(void)
 
 	// アニメーション
 	PlayerAnime();
-
+	PlayerState();
 	CScene2D::SetUse(m_bUse);	// 存在している
 	CScene2D::SetPos(m_pos);	// 位置の設定（更新）
 	CScene2D::SetCol(m_col);	// 色の設定（更新）
@@ -303,4 +303,19 @@ void CPlayer::PlayerAnime(void)
 		}
 		CScene2D::SetTex(m_tex, m_number);
 	}
+}
+
+//=============================================================================
+// プレイヤーの状態
+//=============================================================================
+void CPlayer::PlayerState(void)
+{
+	if (m_bCollEnemy == true)
+	{
+		if (m_pShield == NULL)
+		{
+			m_col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+		}
+	}
+
 }

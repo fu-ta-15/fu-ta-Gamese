@@ -77,25 +77,25 @@ CTutorial * CTutorial::Create(void)
 //=============================================================================
 HRESULT CTutorial::Init(void)
 {
-	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);								  // 背景
+	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);									// 背景
 	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE);  // 地面
-	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);						  // プレイヤー
+	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);							 // プレイヤー
 
-	for (int nCnt = 0; nCnt < OPERA_MAX; nCnt++)
-	{// 操作説明画像
-		D3DXVECTOR3 pos = OPE_POS;												   // 位置の更新
-		m_pOperation[nCnt] = CMesh::Create(OPE_VERTICAL, OPE_SIDE, pos, OPE_SIZE); // ポリゴンの生成
-		m_bButton[nCnt] = false;												   // ウェーブの有無
-	}
+	//for (int nCnt = 0; nCnt < OPERA_MAX; nCnt++)
+	//{// 操作説明画像
+	//	D3DXVECTOR3 pos = OPE_POS;												   // 位置の更新
+	//	m_pOperation[nCnt] = CMesh::Create(OPE_VERTICAL, OPE_SIDE, pos, OPE_SIZE); // ポリゴンの生成
+	//	m_bButton[nCnt] = false;												   // ウェーブの有無
+	//}
 
 	// 画像の貼り付け
 	m_pBg->CreateTexture("data/TEXTURE/BG.png");
 	m_pField->CreateTexture("data/TEXTURE/Field.png");
-	m_pOperation[KEY_A]->CreateTexture("data/TEXTURE/Move_a.png");
-	m_pOperation[KEY_D]->CreateTexture("data/TEXTURE/Move_d.png");
-	m_pOperation[KEY_W]->CreateTexture("data/TEXTURE/Move_w.png");
-	m_pOperation[KEY_NUM_4]->CreateTexture("data/TEXTURE/Bullet_4.png");
-	m_pOperation[KEY_NUM_6]->CreateTexture("data/TEXTURE/Bullet_6.png");
+	//m_pOperation[KEY_A]->CreateTexture("data/TEXTURE/Move_a.png");
+	//m_pOperation[KEY_D]->CreateTexture("data/TEXTURE/Move_d.png");
+	//m_pOperation[KEY_W]->CreateTexture("data/TEXTURE/Move_w.png");
+	//m_pOperation[KEY_NUM_4]->CreateTexture("data/TEXTURE/Bullet_4.png");
+	//m_pOperation[KEY_NUM_6]->CreateTexture("data/TEXTURE/Bullet_6.png");
 
 	return S_OK;
 }

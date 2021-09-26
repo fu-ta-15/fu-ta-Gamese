@@ -49,6 +49,7 @@ private:
 	void PlayerMoveControl(void);
 	void FieldControl(void);
 	void PlayerAnime(void);
+	void PlayerState(void);
 
 	int							m_nAnimeCnt;		// アニメーションカウンター
 	float						m_fStayTime;		// とどまってる時間

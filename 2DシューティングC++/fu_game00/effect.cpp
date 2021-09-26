@@ -81,6 +81,7 @@ HRESULT CEffect::Load(const LPCSTR pSrcFile)
 HRESULT CEffect::Init(void)
 {
 	CScene2D::Init(m_pos, m_size);
+	CScene2D::SetPos(m_pos);
 
 	return S_OK;
 }
@@ -99,13 +100,12 @@ void CEffect::Uninit(void)
 //=============================================================================
 void CEffect::Update(void)
 {
-	m_pos += m_move;
+	m_pos = CScene2D::GetPos();
 
-	//m_nLife--;
-	//if (m_nLife <= 0)
-	//{
-	//	Uninit();
-	//}
+	if (m_nLife <= 0)
+	{
+		Uninit();
+	}
 
 	CScene2D::SetPos(m_pos);
 	CScene2D::SetSize(m_size);
@@ -156,4 +156,9 @@ void CEffect::SetMove(D3DXVECTOR3 move)
 void CEffect::SetLife(int nLife)
 {
 	m_nLife = nLife;
+}
+
+void CEffect::SetPos(D3DXVECTOR3 pos)
+{
+	m_pos = pos;
 }

@@ -26,7 +26,7 @@ CParticle::~CParticle()
 //=============================================================================
 // ƒ|[ƒY‚Ì¶¬
 //=============================================================================
-CParticle * CParticle::Create(int EffectNum, D3DXVECTOR3 pos, D3DXVECTOR3 size)
+CParticle * CParticle::Create(int EffectNum, D3DXVECTOR3 pos, D3DXVECTOR3 size, ParticleType type)
 {
 	CParticle *pParticle = NULL;
 
@@ -35,6 +35,7 @@ CParticle * CParticle::Create(int EffectNum, D3DXVECTOR3 pos, D3DXVECTOR3 size)
 		pParticle = new CParticle;
 		pParticle->m_pos = pos;
 		pParticle->m_size = size;
+		pParticle->m_type = type;
 		pParticle->m_EffectNum = EffectNum;
 		pParticle->m_apParticle[MAX_EFFECT_NUM] = {};
 		pParticle->Init();
