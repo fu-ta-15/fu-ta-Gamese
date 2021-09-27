@@ -110,11 +110,11 @@ void CPlayer::Update(void)
 	// キーボード情報取得
 	CKey *pKey = CManager::GetKey();
 
-	// アクション
-	PlayerAction();	
-
-	// 移動
-	PlayerMove();
+	if (m_state == STATE_NONE)
+	{
+		// アクション
+		PlayerAction();
+	}
 
 	// 移動量の加算
 	m_move.y += GRAVITY;
@@ -128,11 +128,14 @@ void CPlayer::Update(void)
 
 	// アニメーション
 	PlayerAnime();
+
+	// 状態管理
 	PlayerState();
+
 	CScene2D::SetUse(m_bUse);	// 存在している
 	CScene2D::SetPos(m_pos);	// 位置の設定（更新）
 	CScene2D::SetCol(m_col);	// 色の設定（更新）
-	m_pShield->SetPos(m_pos);
+	m_pShield->SetPos(m_pos);	// シールドの位置更新
 }
 
 //=============================================================================
@@ -149,6 +152,7 @@ void CPlayer::Draw(void)
 //=============================================================================
 void CPlayer::PosControl(void)
 {
+	// 地面の当たり判定
 	FieldControl();
 
 	if (m_pos.x - m_size.x < 0)
@@ -169,7 +173,10 @@ void CPlayer::PlayerAction(void)
 	// キーボード情報取得
 	CKey *pKey = CManager::GetKey();
 
-	/* 弾の移動 */
+	// 移動
+	PlayerMove();
+
+	// 弾の発射
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true)	// トリガー・Kが押されたとき
 	{
 		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT, PLAYER_BULLET);	// バレットの生成
@@ -295,7 +302,7 @@ void CPlayer::FieldControl(void)
 void CPlayer::PlayerAnime(void)
 {
 	if ((m_nAnimeCnt % 10) == 1)
-	{
+	{// カウントが１０あまり１の時
 		m_number.x++;
 		if (((int)m_number.x + 1 % 2) == 0)
 		{
@@ -310,12 +317,41 @@ void CPlayer::PlayerAnime(void)
 //=============================================================================
 void CPlayer::PlayerState(void)
 {
-	if (m_bCollEnemy == true)
-	{
-		if (m_pShield == NULL)
-		{
-			m_col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-		}
+	if (m_state == STATE_NONE)
+	{// 通常状態の場合
+		m_col = WhiteColor;	// 色を戻す
 	}
+	if (m_bCollEnemy == true)
+	{// 敵と当たった場合
+		if (m_pShield->GetUse() == false)
+		{// シールドがなかったら
+			m_state = STATE_KNOCKUP;					// ノックアップ状態
+			m_col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);	// ダメージの色に変更
+		}
+		else
+		{// シールドがある場合
+			m_pShield->SetUse(false);	// シールド削除
+		}
+		m_bCollEnemy = false;			// 当たり判定をもとに戻す
+	}
+	if (m_state == STATE_KNOCKUP)
+	{// ノックアップ状態の時
+		DamagePlayer();	// ノックアップ状態の処理
+	}
+}
 
+//=============================================================================
+// プレイヤー自身にダメージを受けた処理
+//=============================================================================
+void CPlayer::DamagePlayer(void)
+{
+	m_nDamageCnt++;
+	
+	m_pos.x = CMove::TargetPosMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pos, 0.035f).x;
+	m_pos.y = CMove::TargetPosMove(D3DXVECTOR3(0.0f, SCREEN_WIDTH, 0.0f), m_pos, 0.015f).y;
+
+	if ((m_nDamageCnt % 25) == 0)
+	{
+		m_state = STATE_NONE;
+	}
 }

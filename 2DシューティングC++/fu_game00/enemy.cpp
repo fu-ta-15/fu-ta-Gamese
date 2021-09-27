@@ -12,6 +12,8 @@
 #include "boss.h"
 #include "normalenemy.h"
 #include "game.h"
+#include "collision.h"
+#include "player.h"
 
 //-----------------------------------------------------------------------------
 // É}ÉNÉçïœêî
@@ -80,7 +82,17 @@ void CEnemy::Uninit(void)
 //=============================================================================
 void CEnemy::Update(void)
 {
-
+	for (int nID = 0; nID < MAX_OBJECT; nID++)
+	{
+		if (ENEMY_ID != NULL)
+		{
+			if (ENEMY_ID->CollisionPlayer() == true && ENEMY_ID->GetEnemyType() == ENEMY_BLACK)
+			{
+				CScene::ObjRelease(OBJ_ENEMY, nID);
+				m_paEnemy[nID] = NULL;
+			}
+		}
+	}
 }
 
 //=============================================================================
@@ -132,4 +144,16 @@ void CEnemy::CollisionEnemy(int nID)
 		}
 		break;
 	}
+}
+
+bool CEnemy::CollisionPlayer(void)
+{
+	bool bCollision = false;
+
+	D3DXVECTOR3 pos = CGame::GetPlayer()->GetPos();
+	D3DXVECTOR3 size = CGame::GetPlayer()->GetSize();
+
+	bCollision = CCollision::CollisionCycle(m_pos, pos, size.x);
+
+	return bCollision;
 }

@@ -119,13 +119,16 @@ void CEffect::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
-	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	if (m_bUse == true)
+	{
+		D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
-	CScene2D::Draw();
+		CScene2D::Draw();
 
-	D3D_DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			// 合成方法
-	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// ソース（描画元）の合成方法の設定
-	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
+		D3D_DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			// 合成方法
+		D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// ソース（描画元）の合成方法の設定
+		D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
+	}
 
 	//// 減産合成の設定
 	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
@@ -156,6 +159,11 @@ void CEffect::SetMove(D3DXVECTOR3 move)
 void CEffect::SetLife(int nLife)
 {
 	m_nLife = nLife;
+}
+
+void CEffect::SetUse(bool bUse)
+{
+	m_bUse = bUse;
 }
 
 void CEffect::SetPos(D3DXVECTOR3 pos)

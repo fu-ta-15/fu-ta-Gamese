@@ -105,6 +105,7 @@ void CNormalEnemy::Update(void)
 	default:
 		break;
 	}
+	CEnemy::Update();
 }
 
 //=============================================================================
@@ -128,10 +129,10 @@ void CNormalEnemy::UpdateBlack(void)
 	if (CollisionPlayer() == true)
 	{
 		CGame::GetPlayer()->SetCollEnemy(true);
+		
 		printf("当たりました");
 	}
-
-	CScene2D::SetPos(m_pos);	// 位置の更新
+	CScene2D::SetPos(m_pos);	// 移動量の更新
 }
 
 //=============================================================================

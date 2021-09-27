@@ -24,6 +24,14 @@ class CBullet;
 class CPlayer : public CScene2D
 {
 public:
+	typedef enum StateType
+	{
+		STATE_NONE = 0,
+		STATE_DAMAGE,
+		STATE_KNOCKUP,
+		STATE_MAX
+	}StateType;
+
 	//-----------------------------------------------------------------------------
 	// メンバ関数
 	//-----------------------------------------------------------------------------
@@ -38,7 +46,7 @@ public:
 	void Draw(void);
 
 	void SetCollEnemy(bool bcoll) { m_bCollEnemy = bcoll; }
-
+	void SetState(StateType state) { m_state = state; }
 	D3DXVECTOR3 GetSize(void)	{ return m_size; }
 	bool GetStay(void)			{ return m_bStay; }
 
@@ -50,23 +58,26 @@ private:
 	void FieldControl(void);
 	void PlayerAnime(void);
 	void PlayerState(void);
+	void DamagePlayer(void);
 
-	int							m_nAnimeCnt;		// アニメーションカウンター
-	float						m_fStayTime;		// とどまってる時間
-	bool						m_bUse;				// 生存確認
-	bool						m_bJunp;			// ジャンプ
-	bool						m_bStay;			// 止まっているかどうか
-	bool						m_bBound;			// メッシュの反発
-	bool						m_bCollEnemy;		// 敵との当たり判定
-	D3DXVECTOR3					m_pos;				// 位置
-	D3DXVECTOR3					m_move;				// 移動量
-	D3DXVECTOR3					m_size;				// サイズ
-	D3DXVECTOR3					m_moveBullet;		// バレットの移動量
-	D3DXVECTOR2					m_tex;				// テクスチャの分割数
-	D3DXVECTOR2					m_number;			// テクスチャ何番目か
-	D3DXCOLOR					m_col;				// 色
+	int					m_nAnimeCnt;		// アニメーションカウンター
+	int					m_nDamageCnt;		// ダメージカウント
+	float				m_fStayTime;		// とどまってる時間
+	bool				m_bUse;				// 生存確認
+	bool				m_bJunp;			// ジャンプ
+	bool				m_bStay;			// 止まっているかどうか
+	bool				m_bBound;			// メッシュの反発
+	bool				m_bCollEnemy;		// 敵との当たり判定
+	D3DXVECTOR3			m_pos;				// 位置
+	D3DXVECTOR3			m_move;				// 移動量
+	D3DXVECTOR3			m_size;				// サイズ
+	D3DXVECTOR3			m_moveBullet;		// バレットの移動量
+	D3DXVECTOR2			m_tex;				// テクスチャの分割数
+	D3DXVECTOR2			m_number;			// テクスチャ何番目か
+	D3DXCOLOR			m_col;				// 色
 
-	CEffect						*m_pShield;
+	StateType			m_state;
+	CEffect				*m_pShield;
 };
 
 

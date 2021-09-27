@@ -25,8 +25,8 @@
 
 #define BOSS_POS_Y		(368)
 #define BOSS_POS_X		(1166)
-#define BOSS_SIZE_Y		(150)
-#define BOSS_SIZE_X		(150)
+#define BOSS_SIZE_Y		(75)
+#define BOSS_SIZE_X		(75)
 
 #define BOSS_POS		(D3DXVECTOR3(BOSS_POS_X, BOSS_POS_Y, 0.0f))
 #define BOSS_SIZE		(D3DXVECTOR3(BOSS_SIZE_X, BOSS_SIZE_Y, 0.0f))
@@ -67,6 +67,7 @@ public:
 
 	// ìñÇΩÇËîªíËèàóù
 	static void CollisionEnemy(int nID);
+	bool CollisionPlayer(void);
 
 	// É_ÉÅÅ[ÉW
 	void DamegeLife(int nDamege)		{ m_nLife -= nDamege; }

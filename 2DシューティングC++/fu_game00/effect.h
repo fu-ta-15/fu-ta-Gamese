@@ -47,6 +47,7 @@ public:
 	void SetColor(D3DXCOLOR col);
 	void SetMove(D3DXVECTOR3 move);
 	void SetLife(int nLife);
+	void SetUse(bool bUse);
 	void SetPos(D3DXVECTOR3 pos);
 
 	// Getä÷êî
