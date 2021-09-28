@@ -1,12 +1,7 @@
-﻿  bullet.cpp
-  enemy.cpp
-  game.cpp
-  manager.cpp
-  normalenemy.cpp
-  player.cpp
+﻿  sound.cpp
   コード生成しています。
-  10 of 313 functions ( 3.2%) were compiled, the rest were copied from previous compilation.
-    3 functions were new in current compilation
+  2 of 317 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
     1 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\fu_game00.exe

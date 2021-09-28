@@ -111,6 +111,7 @@ HRESULT CSound::Init(HWND hWnd)
 		if (SetFilePointer(hFile, 0, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
 		{// ファイルポインタを先頭に移動
 			MessageBox(hWnd, "サウンドデータファイルの生成に失敗！(2)", "警告！", MB_ICONWARNING);
+
 			return HRESULT_FROM_WIN32(GetLastError());
 		}
 
