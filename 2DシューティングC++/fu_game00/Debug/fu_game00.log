@@ -1,4 +1,25 @@
-﻿  player.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\player.cpp(358): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+﻿  title.cpp
+c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\title.cpp(150): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  コードを生成中...
+  スキップ中... (関連する変更は検出されませんでした)
+  tutorial.cpp
+  time.cpp
+  score.cpp
+  scene2D.cpp
+  result.cpp
+  renderer.cpp
+  player.cpp
+  pause.cpp
+  particle.cpp
+  number.cpp
+  normalenemy.cpp
+  mesh.cpp
+  manager.cpp
+  main.cpp
+  game.cpp
+  fade.cpp
+  enemy.cpp
+  effect.cpp
+  boss.cpp
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.pdb (Full PDB)

@@ -10,15 +10,27 @@
 //-----------------------------------------------------------------------------
 #include "sound.h"
 
+//-----------------------------------------------------------------------------
+// 静的メンバ変数
+//-----------------------------------------------------------------------------
+IXAudio2 *CSound::m_pXAudio2 = NULL;								// XAudio2オブジェクトへのインターフェイス
+IXAudio2MasteringVoice *CSound::m_pMasteringVoice = NULL;			// マスターボイス
+IXAudio2SourceVoice *CSound::m_apSourceVoice[CSound::SOUND_LABEL_MAX] = {};	// ソースボイス
+BYTE *CSound::m_apDataAudio[CSound::SOUND_LABEL_MAX] = {};					// オーディオデータ
+DWORD CSound::m_aSizeAudio[CSound::SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
+
+CSound::SOUNDPARAM CSound::m_aParam[CSound::SOUND_LABEL_MAX] =
+{ /* {"data/BGM or SE/音声ファイル(wav)",-1(BGM) or 0(SE)} */
+	{ "data/BGM/titleBgm.wav",-1 },
+	{ "data/BGM/tutorialBgm.wav",-1 },
+	{"data/BGM/gameBgm.wav",-1},
+};
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CSound::CSound()
 {
-	m_aParam[SOUND_LABEL_MAX] =		// 各音素材のパラメータ 
-	{ /* {"data/BGM or SE/音声ファイル(wav)",-1(BGM) or 0(SE)} */
-
-	};
+	
 
 }
 

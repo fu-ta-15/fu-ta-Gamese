@@ -63,24 +63,28 @@ CManager::~CManager()
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
 	m_pRenderer = new CRenderer;
-	m_pKey = new CKey;
-	m_pFade = new CFade;
-	m_pSound = new CSound;
 
 	// レンダラ初期化
 	if (FAILED(m_pRenderer->Init(hWnd, bWindow)))
 	{
 		return -1;
 	}
+
+	m_pKey = new CKey;
+
 	// キーボード初期化
 	if (FAILED(m_pKey->Init(hInstance, hWnd)))
 	{
 		return -1;
 	}
+	m_pSound = new CSound;
+
 	if (FAILED(m_pSound->Init(hWnd)))
 	{
 		return -1;
 	}
+
+	m_pFade = new CFade;
 
 	//フェードクラスのクリエイト
 	m_pFade->Init();
@@ -117,12 +121,12 @@ void CManager::Uninit(void)
 		delete m_pKey;			// メモリの破棄
 		m_pKey = NULL;			// メモリのクリア
 	}
-	if (m_pSound != NULL)
-	{
-		m_pSound->Uninit();
-		delete m_pSound;
-		m_pSound = NULL;
-	}
+	//if (m_pSound != NULL)
+	//{
+	//	m_pSound->Uninit();
+	//	delete m_pSound;
+	//	m_pSound = NULL;
+	//}
 
 	// シーンの全削除
 	CScene::ReleaseAll();

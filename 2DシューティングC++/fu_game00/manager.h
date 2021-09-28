@@ -72,6 +72,7 @@ public:
 	static CRenderer *GetRenderer(void);
 	static CKey *GetKey(void);
 	static CFade * CManager::GetFade(void){ return m_pFade; }
+	static CSound *GetSound(void) { return m_pSound; }
 
 private:
 	void PauseUpdate(void);

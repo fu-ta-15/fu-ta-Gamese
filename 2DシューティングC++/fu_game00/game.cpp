@@ -170,7 +170,7 @@ void CGame::Draw(void)
 //=============================================================================
 void CGame::WaveInit(void)
 {
-	m_WaveInfo.fCenterpos = 670.0f;
+	m_WaveInfo.fCenterpos = 600.0f;
 	m_WaveInfo.fCycle = 70.0f;
 	m_WaveInfo.fHeight = 25.0f;
 }
