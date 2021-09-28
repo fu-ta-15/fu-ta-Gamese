@@ -17,6 +17,7 @@
 #include "game.h"
 #include "result.h"
 #include "pause.h"
+#include "sound.h"
 
 //-----------------------------------------------------------------------------
 //静的メンバ変数宣言
@@ -36,6 +37,8 @@ CTutorial *CManager::m_pTutorial = NULL;
 CGame *CManager::m_pGame = NULL;
 
 CResult *CManager::m_pResult = NULL;
+
+CSound *CManager::m_pSound = NULL;
 
 CPause *CManager::m_pPause = NULL;
 bool CManager::m_bPause = false;
@@ -62,6 +65,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pRenderer = new CRenderer;
 	m_pKey = new CKey;
 	m_pFade = new CFade;
+	m_pSound = new CSound;
 
 	// レンダラ初期化
 	if (FAILED(m_pRenderer->Init(hWnd, bWindow)))
@@ -70,6 +74,10 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	}
 	// キーボード初期化
 	if (FAILED(m_pKey->Init(hInstance, hWnd)))
+	{
+		return -1;
+	}
+	if (FAILED(m_pSound->Init(hWnd)))
 	{
 		return -1;
 	}
@@ -109,6 +117,12 @@ void CManager::Uninit(void)
 		delete m_pKey;			// メモリの破棄
 		m_pKey = NULL;			// メモリのクリア
 	}
+	if (m_pSound != NULL)
+	{
+		m_pSound->Uninit();
+		delete m_pSound;
+		m_pSound = NULL;
+	}
 
 	// シーンの全削除
 	CScene::ReleaseAll();
@@ -132,25 +146,7 @@ void CManager::Update(void)
 		m_pFade->Update();		// フェードクラスの更新処理
 	}
 
-	CKey *pKey = CManager::GetKey();	   // キー入力情報
-	CFade::FADE Fade = CFade::GetFade();   // フェード情報
-
-	if (Fade == CFade::FADE_NONE && m_mode == MODE_GAME)
-	{// フェードが何もしていない時
-		if (pKey->GetState(CKey::STATE_TRIGGER, DIK_P) == true)
-		{// Pが押されたとき
-			m_bPause = m_bPause ? false : true;	// falseかtrueに切り替える
-		}
-		if (m_bPause == true && m_pPause == NULL)
-		{// ポーズが開始されたとき
-			m_pPause = CPause::Create();	// ポーズを生成
-		}
-		else if (m_bPause == false && m_pPause != NULL)
-		{
-			m_pPause->Uninit();
-			m_pPause = NULL;
-		}
-	}
+	PauseUpdate();
 }
 
 //=============================================================================
@@ -281,5 +277,28 @@ CRenderer* CManager::GetRenderer(void)
 CKey* CManager::GetKey(void)
 {
 	return m_pKey;
+}
+
+void CManager::PauseUpdate(void)
+{
+	CKey *pKey = CManager::GetKey();	   // キー入力情報
+	CFade::FADE Fade = CFade::GetFade();   // フェード情報
+
+	if (Fade == CFade::FADE_NONE && m_mode == MODE_GAME)
+	{// フェードが何もしていない時
+		if (pKey->GetState(CKey::STATE_TRIGGER, DIK_P) == true)
+		{// Pが押されたとき
+			m_bPause = m_bPause ? false : true;	// falseかtrueに切り替える
+		}
+		if (m_bPause == true && m_pPause == NULL)
+		{// ポーズが開始されたとき
+			m_pPause = CPause::Create();	// ポーズを生成
+		}
+		else if (m_bPause == false && m_pPause != NULL)
+		{
+			m_pPause->Uninit();
+			m_pPause = NULL;
+		}
+	}
 }
 

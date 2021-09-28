@@ -69,6 +69,7 @@ private:
 	bool				m_bBound;			// メッシュの反発
 	bool				m_bCollEnemy;		// 敵との当たり判定
 	D3DXVECTOR3			m_pos;				// 位置
+	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置
 	D3DXVECTOR3			m_move;				// 移動量
 	D3DXVECTOR3			m_size;				// サイズ
 	D3DXVECTOR3			m_moveBullet;		// バレットの移動量

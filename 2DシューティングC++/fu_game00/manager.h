@@ -30,6 +30,7 @@ class CTutorial;	// チュートリアル
 class CGame;		// ゲーム
 class CResult;		// リザルト
 class CPause;		// ポーズ
+class CSound;		// サウンド
 
 //-----------------------------------------------------------------------------
 // クラス
@@ -73,6 +74,8 @@ public:
 	static CFade * CManager::GetFade(void){ return m_pFade; }
 
 private:
+	void PauseUpdate(void);
+
 	static MODE				 m_mode;				// モード
 	static CRenderer		*m_pRenderer;			// レンダラーポインタ
 	static CKey				*m_pKey;				// キーポインタ
@@ -82,6 +85,7 @@ private:
 	static CGame			*m_pGame;				// ゲームのポインタ
 	static CResult			*m_pResult;				// リザルトのポインタ
 	static CPause			*m_pPause;				// ポーズのポインタ
+	static CSound			*m_pSound;				// サウンドのポインタ
 	static bool				 m_bPause;
 };
 

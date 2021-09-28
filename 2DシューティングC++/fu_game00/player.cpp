@@ -240,6 +240,7 @@ void CPlayer::PlayerMoveControl(void)
 	}
 	if (m_move.x != 0.0f || m_bJunp != false)
 	{// 移動していたら
+		m_bStay = false;
 		m_fStayTime = 0.0f;
 	}
 	if (m_fStayTime >= 120.0f)
@@ -326,6 +327,8 @@ void CPlayer::PlayerState(void)
 		if (m_pShield->GetUse() == false)
 		{// シールドがなかったら
 			m_state = STATE_KNOCKUP;					// ノックアップ状態
+			m_KnockUpPos.x = 0.0f;
+			m_KnockUpPos.y = m_pos.y + 40.0f;
 			m_col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);	// ダメージの色に変更
 		}
 		else
@@ -347,11 +350,12 @@ void CPlayer::DamagePlayer(void)
 {
 	m_nDamageCnt++;
 	
-	m_pos.x = CMove::TargetPosMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pos, 0.035f).x;
-	m_pos.y = CMove::TargetPosMove(D3DXVECTOR3(0.0f, SCREEN_WIDTH, 0.0f), m_pos, 0.015f).y;
+	m_pos.x = CMove::TargetPosMove(D3DXVECTOR3(m_KnockUpPos.x, 0.0f, 0.0f), m_pos, 0.035f).x;
+	m_pos.y = CMove::TargetPosMove(D3DXVECTOR3(0.0f, m_KnockUpPos.y, 0.0f), m_pos, 0.015f).y;
 
-	if ((m_nDamageCnt % 25) == 0)
+	if ((m_nDamageCnt % 15) == 0)
 	{
 		m_state = STATE_NONE;
+		m_nDamageCnt = 0.0f;
 	}
 }
