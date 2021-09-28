@@ -41,7 +41,6 @@ public:
 
 	void UpdateBlack(void);
 	void UpdateWhite(void);
-	bool CollisionPlayer(void);
 private:
 	bool m_bCollision;
 };

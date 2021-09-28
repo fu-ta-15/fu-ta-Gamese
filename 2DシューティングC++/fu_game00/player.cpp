@@ -66,6 +66,8 @@ CPlayer * CPlayer::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 		pPlayer->m_size = size;			// サイズの設定
 		pPlayer->m_fStayTime = 0.0f;	// とどまっている時間
 		pPlayer->m_col = WhiteColor;	// 白カラー
+		pPlayer->m_state = STATE_NONE;	// 状態
+		pPlayer->m_bAlive = true;		// 使用中
 		pPlayer->m_bUse = true;			// 使用中
 		pPlayer->m_pShield = NULL;		// シールド
 		pPlayer->Init();				// 初期化処理
@@ -288,10 +290,21 @@ void CPlayer::FieldControl(void)
 		}
 		if (bOutPro == true)
 		{// 点が二点より下にいたら
-			D3DXVECTOR3 m_posOld = CCollision::WaveCollision(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA, CCollision::TYPE_COL_Y);	// 戻す分を算出
-			m_move.y = 0.0f;					// 重力ゼロ
-			m_bJunp = false;					// ジャンプ可能
-			m_pos.y = m_posOld.y - m_size.y;	// 画面内まで移動させる
+			if (pVtx[nCnt].pos.y > SCREEN_HEIGHT &&  pVtx[nCnt + 1].pos.y > SCREEN_HEIGHT)
+			{
+				m_bFall = true;
+			}
+			else
+			{
+				m_bFall = false;
+			}
+			if (m_bFall == false)
+			{
+				D3DXVECTOR3 m_posOld = CCollision::WaveCollision(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA, CCollision::TYPE_COL_Y);	// 戻す分を算出
+				m_move.y = 0.0f;					// 重力ゼロ
+				m_bJunp = false;					// ジャンプ可能
+				m_pos.y = m_posOld.y - m_size.y;	// 画面内まで移動させる
+			}
 			break;
 		}
 	}
@@ -304,11 +317,12 @@ void CPlayer::PlayerAnime(void)
 {
 	if ((m_nAnimeCnt % 10) == 1)
 	{// カウントが１０あまり１の時
-		m_number.x++;
+		m_number.x++;	// テクスチャ座標加算
 		if (((int)m_number.x + 1 % 2) == 0)
-		{
-			m_number.x = 0.0f;
+		{// テクスチャ座標が過ぎていたら
+			m_number.x = 0.0f;	// 初期値に戻す
 		}
+		// テクスチャ座標の反映
 		CScene2D::SetTex(m_tex, m_number);
 	}
 }
@@ -321,22 +335,25 @@ void CPlayer::PlayerState(void)
 	if (m_state == STATE_NONE)
 	{// 通常状態の場合
 		m_col = WhiteColor;	// 色を戻す
+		m_bDamage = false;	// ダメージ判定OFF
 	}
-	if (m_bCollEnemy == true)
-	{// 敵と当たった場合
-		if (m_pShield->GetUse() == false)
-		{// シールドがなかったら
-			m_state = STATE_KNOCKUP;					// ノックアップ状態
-			m_KnockUpPos.x = 0.0f;
-			m_KnockUpPos.y = m_pos.y + 40.0f;
-			m_col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);	// ダメージの色に変更
-		}
-		else
-		{// シールドがある場合
-			m_pShield->SetUse(false);	// シールド削除
-		}
-		m_bCollEnemy = false;			// 当たり判定をもとに戻す
+
+	if (m_pShield->GetUse() == true && m_bCollEnemy == true)
+	{// シールドがある場合
+		m_pShield->SetUse(false);	// シールド削除
+		m_bCollEnemy = false;		// 当たり判定をもとに戻す
 	}
+
+	if (m_pShield->GetUse() == false && m_bCollEnemy == true)
+	{// シールドがなかったら
+		m_state = STATE_KNOCKUP;					// ノックアップ状態
+		m_bDamage = true;							// ダメージ判定ON
+		m_KnockUpPos.x = 0.0f;						// ノックアップの位置
+		m_KnockUpPos.y = m_pos.y + 40.0f;			// ノックアップの位置
+		m_col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);	// ダメージの色に変更
+		m_bCollEnemy = false;						// 当たり判定をもとに戻す
+	}
+
 	if (m_state == STATE_KNOCKUP)
 	{// ノックアップ状態の時
 		DamagePlayer();	// ノックアップ状態の処理
@@ -348,14 +365,15 @@ void CPlayer::PlayerState(void)
 //=============================================================================
 void CPlayer::DamagePlayer(void)
 {
-	m_nDamageCnt++;
+	m_nDamageCnt++;	// カウントアップ
 	
+	// 目的の場所へノックアップ
 	m_pos.x = CMove::TargetPosMove(D3DXVECTOR3(m_KnockUpPos.x, 0.0f, 0.0f), m_pos, 0.035f).x;
 	m_pos.y = CMove::TargetPosMove(D3DXVECTOR3(0.0f, m_KnockUpPos.y, 0.0f), m_pos, 0.015f).y;
 
 	if ((m_nDamageCnt % 15) == 0)
-	{
-		m_state = STATE_NONE;
-		m_nDamageCnt = 0.0f;
+	{// カウントが一定まで来たら
+		m_state = STATE_NONE;	 // 状態を戻す
+		m_nDamageCnt = 0.0f;	 // カウントを初期化する
 	}
 }

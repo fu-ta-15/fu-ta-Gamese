@@ -13,6 +13,7 @@
 #include "scene.h"
 #include "scene2D.h"
 #include "mesh.h"
+#include "sound.h"
 
 
 class CTitle : public CScene

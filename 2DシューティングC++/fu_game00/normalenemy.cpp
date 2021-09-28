@@ -126,12 +126,6 @@ void CNormalEnemy::UpdateBlack(void)
 	m_pos += m_move;
 	m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f, 6.5f);
 
-	if (CollisionPlayer() == true)
-	{
-		CGame::GetPlayer()->SetCollEnemy(true);
-		
-		printf("当たりました");
-	}
 	CScene2D::SetPos(m_pos);	// 移動量の更新
 }
 
@@ -147,16 +141,4 @@ void CNormalEnemy::UpdateWhite(void)
 
 	CScene2D::SetPos(m_pos);	// 移動量の更新
 	CScene2D::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-}
-
-bool CNormalEnemy::CollisionPlayer(void)
-{
-	bool bCollision = false;
-
-	D3DXVECTOR3 pos = CGame::GetPlayer()->GetPos();
-	D3DXVECTOR3 size = CGame::GetPlayer()->GetSize();
-
-	bCollision = CCollision::CollisionCycle(m_pos, pos, size.x);
-
-	return bCollision;
 }

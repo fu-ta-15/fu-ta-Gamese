@@ -88,6 +88,7 @@ void CEnemy::Update(void)
 		{
 			if (ENEMY_ID->CollisionPlayer() == true && ENEMY_ID->GetEnemyType() == ENEMY_BLACK)
 			{
+				CGame::GetPlayer()->SetCollEnemy(true);
 				CScene::ObjRelease(OBJ_ENEMY, nID);
 				m_paEnemy[nID] = NULL;
 			}

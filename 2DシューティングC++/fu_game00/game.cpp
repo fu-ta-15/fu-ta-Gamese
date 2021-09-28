@@ -21,6 +21,7 @@
 #include "boss.h"
 #include "mesh.h"
 #include "move.h"
+#include "sound.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -97,6 +98,8 @@ CGame * CGame::Create(void)
 //=============================================================================
 HRESULT CGame::Init(void)
 {
+	CSound *pSound = CManager::GetSound();
+
 	m_pBg = CScene2D::Create(BG_POS, BG_SIZE);
 
 	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE);
@@ -110,6 +113,8 @@ HRESULT CGame::Init(void)
 	m_pBg->CreateTexture(BG_TEXTURE);
 	m_pField->CreateTexture(FIELD_TEXTURE);
 
+	pSound->PlaySound(CSound::SOUND_LABEL_BGM002);
+
 	WaveInit();
 	return S_OK;
 }
@@ -119,6 +124,9 @@ HRESULT CGame::Init(void)
 //=============================================================================
 void CGame::Uninit(void)
 {
+	CSound *pSound = CManager::GetSound();
+	pSound->StopSound();
+
 	// オブジェクトの破棄
 	Release();
 }
@@ -186,8 +194,12 @@ void CGame::WaveUpdate(void)
 	{
 		if (((int)m_fWaveTime % 3) == 0)
 		{
-			WAVE_POS += 0.05f;
+			WAVE_HEIGHT += 0.05f;
 		}
+	}
+	if (m_pPlayer->GetDamage() == true)
+	{
+		WAVE_POS += 0.5f;
 	}
 
 	for (int nVtx = 0; nVtx < m_pField->GetVtxNum() / 2; nVtx++)

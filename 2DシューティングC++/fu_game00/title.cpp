@@ -17,7 +17,6 @@
 #include "bullet.h"
 #include "mesh.h"
 #include "move.h"
-#include "sound.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -89,6 +88,8 @@ HRESULT CTitle::Init(void)
 //=============================================================================
 void CTitle::Uninit(void)
 {
+	CSound *pSound = CManager::GetSound();
+	pSound->StopSound();
 	//オブジェクトの破棄
 	Release();
 }

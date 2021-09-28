@@ -12,6 +12,7 @@
 //-----------------------------------------------------------------------------
 #include "scene.h"
 #include "keyinput.h"
+#include "move.h"
 
 //-----------------------------------------------------------------------------
 //ëOï˚êÈåæ
@@ -53,6 +54,8 @@ public:
 	static CMesh* GetMesh(void) { return m_pField; }
 
 private:
+	void WaveInit(void);
+	void WaveUpdate(void);
 
 	void OnKeyOperat(CKey *pKey);
 	void OperatUpdate(void);
@@ -62,10 +65,13 @@ private:
 	static CMesh		*m_pField;
 	static CMesh		*m_pOperation[OPERA_MAX];
 	static CScene2D		*m_pOperationPolygon;
+
+	CMove::WaveInfo		m_WaveInfo;
+
 	static bool			 m_OperationStop;
 	bool				 m_bButton[OPERA_MAX];
 	int					 m_nCntTimeOP = 0;
-	int					 m_nCntTime = 0;
+	float				 m_fCntTime = 0.0f;
 
 };
 

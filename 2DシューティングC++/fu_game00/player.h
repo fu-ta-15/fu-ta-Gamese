@@ -32,9 +32,9 @@ public:
 		STATE_MAX
 	}StateType;
 
-	//-----------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	// メンバ関数
-	//-----------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	CPlayer();
 	~CPlayer();
 
@@ -44,11 +44,14 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
-	void SetCollEnemy(bool bcoll) { m_bCollEnemy = bcoll; }
-	void SetState(StateType state) { m_state = state; }
-	D3DXVECTOR3 GetSize(void)	{ return m_size; }
-	bool GetStay(void)			{ return m_bStay; }
+	// Set関数
+	void SetCollEnemy(bool bcoll)	{ m_bCollEnemy = bcoll; }
+	void SetState(StateType state)	{ m_state = state; }
+	// Get関数
+	D3DXVECTOR3 GetSize(void)		{ return m_size; }
+	bool GetStay(void)				{ return m_bStay; }
+	bool GetDamage(void)			{ return m_bDamage; }
+	bool GetAlive(void)				{ return m_bAlive; }
 
 private:
 	void PosControl(void);
@@ -66,8 +69,10 @@ private:
 	bool				m_bUse;				// 生存確認
 	bool				m_bJunp;			// ジャンプ
 	bool				m_bStay;			// 止まっているかどうか
-	bool				m_bBound;			// メッシュの反発
 	bool				m_bCollEnemy;		// 敵との当たり判定
+	bool				m_bFall;			// 落下判定
+	bool				m_bDamage;			// ダメージの判定
+	bool				m_bAlive;			// 生きているかどうか
 	D3DXVECTOR3			m_pos;				// 位置
 	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置
 	D3DXVECTOR3			m_move;				// 移動量

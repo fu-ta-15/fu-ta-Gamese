@@ -23,14 +23,11 @@ public:
 		SOUND_LABEL_BGM001,			// チュートリアル
 		SOUND_LABEL_BGM002,			// ゲーム
 		SOUND_LABEL_BGM003,			// result
-		SOUND_LABEL_BGM004,			// ランキング
 
 		SOUND_LABEL_SE_PAUSE0,		// 弾発射音
 		SOUND_LABEL_SE_PAUSE1,		// ヒット音
 		SOUND_LABEL_SE_PAUSE2,		// 爆発音
 		SOUND_LABEL_SE_ATTACK,		// 弾発射音
-		SOUND_LABEL_SE_BLOCK,
-		SOUND_LABEL_SE_CAENGE,
 		SOUND_LABEL_SE_OK,
 		SOUND_LABEL_SE_NO,
 
@@ -56,8 +53,6 @@ public:
 	void StopSound(void);
 
 private:
-	HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);
-	HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);
 
 	static IXAudio2					*m_pXAudio2;								// XAudio2オブジェクトへのインターフェイス
 	static IXAudio2MasteringVoice		*m_pMasteringVoice;						// マスターボイス

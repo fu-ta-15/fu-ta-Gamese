@@ -5,41 +5,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="mode">
-      <UniqueIdentifier>{736a70bd-91eb-4f20-9b11-31be9b84e0f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{3b45a4a9-daac-4752-a248-e9603a4651d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input\ヘッダー ファイル">
-      <UniqueIdentifier>{4c2afc9b-ddeb-49b8-9ebc-5b059df15bc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input\ソース ファイル">
-      <UniqueIdentifier>{1a245207-ed1a-4b55-8cc8-c05f84798ce4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mode\ヘッダー ファイル">
-      <UniqueIdentifier>{d8f0b224-2538-4974-ac2f-61ebcab5ca79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mode\ソースフ ァイル">
-      <UniqueIdentifier>{20ebad4d-1af5-4b56-819e-63bd8c074983}</UniqueIdentifier>
-    </Filter>
     <Filter Include="game">
       <UniqueIdentifier>{78b906c0-9b25-49d8-99cf-802f5d96fc30}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="game\ヘッダ ファイル">
-      <UniqueIdentifier>{2a5f16bb-389d-4068-ab10-f94f941f12a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="game\ソース ファイル">
-      <UniqueIdentifier>{1c838ac4-968e-45be-83bc-96fa0df13844}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="polygon">
-      <UniqueIdentifier>{b7cd25d9-ef6b-4a34-acb3-db55a8df603b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="polygon\ソースファイル">
-      <UniqueIdentifier>{76073943-a4fd-4478-b38e-a5089a06951d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="polygon\ヘッダーファイル">
-      <UniqueIdentifier>{5efb7ba9-5b10-48a2-862d-2584e698664d}</UniqueIdentifier>
     </Filter>
     <Filter Include="main">
       <UniqueIdentifier>{b62de430-2f3d-4f36-a8b2-d3241377a135}</UniqueIdentifier>
@@ -61,6 +28,33 @@
     <Filter Include="game\Number">
       <UniqueIdentifier>{d191fc3b-f95b-4bfb-aa16-06ca2c3faf1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="main\mode">
+      <UniqueIdentifier>{736a70bd-91eb-4f20-9b11-31be9b84e0f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\mode\ヘッダー ファイル">
+      <UniqueIdentifier>{d8f0b224-2538-4974-ac2f-61ebcab5ca79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\mode\ソースフ ァイル">
+      <UniqueIdentifier>{20ebad4d-1af5-4b56-819e-63bd8c074983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\Input">
+      <UniqueIdentifier>{3b45a4a9-daac-4752-a248-e9603a4651d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\Input\ヘッダー ファイル">
+      <UniqueIdentifier>{4c2afc9b-ddeb-49b8-9ebc-5b059df15bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\Input\ソース ファイル">
+      <UniqueIdentifier>{1a245207-ed1a-4b55-8cc8-c05f84798ce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\polygon">
+      <UniqueIdentifier>{b7cd25d9-ef6b-4a34-acb3-db55a8df603b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\polygon\ソースファイル">
+      <UniqueIdentifier>{76073943-a4fd-4478-b38e-a5089a06951d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\polygon\ヘッダーファイル">
+      <UniqueIdentifier>{5efb7ba9-5b10-48a2-862d-2584e698664d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -76,28 +70,28 @@
       <Filter>main\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="title.cpp">
-      <Filter>mode\ソースフ ァイル</Filter>
+      <Filter>main\mode\ソースフ ァイル</Filter>
     </ClCompile>
     <ClCompile Include="keyinput.cpp">
-      <Filter>Input\ソース ファイル</Filter>
+      <Filter>main\Input\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Xinput.cpp">
-      <Filter>Input\ソース ファイル</Filter>
+      <Filter>main\Input\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Dinput.cpp">
-      <Filter>Input\ソース ファイル</Filter>
+      <Filter>main\Input\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
-      <Filter>mode\ソースフ ァイル</Filter>
+      <Filter>main\mode\ソースフ ァイル</Filter>
     </ClCompile>
     <ClCompile Include="result.cpp">
-      <Filter>mode\ソースフ ァイル</Filter>
+      <Filter>main\mode\ソースフ ァイル</Filter>
     </ClCompile>
     <ClCompile Include="tutorial.cpp">
-      <Filter>mode\ソースフ ァイル</Filter>
+      <Filter>main\mode\ソースフ ァイル</Filter>
     </ClCompile>
     <ClCompile Include="input.cpp">
-      <Filter>Input\ソース ファイル</Filter>
+      <Filter>main\Input\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="fade.cpp">
       <Filter>main\ソース ファイル</Filter>
@@ -105,26 +99,20 @@
     <ClCompile Include="sound.cpp">
       <Filter>main\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="bullet.cpp">
-      <Filter>game\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="effect.cpp">
-      <Filter>polygon\ソースファイル</Filter>
+      <Filter>main\polygon\ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="number.cpp">
-      <Filter>polygon\ソースファイル</Filter>
+      <Filter>main\polygon\ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="mesh.cpp">
-      <Filter>polygon\ソースファイル</Filter>
+      <Filter>main\polygon\ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="scene2D.cpp">
-      <Filter>polygon\ソースファイル</Filter>
+      <Filter>main\polygon\ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="pause.cpp">
-      <Filter>mode\ソースフ ァイル</Filter>
-    </ClCompile>
-    <ClCompile Include="collision.cpp">
-      <Filter>game\ソース ファイル</Filter>
+      <Filter>main\mode\ソースフ ァイル</Filter>
     </ClCompile>
     <ClCompile Include="boss.cpp">
       <Filter>game\Character</Filter>
@@ -150,6 +138,12 @@
     <ClCompile Include="time.cpp">
       <Filter>game\Number</Filter>
     </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -165,61 +159,52 @@
       <Filter>main\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="title.h">
-      <Filter>mode\ヘッダー ファイル</Filter>
+      <Filter>main\mode\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="keyinput.h">
-      <Filter>Input\ヘッダー ファイル</Filter>
+      <Filter>main\Input\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Xinput.h">
-      <Filter>Input\ヘッダー ファイル</Filter>
+      <Filter>main\Input\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Dinput.h">
-      <Filter>Input\ヘッダー ファイル</Filter>
+      <Filter>main\Input\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>mode\ヘッダー ファイル</Filter>
+      <Filter>main\mode\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="result.h">
-      <Filter>mode\ヘッダー ファイル</Filter>
+      <Filter>main\mode\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="tutorial.h">
-      <Filter>mode\ヘッダー ファイル</Filter>
+      <Filter>main\mode\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
-      <Filter>Input\ヘッダー ファイル</Filter>
+      <Filter>main\Input\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="fade.h">
       <Filter>main\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="bullet.h">
-      <Filter>game\ヘッダ ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sound.h">
       <Filter>main\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="effect.h">
-      <Filter>polygon\ヘッダーファイル</Filter>
+      <Filter>main\polygon\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="mesh.h">
-      <Filter>polygon\ヘッダーファイル</Filter>
+      <Filter>main\polygon\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="scene2D.h">
-      <Filter>polygon\ヘッダーファイル</Filter>
+      <Filter>main\polygon\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="number.h">
-      <Filter>polygon\ヘッダーファイル</Filter>
+      <Filter>main\polygon\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="pause.h">
-      <Filter>mode\ヘッダー ファイル</Filter>
+      <Filter>main\mode\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="material.h">
       <Filter>main\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="collision.h">
-      <Filter>game\ヘッダ ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="gauge.h">
-      <Filter>game\ヘッダ ファイル</Filter>
     </ClInclude>
     <ClInclude Include="boss.h">
       <Filter>game\Character</Filter>
@@ -244,6 +229,15 @@
     </ClInclude>
     <ClInclude Include="time.h">
       <Filter>game\Number</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>game\effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@
 #include "scene2D.h"
 #include "player.h"
 #include "mesh.h"
+#include "sound.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -29,8 +30,13 @@
 #define FIELD_VERTICAL	(40)
 #define FIELD_SIDE		(0)
 
+#define WAVE_POS		(m_WaveInfo.fCenterpos)
+#define WAVE_CYCLE		(m_WaveInfo.fCycle)
+#define WAVE_HEIGHT		(m_WaveInfo.fHeight)
+#define WAVE_TIME		((m_fCntTime + nVtx))
+
 #define OPE_POS			(D3DXVECTOR3((10.0f+(285.0f*nCnt)), 100.0f, 0.0f))
-#define OPE_SIZE		(D3DXVECTOR3(200.0f, 100.0f, 0.0f))
+#define OPE_SIZE		(D3DXVECTOR3(70.0f, 70.0f, 0.0f))
 #define OPE_VERTICAL	(30)
 #define OPE_SIDE		(0)
 
@@ -77,6 +83,10 @@ CTutorial * CTutorial::Create(void)
 //=============================================================================
 HRESULT CTutorial::Init(void)
 {
+	CSound *pSound = CManager::GetSound();
+
+	WaveInit();
+
 	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);									// 背景
 	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE);  // 地面
 	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);							 // プレイヤー
@@ -97,6 +107,7 @@ HRESULT CTutorial::Init(void)
 	m_pOperation[KEY_NUM_4]->CreateTexture("data/TEXTURE/Bullet_4.png");
 	m_pOperation[KEY_NUM_6]->CreateTexture("data/TEXTURE/Bullet_6.png");
 
+	pSound->PlaySound(CSound::SOUND_LABEL_BGM001);
 	return S_OK;
 }
 
@@ -105,6 +116,8 @@ HRESULT CTutorial::Init(void)
 //=============================================================================
 void CTutorial::Uninit(void)
 {
+	CSound *pSound = CManager::GetSound();
+	pSound->StopSound();
 	//オブジェクトの破棄
 	Release();
 }
@@ -120,7 +133,7 @@ void CTutorial::Update(void)
 	{// RETURNキーが押されたら
 		CManager::GetFade()->SetFade(CManager::MODE_GAME);	// GAME・MODEへ
 	}
-
+	WaveUpdate();
 	// 初めて押されたキーの確認
 	OnKeyOperat(pKey);
 	OperatUpdate();
@@ -132,6 +145,25 @@ void CTutorial::Update(void)
 //=============================================================================
 void CTutorial::Draw(void)
 {
+}
+
+void CTutorial::WaveInit(void)
+{
+	m_WaveInfo.fCenterpos = 600.0f;
+	m_WaveInfo.fCycle = 70.0f;
+	m_WaveInfo.fHeight = 25.0f;
+}
+
+void CTutorial::WaveUpdate(void)
+{
+	m_fCntTime += 0.02f;
+
+	for (int nVtx = 0; nVtx < m_pField->GetVtxNum() / 2; nVtx++)
+	{
+		D3DXVECTOR3 pos = ZeroVector3;
+		pos.y = CMove::SinWave(WAVE_POS, WAVE_HEIGHT, WAVE_CYCLE, WAVE_TIME);
+		m_pField->SetWavePos(nVtx, pos.y);
+	}
 }
 
 //=============================================================================
@@ -158,7 +190,14 @@ void CTutorial::OperatUpdate(void)
 	{
 		if (m_bButton[nCnt] == true)
 		{// そのキーが押されたことがわかっていたら
-			//m_pOperation[nCnt]->WaveMove(100.0f, 20.0f, 40.0f, m_nCntTimeOP);
+			for (int nVtx = 0; nVtx < m_pOperation[nCnt]->GetVtxNum()/2; nVtx++)
+			{// 波を起こす処理
+				D3DXVECTOR3 pos = ZeroVector3;
+				pos.y = CMove::SinWave(100.0f, 20.0f, 60.0f, m_nCntTimeOP + nVtx);
+				m_pOperation[nCnt]->SetWavePos(nVtx, pos.y);
+				pos.y += 100.0f;
+				m_pOperation[nCnt]->SetWavePos(nVtx + (m_pOperation[nCnt]->GetVtxNum() / 2), pos.y);
+			}
 		}
 	}
 }
