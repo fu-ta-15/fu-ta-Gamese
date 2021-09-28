@@ -121,7 +121,6 @@ void CNormalEnemy::Draw(void)
 //=============================================================================
 void CNormalEnemy::UpdateBlack(void)
 {
-	
 	// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
 	m_pos += m_move;
 	m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f, 6.5f);

@@ -92,6 +92,11 @@ void CEnemy::Update(void)
 				CScene::ObjRelease(OBJ_ENEMY, nID);
 				m_paEnemy[nID] = NULL;
 			}
+			if (ENEMY_ID->CollisionPlayer() == true && ENEMY_ID->GetEnemyType() == ENEMY_WHITE)
+			{
+				CScene::ObjRelease(OBJ_ENEMY, nID);
+				m_paEnemy[nID] = NULL;
+			}
 		}
 	}
 }
@@ -147,6 +152,9 @@ void CEnemy::CollisionEnemy(int nID)
 	}
 }
 
+//=============================================================================
+// ÉvÉåÉCÉÑÅ[Ç∆ÇÃìñÇΩÇËîªíË
+//=============================================================================
 bool CEnemy::CollisionPlayer(void)
 {
 	bool bCollision = false;

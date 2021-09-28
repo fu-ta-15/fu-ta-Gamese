@@ -39,9 +39,12 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	void SetMoveType(EnemyMove movetype) { m_MoveType = movetype; }
+
 	void UpdateBlack(void);
 	void UpdateWhite(void);
 private:
+	EnemyMove m_MoveType;
 	bool m_bCollision;
 };
 

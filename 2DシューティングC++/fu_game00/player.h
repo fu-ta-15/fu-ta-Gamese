@@ -83,6 +83,7 @@ private:
 	D3DXCOLOR			m_col;				// êF
 
 	StateType			m_state;
+	CEffect				*m_pWeapon;
 	CEffect				*m_pShield;
 };
 
