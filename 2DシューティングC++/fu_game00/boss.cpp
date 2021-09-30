@@ -143,10 +143,11 @@ void CBoss::UpdateBoss(void)
 
 	int nRandEne0 = rand() % 250 + nCntRand;
 	int nEnemy0 = rand() % 50 + 11;
+	int nMoveType = rand() % 4;
 
 	if ((m_nCnt % nRandEne0) == nEnemy0)
 	{
-		CNormalEnemy::Create(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE_TYPE0);
+		CNormalEnemy::Create(m_pos, ENEMY_SIZE, ENEMY_TYPE0,(CNormalEnemy::EnemyMove)nMoveType);
 	}
 }
 

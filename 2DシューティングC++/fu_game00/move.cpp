@@ -52,10 +52,6 @@ D3DXVECTOR3 CMove::TargetPosMove(D3DXVECTOR3 tagpos, D3DXVECTOR3 mypos, float De
 	return mypos;
 }
 
-float CMove::HomingMove(float Point, float myPoint)
-{
-	return 0.0f;
-}
 
 //=============================================================================
 // プレイヤーの位置制御
@@ -75,4 +71,14 @@ float CMove::CosWave(const float CenterPos, const float nHeight, const float nCy
 	float WavePos = CenterPos + cosf((D3DX_PI * 2) / nCycle * (nTime + nTime)) * nHeight;
 
 	return WavePos;
+}
+
+float CMove::HomingMove(float Angle, float fSpeed)
+{
+	return Angle * fSpeed;
+}
+
+float CMove::AnglePoint(float PointX, float PointY)
+{
+	return atan2f(PointX, PointY);
 }

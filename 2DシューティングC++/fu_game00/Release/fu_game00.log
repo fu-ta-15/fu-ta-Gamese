@@ -1,8 +1,20 @@
-﻿  sound.cpp
+﻿  boss.cpp
+  bullet.cpp
+  enemy.cpp
+  game.cpp
+  manager.cpp
+  move.cpp
+  normalenemy.cpp
+  player.cpp
+player.cpp(409): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+  title.cpp
+title.cpp(151): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  tutorial.cpp
+tutorial.cpp(196): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
   コード生成しています。
-  2 of 317 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  16 of 323 functions ( 5.0%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    7 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\fu_game00.pdb (Full PDB)
