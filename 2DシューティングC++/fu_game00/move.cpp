@@ -30,11 +30,11 @@ float CMove::MoveSnake(float pos, float move, float Uplimit, float Downlimit,flo
 {
 	if (pos > Downlimit)
 	{
-		move = -Speed;
+		move = -move;
 	}
 	else if (pos < Uplimit)
 	{
-		move = Speed;
+		move = (move) * -1;
 	}
 	return move;
 }
@@ -42,14 +42,19 @@ float CMove::MoveSnake(float pos, float move, float Uplimit, float Downlimit,flo
 //=============================================================================
 // プレイヤーの位置制御
 //=============================================================================
-D3DXVECTOR3 CMove::TargetPosMove(D3DXVECTOR3 tagpos, D3DXVECTOR3 mypos,float Decele)
+D3DXVECTOR3 CMove::TargetPosMove(D3DXVECTOR3 tagpos, D3DXVECTOR3 mypos, float Decele)
 {
 	// 移動・回転量の減衰
 	mypos.x += (tagpos.x - mypos.x) * Decele;
 	mypos.y += (tagpos.y - mypos.y) * Decele;
 	mypos.z += (tagpos.z - mypos.z) * Decele;
-
+					     
 	return mypos;
+}
+
+float CMove::HomingMove(float Point, float myPoint)
+{
+	return 0.0f;
 }
 
 //=============================================================================

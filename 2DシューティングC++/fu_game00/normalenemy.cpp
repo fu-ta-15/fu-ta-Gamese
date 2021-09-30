@@ -16,7 +16,7 @@
 //-----------------------------------------------------------------------------
 // マクロ
 //-----------------------------------------------------------------------------
-#define ENEMY_TYPE1_MOVE		(D3DXVECTOR3(-1.0f, -5.0f, 0.0f))
+#define ENEMY_TYPE1_MOVE		(D3DXVECTOR3(-2.5f, -5.0f, 0.0f))
 #define TYPE1_COLOR				(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f))
 
 //=============================================================================
@@ -51,6 +51,27 @@ CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 siz
 		pNormalEnemy->SetType(type);			  // 種類
 		pNormalEnemy->SetCol(TYPE1_COLOR);		  // 色
 		pNormalEnemy->Init();					  // 初期化
+	}
+
+	return pNormalEnemy;
+}
+
+CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, ENEMYTYPE type, EnemyMove movetype)
+{
+	CNormalEnemy *pNormalEnemy = NULL;
+
+	if (pNormalEnemy == NULL)
+	{// NULLチェック
+		pNormalEnemy = new CNormalEnemy;
+		pNormalEnemy->m_bCollision = false;		 // 当たり判定
+		pNormalEnemy->m_move = ENEMY_TYPE1_MOVE;  // 移動量
+		pNormalEnemy->SetPos(pos);				 // 位置
+		pNormalEnemy->SetSize(size);			 // サイズ
+		pNormalEnemy->SetMoveType(movetype);	 // 移動のタイプ
+		pNormalEnemy->SetLife(ENEMY_LIFE);		 // 体力
+		pNormalEnemy->SetType(type);			 // 種類
+		pNormalEnemy->SetCol(TYPE1_COLOR);		 // 色
+		pNormalEnemy->Init();					 // 初期化
 	}
 
 	return pNormalEnemy;
@@ -121,9 +142,26 @@ void CNormalEnemy::Draw(void)
 //=============================================================================
 void CNormalEnemy::UpdateBlack(void)
 {
+	switch (m_MoveType)
+	{
+	case CNormalEnemy::MOVE_0:
+		m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f, 5.5f);
+		break;
+	case CNormalEnemy::MOVE_1:
+		m_move = CMove::TargetPosMove(CGame::GetPlayer()->GetPos(), m_pos, 0.004f);
+		break;
+	case CNormalEnemy::MOVE_2:
+		break;
+	case CNormalEnemy::MOVE_3:
+		break;
+	case CNormalEnemy::MOVE_4:
+		break;
+	default:
+		break;
+	}
+
 	// 位置に移動量を加算
 	m_pos += m_move;
-	m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f, 6.5f);
 
 	CScene2D::SetPos(m_pos);	// 移動量の更新
 }

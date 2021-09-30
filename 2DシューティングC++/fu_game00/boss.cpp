@@ -146,7 +146,7 @@ void CBoss::UpdateBoss(void)
 
 	if ((m_nCnt % nRandEne0) == nEnemy0)
 	{
-		CNormalEnemy::Create(m_pos, ENEMY_SIZE, ENEMY_TYPE0);
+		CNormalEnemy::Create(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE_TYPE0);
 	}
 }
 

@@ -14,9 +14,9 @@
 #include "effect.h"
 
 //-----------------------------------------------------------------------------
-// 前方宣言
+// マクロ変数
 //-----------------------------------------------------------------------------
-class CBullet;
+#define MAX_STOCK	(5)
 
 //-----------------------------------------------------------------------------
 // クラス
@@ -44,9 +44,11 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	// Set関数
 	void SetCollEnemy(bool bcoll)	{ m_bCollEnemy = bcoll; }
 	void SetState(StateType state)	{ m_state = state; }
+
 	// Get関数
 	D3DXVECTOR3 GetSize(void)		{ return m_size; }
 	bool GetStay(void)				{ return m_bStay; }
@@ -54,6 +56,7 @@ public:
 	bool GetAlive(void)				{ return m_bAlive; }
 
 private:
+	void StockUpdate(void);
 	void PosControl(void);
 	void PlayerAction(void);
 	void PlayerMove(void);
@@ -65,7 +68,10 @@ private:
 
 	int					m_nAnimeCnt;		// アニメーションカウンター
 	int					m_nDamageCnt;		// ダメージカウント
+
 	float				m_fStayTime;		// とどまってる時間
+	float				m_fStockTime;		// ストックが存在している時間
+
 	bool				m_bUse;				// 生存確認
 	bool				m_bJunp;			// ジャンプ
 	bool				m_bStay;			// 止まっているかどうか
@@ -73,9 +79,11 @@ private:
 	bool				m_bFall;			// 落下判定
 	bool				m_bDamage;			// ダメージの判定
 	bool				m_bAlive;			// 生きているかどうか
+
 	D3DXVECTOR3			m_pos;				// 位置
 	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置
 	D3DXVECTOR3			m_move;				// 移動量
+	D3DXVECTOR3			m_StockMove;		// ストックの移動量
 	D3DXVECTOR3			m_size;				// サイズ
 	D3DXVECTOR3			m_moveBullet;		// バレットの移動量
 	D3DXVECTOR2			m_tex;				// テクスチャの分割数
@@ -83,7 +91,10 @@ private:
 	D3DXCOLOR			m_col;				// 色
 
 	StateType			m_state;
-	CEffect				*m_pWeapon;
+
+	CScene2D			*m_pGaugeStock[MAX_STOCK];
+	bool				m_bStock[MAX_STOCK];
+
 	CEffect				*m_pShield;
 };
 

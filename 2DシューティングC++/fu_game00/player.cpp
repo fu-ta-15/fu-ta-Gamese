@@ -85,11 +85,21 @@ HRESULT CPlayer::Init(void)
 	m_tex = D3DXVECTOR2(2.0f, 0.0f);
 	m_number = D3DXVECTOR2(0.0f, 0.0f);
 	m_nAnimeCnt = 0;
+	m_fStockTime = 0.0f;
 
 	// ポリゴンの生成
 	CScene2D::Init(m_pos, m_size);
 	CScene2D::CreateTexture("data/TEXTURE/player0.png");
 	CScene2D::SetTex(m_tex, m_number);
+
+	for (int nCnt = 0; nCnt < MAX_STOCK; nCnt++)
+	{
+		m_pGaugeStock[nCnt] = CScene2D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 20.0f, 0.0f));
+		m_pGaugeStock[nCnt]->CreateTexture("data/TEXTURE/Spark002.png");
+		m_pGaugeStock[nCnt]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_bStock[nCnt] = true;
+	}
+
 	m_pShield = CEffect::Create(m_pos, m_size * 2);
 	m_pShield->CreateTexture("data/TEXTURE/Shockwave.png");
 	return S_OK;
@@ -133,6 +143,7 @@ void CPlayer::Update(void)
 
 	// 状態管理
 	PlayerState();
+	StockUpdate();
 
 	CScene2D::SetUse(m_bUse);	// 存在している
 	CScene2D::SetPos(m_pos);	// 位置の設定（更新）
@@ -147,6 +158,26 @@ void CPlayer::Draw(void)
 {
 	// ポリゴンの描画
 	CScene2D::Draw();
+}
+
+//=============================================================================
+// ストックの更新
+//=============================================================================
+void CPlayer::StockUpdate(void)
+{
+	for (int nCnt = 0; nCnt < MAX_STOCK; nCnt++)
+	{
+		if (m_bStock[nCnt] == true)
+		{
+			m_fStockTime += 0.05f;
+
+			D3DXVECTOR3 pos;
+			pos.x = CMove::CosWave(m_pos.x, m_size.x + 40.0f, 100.0f, m_fStockTime + (nCnt * 10));
+			pos.y = CMove::SinWave(m_pos.y, m_size.y + 40.0f + m_move.y, 100.0f, m_fStockTime + (nCnt * 10));
+
+			m_pGaugeStock[nCnt]->SetPos(pos);
+		}
+	}
 }
 
 //=============================================================================
@@ -315,10 +346,11 @@ void CPlayer::FieldControl(void)
 //=============================================================================
 void CPlayer::PlayerAnime(void)
 {
-	if ((m_nAnimeCnt % 10) == 1)
+	if ((m_nAnimeCnt % 10) == 0)
 	{// カウントが１０あまり１の時
-		m_number.x++;	// テクスチャ座標加算
-		if (((int)m_number.x + 1 % 2) == 0)
+		m_number.x += 1;	// テクスチャ座標加算
+		m_nAnimeCnt = 0;
+		if (((int)m_number.x % 2) == 0)
 		{// テクスチャ座標が過ぎていたら
 			m_number.x = 0.0f;	// 初期値に戻す
 		}

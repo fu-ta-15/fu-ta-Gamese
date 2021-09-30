@@ -86,16 +86,19 @@ void CEnemy::Update(void)
 	{
 		if (ENEMY_ID != NULL)
 		{
-			if (ENEMY_ID->CollisionPlayer() == true && ENEMY_ID->GetEnemyType() == ENEMY_BLACK)
+			if (ENEMY_ID->CollisionPlayer() == true)
 			{
-				CGame::GetPlayer()->SetCollEnemy(true);
-				CScene::ObjRelease(OBJ_ENEMY, nID);
-				m_paEnemy[nID] = NULL;
-			}
-			if (ENEMY_ID->CollisionPlayer() == true && ENEMY_ID->GetEnemyType() == ENEMY_WHITE)
-			{
-				CScene::ObjRelease(OBJ_ENEMY, nID);
-				m_paEnemy[nID] = NULL;
+				if (ENEMY_ID->GetEnemyType() == ENEMY_BLACK)
+				{
+					CGame::GetPlayer()->SetCollEnemy(true);
+					CScene::ObjRelease(OBJ_ENEMY, nID);
+					m_paEnemy[nID] = NULL;
+				}
+				else if (ENEMY_ID->GetEnemyType() == ENEMY_WHITE)
+				{
+					CScene::ObjRelease(OBJ_ENEMY, nID);
+					m_paEnemy[nID] = NULL;
+				}
 			}
 		}
 	}
