@@ -148,31 +148,25 @@ void CNormalEnemy::UpdateBlack(void)
 	{
 	case CNormalEnemy::MOVE_0:
 		m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f, 5.5f);
-
-		// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
-		m_pos += m_move;
+		m_pos += m_move;	// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
 		break;
 	case CNormalEnemy::MOVE_1:
 		m_move.x = CMove::HomingMove(sinf(D3DX_PI + fAngle), 2.0f);
 		m_move.y = CMove::HomingMove(cosf(D3DX_PI - fAngle), 2.0f);
-		// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
-		m_pos += m_move;
-
+		m_pos += m_move;	// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
 		break;
 	case CNormalEnemy::MOVE_2:
 		m_fSinWaveCnt += 0.035f;
 		m_pos.x = CMove::CosWave(m_pos.x, 15.0f, 3.5f, m_fSinWaveCnt);
 		m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 80.0f, 400.0f, 5.5f);
-		// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
-		m_pos += m_move;
+		m_pos += m_move;	// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
 		break;
 	case CNormalEnemy::MOVE_3:
 		m_fCosWaveCnt += 0.35f;
 		m_fSinWaveCnt += 0.035f;
 		m_pos.x = CMove::CosWave(m_pos.x, 15.0f, 3.5f, m_fSinWaveCnt);
 		m_pos.y = CMove::SinWave(m_pos.y, 10.0f, 4.0f, m_fSinWaveCnt);
-		// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
-		m_pos.x += m_move.x * 0.5f;
+		m_pos.x += m_move.x * 0.5f;	// ˆÊ’u‚ÉˆÚ“®—Ê‚ð‰ÁŽZ
 		break;
 	default:
 		break;

@@ -86,7 +86,7 @@ void CEnemy::Update(void)
 	{
 		if (ENEMY_ID != NULL)
 		{
-			if (ENEMY_ID->CollisionPlayer() == true)
+			if (ENEMY_ID->CollisionPlayer() == true && CGame::GetPlayer()->Get)
 			{
 				if (ENEMY_ID->GetEnemyType() == ENEMY_BLACK)
 				{

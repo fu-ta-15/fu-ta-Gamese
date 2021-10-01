@@ -39,7 +39,7 @@
 
 #define TIME_POS		(D3DXVECTOR3(SCREEN_WIDTH / 3, 50.0f, 0.0f))
 #define TIME_SIZE		(D3DXVECTOR3(20.0f, 30.0f, 0.0f))
-#define TIME_SET		(100)
+#define TIME_SET		(0)
 
 #define BG_POS			(CENTER_POS)
 #define BG_SIZE			(D3DXVECTOR3(WIDTH_HALF,HEIGHT_HALF,0.0f))
@@ -145,7 +145,7 @@ void CGame::Update(void)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
-	if (m_pTime->GetTime() == 0 || CBoss::GetAlive() == false)
+	if (/*m_pTime->GetTime() == 0 ||*/ CBoss::GetAlive() == false)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
@@ -161,7 +161,7 @@ void CGame::Update(void)
 
 	if ((nCntTime % 60) == 0)
 	{// タイマーの減算
-		m_pTime->AddTime(-1);
+		m_pTime->AddTime(1);
 	}
 }
 
