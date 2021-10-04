@@ -19,6 +19,9 @@ CScene *CScene::m_pPauseScene = NULL;
 CScene *CScene::m_pPauseObj[PAUSE_MAX] = {};
 int CScene::m_nNumAll = 0;
 
+CScene *CScene::m_pTop[OBJ_MAX] = {};
+CScene *CScene::m_pCur[OBJ_MAX] = {};
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -42,6 +45,25 @@ CScene::CScene(ObjType type)
 			break;
 		}
 	}
+
+	m_type = type;
+
+	if (m_pTop[m_type] != NULL)
+	{
+		m_pCur[m_type]->m_pNext = this; // 最後尾から、追加する。
+		this->m_pNext = NULL;			// 自身の次はNULLである。
+		this->m_pPrev = m_pCur[m_type];	// 自身の前は今の最後尾である。
+	}
+	else
+	{
+		m_pTop[m_type] = this;			// あなたは先頭です。
+		this->m_pNext = NULL;			// 次はNULL
+		this->m_pPrev = NULL;			// 前はNULL
+	}
+
+	// 自身を最後尾
+	m_pCur[m_type] = this;
+
 }
 
 //=============================================================================
@@ -50,7 +72,7 @@ CScene::CScene(ObjType type)
 CScene::CScene(PauseType type)
 {
 	if (m_pPauseObj[type] == NULL)
-	{
+	{// ポーズシーンに情報を入れる
 		m_pPauseObj[type] = this;
 	}
 }
@@ -61,7 +83,7 @@ CScene::CScene(PauseType type)
 CScene::CScene(bool bpause)
 {
 	if (bpause == true && m_pPauseScene == NULL)
-	{
+	{// ポーズを行う合図
 		m_pPauseScene = this;
 	}
 }
@@ -267,6 +289,9 @@ void CScene::Release(void)
 		m_apScene[type][nID] = NULL;
 		m_nNumAll--;
 	}
+
+
+
 }
 
 //=============================================================================

@@ -48,9 +48,11 @@ public:
 	// Setä÷êî
 	void SetCollEnemy(bool bcoll)	{ m_bCollEnemy = bcoll; }
 	void SetState(StateType state)	{ m_state = state; }
+	void SetStock(void);
 
 	// Getä÷êî
 	D3DXVECTOR3 GetSize(void)		{ return m_size; }
+	StateType GetState(void)		{ return m_state; }
 	bool GetStay(void)				{ return m_bStay; }
 	bool GetDamage(void)			{ return m_bDamage; }
 	bool GetAlive(void)				{ return m_bAlive; }

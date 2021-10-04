@@ -87,6 +87,13 @@ private:
 	D3DXCOLOR			 m_col;							   // 色
 	bool				 m_bBool;
 	int					 m_nID;							   // 特定のナンバー
+
+
+	static CScene *m_pTop[OBJ_MAX];	 // 先頭のオブジェクトへのポインタ
+	static CScene *m_pCur[OBJ_MAX];	 // 現在（最後尾）のオブジェクトへのポインタ
+	CScene *m_pPrev;				 // 前のオブジェクトへのポインタ
+	CScene *m_pNext;				 // 次のオブジェクトへのポインタ
+
 };
 
 

@@ -97,7 +97,7 @@ HRESULT CPlayer::Init(void)
 		m_pGaugeStock[nCnt] = CScene2D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 20.0f, 0.0f));
 		m_pGaugeStock[nCnt]->CreateTexture("data/TEXTURE/Spark002.png");
 		m_pGaugeStock[nCnt]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-		m_bStock[nCnt] = true;
+		m_bStock[nCnt] = false;
 	}
 
 	m_pShield = CEffect::Create(m_pos, m_size * 2);
@@ -158,6 +158,19 @@ void CPlayer::Draw(void)
 {
 	// ƒ|ƒŠƒSƒ“‚Ì•`‰æ
 	CScene2D::Draw();
+}
+
+void CPlayer::SetStock(void)
+{
+	for (int nCnt = 0; nCnt < MAX_STOCK; nCnt++)
+	{
+		if (m_bStock[nCnt] == false)
+		{
+			m_bStock[nCnt] = true;
+			break;
+		}
+	}
+
 }
 
 //=============================================================================
