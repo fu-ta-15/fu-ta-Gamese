@@ -66,7 +66,7 @@ public:
 	void Draw(void);	
 
 	// 当たり判定処理
-	static void CollisionEnemy(int nID);
+	void CollisionEnemy(void);
 	bool CollisionPlayer(void);
 
 	// ダメージ
@@ -82,7 +82,6 @@ public:
 	// Get関数
 	ENEMY GetEnemyType(void)			{ return m_type; }
 	int GetLife(void)					{ return m_nLife; }
-	static CEnemy **GetEnemy(void)		{ return &m_paEnemy[0]; }
 
 protected:
 
@@ -94,7 +93,6 @@ protected:
 	ENEMY					m_type;							// 敵のタイプ
 
 private:
-	static CEnemy		*m_paEnemy[MAX_OBJECT];
 };
 
 

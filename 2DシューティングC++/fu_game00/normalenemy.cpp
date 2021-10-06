@@ -171,8 +171,6 @@ void CNormalEnemy::UpdateBlack(void)
 	default:
 		break;
 	}
-
-
 	CScene2D::SetPos(m_pos);	// ˆÚ“®—Ê‚ÌXV
 }
 

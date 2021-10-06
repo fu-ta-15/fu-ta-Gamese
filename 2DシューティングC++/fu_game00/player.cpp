@@ -96,7 +96,7 @@ HRESULT CPlayer::Init(void)
 	{
 		m_pGaugeStock[nCnt] = CScene2D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 20.0f, 0.0f));
 		m_pGaugeStock[nCnt]->CreateTexture("data/TEXTURE/Spark002.png");
-		m_pGaugeStock[nCnt]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pGaugeStock[nCnt]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 		m_bStock[nCnt] = false;
 	}
 
@@ -189,6 +189,7 @@ void CPlayer::StockUpdate(void)
 			pos.y = CMove::SinWave(m_pos.y, m_size.y + 40.0f + m_move.y, 100.0f, m_fStockTime + (nCnt * 10));
 
 			m_pGaugeStock[nCnt]->SetPos(pos);
+			m_pGaugeStock[nCnt]->SetCol(WhiteColor);
 		}
 	}
 }

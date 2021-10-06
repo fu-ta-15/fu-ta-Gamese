@@ -30,21 +30,13 @@
 //-----------------------------------------------------------------------------
 // 静的変数
 //-----------------------------------------------------------------------------
-CEnemy *CEnemy::m_paEnemy[MAX_OBJECT] = {};
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CEnemy::CEnemy() : CScene2D(OBJ_ENEMY)
 {
-	for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
-	{
-		if (ENEMY_CNT == NULL)
-		{// 中身が空っぽの場合
-			ENEMY_CNT = this;	// 情報代入
-			break;
-		}
-	}
+
 }
 
 //=============================================================================
@@ -70,10 +62,6 @@ HRESULT CEnemy::Init(void)
 //=============================================================================
 void CEnemy::Uninit(void)
 {
-	for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
-	{// 中身をNULLにする
-		ENEMY_CNT = NULL;
-	}
 	CScene2D::Uninit();	// 終了処理
 }
 
@@ -82,27 +70,20 @@ void CEnemy::Uninit(void)
 //=============================================================================
 void CEnemy::Update(void)
 {
-	for (int nID = 0; nID < MAX_OBJECT; nID++)
+	if (this->CollisionPlayer() == true && GET_PLAYER->GetState() != CPlayer::STATE_KNOCKUP)
 	{
-		if (ENEMY_ID != NULL)
+		if (this->GetEnemyType() == ENEMY_BLACK)
 		{
-			if (ENEMY_ID->CollisionPlayer() == true && GET_PLAYER->GetState() != CPlayer::STATE_KNOCKUP)
-			{
-				if (ENEMY_ID->GetEnemyType() == ENEMY_BLACK)
-				{
-					GET_PLAYER->SetCollEnemy(true);
-					CScene::ObjRelease(OBJ_ENEMY, nID);
-					m_paEnemy[nID] = NULL;
-				}
-				else if (ENEMY_ID->GetEnemyType() == ENEMY_WHITE)
-				{
-					GET_PLAYER->SetStock();
-					CScene::ObjRelease(OBJ_ENEMY, nID);
-					m_paEnemy[nID] = NULL;
-				}
-			}
+			GET_PLAYER->SetCollEnemy(true);
+			this->Release();
+		}
+		else if (this->GetEnemyType() == ENEMY_WHITE)
+		{
+			GET_PLAYER->SetStock();
+			this->Release();
 		}
 	}
+	CollisionEnemy();
 }
 
 //=============================================================================
@@ -116,43 +97,45 @@ void CEnemy::Draw(void)
 //=============================================================================
 // 種類ごとの当たり判定後の処理
 //=============================================================================
-void CEnemy::CollisionEnemy(int nID)
+void CEnemy::CollisionEnemy(void)
 {
-	// 敵の種類
-	switch (ENEMY_ID->m_type)
+	if (this->GetBool() == true)
 	{
-	case ENEMY_TYPE0:
-
-		ENEMY_ID->DamegeLife(1);
-
-		if (ENEMY_ID->GetLife() == 0)
+		// 敵の種類
+		switch (this->m_type)
 		{
-			ENEMY_ID->m_type = ENEMY_WHITE;
-		}
-		break;
+		case ENEMY_TYPE0:
 
-	case ENEMY_TYPE1:
-		break;
+			this->DamegeLife(1);
 
-	case ENEMY_TYPE2:
+			if (this->GetLife() == 0)
+			{
+				this->m_type = ENEMY_WHITE;
+			}
+			break;
 
-		if (BOSS->GetState() == BOSS_NONE && BOSS->GetShield() == false)
-		{
-			BOSS->DamegeLife(1);
-			BOSS->SetState(BOSS_DAMAGE);
-		}
-		else if (BOSS->GetState() == BOSS_NOT_DAMAGE)
-		{
-			BOSS->SetShield(true);
-		}
+		case ENEMY_TYPE1:
+			break;
 
-		if (BOSS_GET_LIFE == 0)
-		{
-			BOSS->SetAlive(false);
-			CScene::ObjRelease(OBJ_ENEMY, nID);
-			m_paEnemy[nID] = NULL;
+		case ENEMY_TYPE2:
+
+			if (BOSS->GetState() == BOSS_NONE && BOSS->GetShield() == false)
+			{
+				BOSS->DamegeLife(1);
+				BOSS->SetState(BOSS_DAMAGE);
+			}
+			else if (BOSS->GetState() == BOSS_NOT_DAMAGE)
+			{
+				BOSS->SetShield(true);
+			}
+
+			if (BOSS_GET_LIFE == 0)
+			{
+				BOSS->SetAlive(false);
+				BOSS->Release();
+			}
+			break;
 		}
-		break;
 	}
 }
 

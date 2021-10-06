@@ -62,6 +62,7 @@ public:
 	void SetPos(D3DXVECTOR3 pos);			// 位置の設定
 	void SetSize(D3DXVECTOR3 size);			// サイズの設定
 	void SetCol(D3DXCOLOR col);				// 色の設定
+	void SetBool(bool bflag);				// 何かのフラグ
 
 	/* Get関数 */
 	static int GetObjeNum(ObjType type);						// 特定のオブジェクト数
@@ -69,9 +70,19 @@ public:
 	static D3DXVECTOR3 GetSize(ObjType type, int nID);			// 特定のオブジェクトのサイズ取得
 	static D3DXCOLOR GetCol(ObjType type, int nID);
 
+	D3DXVECTOR3 GetPos(void);			// 特定のオブジェクトの位置取得
+	D3DXVECTOR3 GetSize(void);			// 特定のオブジェクトのサイズ取得
+	D3DXCOLOR GetCol(void);				// 色の取得
+	bool GetBool(void);
+	CScene *GetSceneNext(void);
+
+	static CScene *GetScene(ObjType type);
+
 	void Release(void);									// 個々のオブジェクトの削除
+	void DeathRelease(void);
 	static void ObjRelease(ObjType type, int nID);				// 特定のオブジェクトの削除
 	static void PauseRelease(void);
+
 
 protected:
 
@@ -79,7 +90,6 @@ private:
 	static CScene		*m_apScene[OBJ_MAX][MAX_OBJECT];   // シーンの静的変数
 	static CScene		*m_pPauseScene;					   // シーンを止める静的変数
 	static CScene		*m_pPauseObj[PAUSE_MAX];
-	static int			 m_nNumAll;						   // すべてのオブジェクト数
 	static bool			 m_bPause;
 	ObjType				 m_type;						   // オブジェクタイプ
 	D3DXVECTOR3			 m_pos;							   // 位置
@@ -89,11 +99,12 @@ private:
 	int					 m_nID;							   // 特定のナンバー
 
 
-	static CScene *m_pTop[OBJ_MAX];	 // 先頭のオブジェクトへのポインタ
-	static CScene *m_pCur[OBJ_MAX];	 // 現在（最後尾）のオブジェクトへのポインタ
-	CScene *m_pPrev;				 // 前のオブジェクトへのポインタ
-	CScene *m_pNext;				 // 次のオブジェクトへのポインタ
-
+	static CScene		*m_pTop[OBJ_MAX];		// 先頭のオブジェクトへのポインタ
+	static CScene		*m_pCur[OBJ_MAX];		// 現在（最後尾）のオブジェクトへのポインタ
+	static int			 m_nNumAll[OBJ_MAX];	// すべてのオブジェクト数
+	CScene				*m_pPrev;				// 前のオブジェクトへのポインタ
+	CScene				*m_pNext;				// 次のオブジェクトへのポインタ
+	bool				 m_bDeath;				// 死亡フラグ
 };
 
 

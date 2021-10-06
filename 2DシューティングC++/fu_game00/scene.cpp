@@ -17,7 +17,7 @@
 CScene *CScene::m_apScene[OBJ_MAX][MAX_OBJECT] = {};
 CScene *CScene::m_pPauseScene = NULL;
 CScene *CScene::m_pPauseObj[PAUSE_MAX] = {};
-int CScene::m_nNumAll = 0;
+int CScene::m_nNumAll[OBJ_MAX] = {};
 
 CScene *CScene::m_pTop[OBJ_MAX] = {};
 CScene *CScene::m_pCur[OBJ_MAX] = {};
@@ -34,20 +34,8 @@ CScene::CScene()
 //=============================================================================
 CScene::CScene(ObjType type)
 {
-	for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
-	{
-		if (m_apScene[type][nCnt] == NULL)
-		{// 中身が空っぽの場合
-			m_apScene[type][nCnt] = this;
-			m_nID = nCnt;
-			m_type = type;
-			m_nNumAll++;
-			break;
-		}
-	}
-
 	m_type = type;
-
+	m_bDeath = false;
 	if (m_pTop[m_type] != NULL)
 	{
 		m_pCur[m_type]->m_pNext = this; // 最後尾から、追加する。
@@ -63,6 +51,7 @@ CScene::CScene(ObjType type)
 
 	// 自身を最後尾
 	m_pCur[m_type] = this;
+	m_nNumAll[m_type]++;
 
 }
 
@@ -102,12 +91,35 @@ void CScene::ReleaseAll(void)
 {
 	for (int nCntType = 0; nCntType < OBJ_MAX; nCntType++)
 	{
-		for (int nCntScene = 0; nCntScene < MAX_OBJECT; nCntScene++)
+		CScene *pScene = m_pTop[nCntType];
+
+		while (pScene)
 		{
-			if (m_apScene[nCntType][nCntScene] != NULL)
+			CScene *pSceneNext = pScene->m_pNext;
+
+			// 更新処理
+			pScene->Uninit();
+
+			pScene = pSceneNext;
+		}
+
+	}
+	for (int nCntType = 0; nCntType < OBJ_MAX; nCntType++)
+	{
+		if (m_pTop[nCntType] != NULL)
+		{
+			CScene *pScene = m_pTop[nCntType];
+
+			do
 			{
-				m_apScene[nCntType][nCntScene]->Uninit();
-			}
+				CScene *pSceneNext = pScene->m_pNext;
+				if (pScene->m_bDeath == true)
+				{
+					pScene->DeathRelease();
+					pScene = NULL;
+				}
+				pScene = pSceneNext;
+			} while (pScene != NULL);
 		}
 	}
 	if (m_pPauseScene != NULL)
@@ -131,12 +143,40 @@ void CScene::UpdateAll(void)
 	{
 		for (int nCntType = 0; nCntType < OBJ_MAX; nCntType++)
 		{
-			for (int nCntScene = 0; nCntScene < MAX_OBJECT; nCntScene++)
+			if (m_pTop[nCntType] != NULL)
 			{
-				if (m_apScene[nCntType][nCntScene] != NULL)
+				CScene *pScene = m_pTop[nCntType];
+				do
 				{
-					m_apScene[nCntType][nCntScene]->Update();
-				}
+					CScene *pSceneNext = pScene->m_pNext;
+
+					if (pScene->m_bDeath != true)
+					{
+						// 更新処理
+						pScene->Update();
+					}
+					pScene = pSceneNext;
+
+				} while (pScene != NULL);
+			}
+		}
+		for (int nCntType = 0; nCntType < OBJ_MAX; nCntType++)
+		{
+			if (m_pTop[nCntType] != NULL)
+			{
+				CScene *pScene = m_pTop[nCntType];
+				do
+				{
+					CScene *pSceneNext = pScene->m_pNext;
+
+					if (pScene->m_bDeath == true)
+					{
+						pScene->DeathRelease();
+						pScene = NULL;
+					}
+					pScene = pSceneNext;
+
+				} while (pScene != NULL);
 			}
 		}
 	}
@@ -160,12 +200,20 @@ void CScene::DrawAll(void)
 {
 	for (int nCntType = 0; nCntType < OBJ_MAX; nCntType++)
 	{
-		for (int nCntScene = 0; nCntScene < MAX_OBJECT; nCntScene++)
+		if (m_pTop[nCntType] != NULL)
 		{
-			if (m_apScene[nCntType][nCntScene] != NULL)
+			CScene *pScene = m_pTop[nCntType];
+			do
 			{
-				m_apScene[nCntType][nCntScene]->Draw();
-			}
+				CScene *pSceneNext = pScene->m_pNext;
+				if (pScene->m_bDeath != true)
+				{
+					// 更新処理
+					pScene->Draw();
+				}
+
+				pScene = pSceneNext;
+			} while (pScene != NULL);
 		}
 	}
 	if (m_pPauseScene != NULL)
@@ -205,23 +253,30 @@ void CScene::SetCol(D3DXCOLOR col)
 }
 
 //=============================================================================
+// flagの設定
+//=============================================================================
+void CScene::SetBool(bool bflag)
+{
+	m_bBool = bflag;
+}
+
+//=============================================================================
 // 特定のオブジェクトの数を取得
 //=============================================================================
 int CScene::GetObjeNum(ObjType type)
 {
-	int Num = 0;
-	for (int nCntObj = 0; nCntObj < MAX_OBJECT; nCntObj++)
-	{
-		if (m_apScene[type][nCntObj] != NULL)
-		{
-			Num++;
-		}
-		else
-		{
-
-		}
-	}
-	return Num;
+	//int Num = 0;
+	//for (int nCntObj = 0; nCntObj < MAX_OBJECT; nCntObj++)
+	//{
+	//	if (m_apScene[type][nCntObj] != NULL)
+	//	{
+	//		Num++;
+	//	}
+	//	else
+	//	{
+	//	}
+	//}
+	return m_nNumAll[type];
 }
 
 //=============================================================================
@@ -276,22 +331,83 @@ D3DXCOLOR CScene::GetCol(ObjType type, int nID)
 	return col;
 }
 
+D3DXVECTOR3 CScene::GetPos(void)
+{
+	return this->m_pos;
+}
+
+D3DXVECTOR3 CScene::GetSize(void)
+{
+	return this->m_size;
+}
+
+D3DXCOLOR CScene::GetCol(void)
+{
+	return this->m_col;
+}
+
+bool CScene::GetBool(void)
+{
+	return m_bBool;
+}
+
+CScene * CScene::GetSceneNext(void)
+{
+	CScene *pScene;
+
+	if (this->m_pNext != NULL)
+	{
+		pScene = this->m_pNext;
+	}
+	else
+	{
+		pScene = NULL;
+	}
+	return pScene;
+}
+
+CScene * CScene::GetScene(ObjType type)
+{
+	return m_pTop[type];
+}
+
 //=============================================================================
 // シーンの削除処理
 //=============================================================================
 void CScene::Release(void)
 {
-	if (m_apScene[m_type][m_nID] != NULL)
+	m_bDeath = true;
+}
+
+//=============================================================================
+// 死亡フラグが立っているシーンの削除
+//=============================================================================
+void CScene::DeathRelease(void)
+{
+	for (int nCntType = 0; nCntType < OBJ_MAX; nCntType++)
 	{
-		int nID = m_nID;
-		ObjType type = m_type;
-		delete m_apScene[type][nID];
-		m_apScene[type][nID] = NULL;
-		m_nNumAll--;
+		if (m_pTop[nCntType] == this)
+		{
+			m_pTop[nCntType] = this->m_pNext;
+		}
+
+		if (m_pCur[nCntType] == this)
+		{
+			m_pCur[nCntType] = this->m_pPrev;
+		}
+
+		if (this->m_pPrev != NULL)
+		{
+			this->m_pPrev->m_pNext = this->m_pNext;
+		}
+
+		if (this->m_pNext != NULL)
+		{
+			this->m_pNext->m_pPrev = this->m_pPrev;
+		}
 	}
 
-
-
+	delete this;
 }
 
 //=============================================================================
@@ -299,12 +415,12 @@ void CScene::Release(void)
 //=============================================================================
 void CScene::ObjRelease(ObjType type, int nID)
 {
-	if (m_apScene[type][nID] != NULL)
-	{
-		delete m_apScene[type][nID];
-		m_apScene[type][nID] = NULL;
-		m_nNumAll--;
-	}
+	//if (m_apScene[type][nID] != NULL)
+	//{
+	//	delete m_apScene[type][nID];
+	//	m_apScene[type][nID] = NULL;
+	//	m_nNumAll--;
+	//}
 }
 
 //=============================================================================
@@ -324,8 +440,5 @@ void CScene::PauseRelease(void)
 		}
 		delete m_pPauseScene;
 		m_pPauseScene = NULL;
-
-
-		
 	}
 }

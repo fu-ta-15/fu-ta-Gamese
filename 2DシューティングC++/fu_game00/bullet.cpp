@@ -124,25 +124,25 @@ bool CBullet::CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 	D3DXVECTOR3 posEnemy;							// 敵の位置
 	D3DXVECTOR3 sizeEnemy;							// 敵のサイズ
 	int EnemyNum = CScene::GetObjeNum(OBJ_ENEMY);	// 画面にいる敵の数の取得
-	CEnemy **pEnemy = CEnemy::GetEnemy();			// 敵の情報取得
 
-	if (EnemyNum == 0)
-	{/* 画面にいる敵がゼロの場合 */
-		m_Collision = false;	// 当たり判定は無し
-	}
-	else if (EnemyNum >= 1)
-	{/* 敵が一体以上いる場合 */
-		for (int nCntEnemy = 0; nCntEnemy < MAX_OBJECT; nCntEnemy++)
+	CScene *pScene = CScene::GetScene(OBJ_ENEMY);
+
+	m_Collision = false;	// 当たり判定は無し
+	for (int nCntEnemy = 0; nCntEnemy < MAX_OBJECT; nCntEnemy++)
+	{
+		if (pScene != NULL)
 		{
-			posEnemy = CScene::GetPos(OBJ_ENEMY, nCntEnemy);	 // 敵の位置を取得
-			sizeEnemy = CScene::GetSize(OBJ_ENEMY, nCntEnemy);	 // 敵のサイズを取得
+			CScene *pSceneNext = pScene->GetSceneNext();
+			posEnemy = pScene->GetPos();
+			sizeEnemy = pScene->GetSize();
 
-			if (CCollision::CollisionCycle(m_pos, posEnemy, sizeEnemy.x) == true && P_ENEMY->GetEnemyType() != ENEMY_TYPE1)
+			if (CCollision::CollisionCycle(m_pos, posEnemy, sizeEnemy.x) == true)
 			{/* 敵の範囲に弾が存在したら */
-				CEnemy::CollisionEnemy(nCntEnemy);			// 当たった敵の当たり判定処理へ
+				pScene->SetBool(true);
 				m_Collision = true;							// 当たり判定は有
 				break;
 			}
+			pScene = pSceneNext;
 		}
 	}
 	if (m_pos.x - m_size.x > SCREEN_WIDTH || m_pos.x + m_size.x < 0.0f)
