@@ -101,6 +101,8 @@ void CEnemy::CollisionEnemy(void)
 {
 	if (this->GetBool() == true)
 	{
+		CBoss *pBoss = BOSS;
+
 		// “G‚ÌŽí—Þ
 		switch (this->m_type)
 		{
@@ -119,23 +121,24 @@ void CEnemy::CollisionEnemy(void)
 
 		case ENEMY_TYPE2:
 
-			if (BOSS->GetState() == BOSS_NONE && BOSS->GetShield() == false)
+			if (pBoss->GetState() == BOSS_NONE && pBoss->GetShield() == false)
 			{
-				BOSS->DamegeLife(1);
-				BOSS->SetState(BOSS_DAMAGE);
+				pBoss->DamegeLife(1);
+				pBoss->SetState(BOSS_DAMAGE);
 			}
-			else if (BOSS->GetState() == BOSS_NOT_DAMAGE)
+			else if (pBoss->GetState() == BOSS_NOT_DAMAGE)
 			{
-				BOSS->SetShield(true);
+				pBoss->SetShield(true);
 			}
 
-			if (BOSS_GET_LIFE == 0)
+			if (pBoss->GetLife() == 0)
 			{
-				BOSS->SetAlive(false);
-				BOSS->Release();
+				pBoss->SetAlive(false);
+				pBoss->Release();
 			}
 			break;
 		}
+		this->SetBool(false);
 	}
 }
 

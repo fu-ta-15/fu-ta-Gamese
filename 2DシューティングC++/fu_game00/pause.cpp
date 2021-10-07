@@ -118,7 +118,6 @@ void CPause::Update(void)
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_UP) == true)			// プレス・Dが押されたとき
 	{
 		m_nMenuID = (m_nMenuID + 1) % 2;
-		printf("MenuID : %d\n", m_nMenuID);
 	}
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_DOWN) == true)			// プレス・Dが押されたとき
 	{

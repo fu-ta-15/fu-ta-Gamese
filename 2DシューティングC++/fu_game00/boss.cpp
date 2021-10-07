@@ -97,7 +97,7 @@ void CBoss::Update(void)
 {
 	// à íuÇÃçXêV
 	CScene2D::SetPos(m_pos);	
-
+	CEnemy::Update();
 	switch (m_State)
 	{// åªç›ÇÃèÛë‘
 	case NONE:
@@ -148,8 +148,6 @@ void CBoss::UpdateBoss(void)
 	if ((m_nCnt % nRandEne0) == nEnemy0)
 	{
 		CNormalEnemy::Create(m_pos, ENEMY_SIZE, ENEMY_TYPE0,(CNormalEnemy::EnemyMove)nMoveType);
-		printf("Create --- ");
-		printf("TYPE:%d\n", nMoveType);
 	}
 }
 

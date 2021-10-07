@@ -82,8 +82,6 @@ HRESULT CScene2D::Init(void)
 	m_rot = D3DXVECTOR3(45.0f, 45.0f, 0.0f);
 	m_fAngle = atan2f(m_size.x, m_size.y);
 
-	printf("対角線の長さ：%.2f",m_fAngle);
-
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
