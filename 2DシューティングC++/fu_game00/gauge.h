@@ -10,6 +10,7 @@
 //-----------------------------------------------------------------------------
 // インクルードファイル
 //-----------------------------------------------------------------------------
+#include "main.h"
 #include "scene2D.h"
 
 //-----------------------------------------------------------------------------
@@ -24,9 +25,20 @@ public:
 	CGauge();
 	~CGauge();
 
-	
+	static CGauge *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,int Stock);
+
+	// メンバ関数
+	HRESULT Init(void);
+	void Uninit(void);
+	void Update(void);
+	void Draw(void);
+
 
 private:
+	D3DXVECTOR3	m_pos;
+	D3DXVECTOR3	m_size;
+	D3DXCOLOR	m_col;
+
 
 };
 

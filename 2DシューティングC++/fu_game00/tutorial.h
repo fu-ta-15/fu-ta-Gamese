@@ -33,7 +33,6 @@ public:
 		KEY_A = 0,
 		KEY_D,
 		KEY_W,
-		KEY_NUM_4,
 		KEY_NUM_6,
 		OPERA_MAX
 	}OPERA_KEY;

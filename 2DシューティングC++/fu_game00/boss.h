@@ -71,6 +71,7 @@ private:
 	float				m_fA_Shield = 0.0f;
 	int					m_nDamageCnt = 0;
 	int					m_nCnt = 0;
+	float					m_fMoveTime = 0;
 };
 
 #endif // !_BOSS_H_

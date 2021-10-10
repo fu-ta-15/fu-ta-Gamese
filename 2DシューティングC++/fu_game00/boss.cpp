@@ -11,6 +11,7 @@
 #include "normalenemy.h"
 #include "manager.h"
 #include "renderer.h"
+#include "move.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -22,7 +23,7 @@
 #define DAMAGE_TEXTUER	("data/TEXTURE/stateBoss.png")		// ダメージ状態テクスチャのリンク
 #define DAMAGE_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))	// 色
 															
-#define SHILED_TEXTUER	("data/TEXTURE/shield.png")			// シールドテクスチャのリンク
+#define SHILED_TEXTUER	("data/TEXTURE/AuroraRing.png")			// シールドテクスチャのリンク
 #define SHILED_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))	// 色
 
 
@@ -95,8 +96,7 @@ void CBoss::Uninit(void)
 //=============================================================================
 void CBoss::Update(void)
 {
-	// 位置の更新
-	CScene2D::SetPos(m_pos);	
+
 	CEnemy::Update();
 	switch (m_State)
 	{// 現在の状態
@@ -116,6 +116,13 @@ void CBoss::Update(void)
 	DamageBoss();		// ダメージ状態更新
 	NotDamageBoss();	// ダメージNO！状態更新
 	StateUpdate();		// 状態の公人
+
+	m_fMoveTime += 0.54f;
+	m_pos.y = CMove::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
+
+	// 位置の更新
+	CScene2D::SetPos(m_pos);
+
 }
 
 //=============================================================================
@@ -138,16 +145,15 @@ void CBoss::UpdateBoss(void)
 
 	int nCntRand = 0;				// 乱数保管用
 
-	nCntRand = rand() % 60 + 100;	// 乱数生成
+	nCntRand = rand() % 60 + 10;	// 乱数生成
 	m_nCnt++;						// カウント加算
 
-	int nRandEne0 = rand() % 250 + nCntRand;
-	int nEnemy0 = rand() % 50 + 11;
-	int nMoveType = rand() % 4;
+	int nRandEne0 = rand() % 80 + nCntRand;
+	int nEnemy0 = rand() % 20 + 11;
 
 	if ((m_nCnt % nRandEne0) == nEnemy0)
 	{
-		CNormalEnemy::Create(m_pos, ENEMY_SIZE, ENEMY_TYPE0,(CNormalEnemy::EnemyMove)nMoveType);
+		CNormalEnemy::Create(m_pos, ENEMY_SIZE, ENEMY_TYPE0, CNormalEnemy::MOVE_3);
 	}
 }
 
@@ -167,6 +173,10 @@ void CBoss::DamageBoss(void)
 			m_StateCol = m_pDamage->GetColor();			   // 色の取得
 			m_fA_Damage = 0.065f;						   // 透明度加算用
 		}
+		if (m_pDamage != NULL)
+		{
+			m_pDamage->SetPos(m_pos);
+		}
 	}
 }
 
@@ -179,11 +189,15 @@ void CBoss::NotDamageBoss(void)
 	{// シールド展開中
 		if (m_pShield == NULL)
 		{// NULLチェック
-			m_pShield = CEffect::Create(m_pos, m_size);	  // エフェクトの生成
+			m_pShield = CEffect::Create(m_pos, m_size*2);	  // エフェクトの生成
 			m_pShield->CreateTexture(SHILED_TEXTUER);	  // テクスチャ設定
 			m_pShield->SetColor(SHILED_COLOR);			  // 色の設定
 			m_ShieldCol = m_pShield->GetColor();		  // 色の取得
 			m_fA_Shield = 0.04f;						  // 透明度加算用
+		}
+		if (m_pShield != NULL)
+		{
+			m_pShield->SetPos(m_pos);
 		}
 	}
 }
@@ -202,7 +216,7 @@ void CBoss::StateUpdate(void)
 
 		if (m_ShieldCol.a >= 0.7f)
 		{
-			m_fA_Shield = -0.1f;
+			m_fA_Shield = -0.005f;
 		}
 		if (m_ShieldCol.a < 0.0f)
 		{

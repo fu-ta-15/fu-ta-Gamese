@@ -12,6 +12,7 @@
 #include "move.h"
 #include "player.h"
 #include "game.h"
+#include "boss.h"
 
 //-----------------------------------------------------------------------------
 // マクロ
@@ -143,6 +144,7 @@ void CNormalEnemy::Draw(void)
 void CNormalEnemy::UpdateBlack(void)
 {
 	float fAngle = CMove::AnglePoint(m_pos.x - CGame::GetPlayer()->GetPos().x, m_pos.y - CGame::GetPlayer()->GetPos().y);
+	CBoss *pBoss = CGame::GetBoss();
 
 	switch (m_MoveType)
 	{
@@ -164,9 +166,8 @@ void CNormalEnemy::UpdateBlack(void)
 	case CNormalEnemy::MOVE_3:
 		m_fCosWaveCnt += 0.35f;
 		m_fSinWaveCnt += 0.035f;
-		m_pos.x = CMove::CosWave(m_pos.x, 15.0f, 3.5f, m_fSinWaveCnt);
-		m_pos.y = CMove::SinWave(m_pos.y, 10.0f, 4.0f, m_fSinWaveCnt);
-		m_pos.x += m_move.x * 0.5f;	// 位置に移動量を加算
+		m_pos.x = CMove::CosWave(pBoss->GetPos().x, 120.0f, 13.5f, m_fSinWaveCnt);
+		m_pos.y = CMove::SinWave(pBoss->GetPos().y, 120.0f, 14.0f, m_fSinWaveCnt);
 		break;
 	default:
 		break;
@@ -180,9 +181,9 @@ void CNormalEnemy::UpdateBlack(void)
 void CNormalEnemy::UpdateWhite(void)
 {
 	CPlayer *pPlayer = CGame::GetPlayer();
+	m_fSinWaveCnt += 0.035f;
 
-	m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 200.0f, 500.0f, 6.5f);
-	m_pos.y += m_move.y;
+	m_pos.y = CMove::SinWave(m_pos.y, 10.0f, 4.0f, m_fSinWaveCnt);
 
 	CScene2D::SetPos(m_pos);	// 移動量の更新
 	CScene2D::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

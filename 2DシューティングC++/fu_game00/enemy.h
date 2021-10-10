@@ -19,12 +19,12 @@
 #define MAX_ENEMY		(256)
 
 #define ENEMY_POS		(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT / 2, 0.0f))
-#define ENEMY_SIZE		(D3DXVECTOR3(20.0f, 20.0f, 0.0f))
+#define ENEMY_SIZE		(D3DXVECTOR3(15.0f, 15.0f, 0.0f))
 #define ENEMY_MOVE		(D3DXVECTOR3(-2.0f, 0.0f, 0.0f))
 #define ENEMY_LIFE		(2)
 
 #define BOSS_POS_Y		(368)
-#define BOSS_POS_X		(1166)
+#define BOSS_POS_X		(1066)
 #define BOSS_SIZE_Y		(75)
 #define BOSS_SIZE_X		(75)
 

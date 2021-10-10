@@ -48,6 +48,7 @@ public:
 	// Set関数
 	void SetCollEnemy(bool bcoll)	{ m_bCollEnemy = bcoll; }
 	void SetState(StateType state)	{ m_state = state; }
+	void SetLife(int nLife)			{ m_nLife = nLife; }
 	void SetStock(void);
 
 	// Get関数
@@ -56,6 +57,7 @@ public:
 	bool GetStay(void)				{ return m_bStay; }
 	bool GetDamage(void)			{ return m_bDamage; }
 	bool GetAlive(void)				{ return m_bAlive; }
+	int GetLife(void)				{ return m_nLife; }
 
 private:
 	void StockUpdate(void);
@@ -70,6 +72,7 @@ private:
 
 	int					m_nAnimeCnt;		// アニメーションカウンター
 	int					m_nDamageCnt;		// ダメージカウント
+	int					m_nLife;			// ライフ
 
 	float				m_fStayTime;		// とどまってる時間
 	float				m_fStockTime;		// ストックが存在している時間

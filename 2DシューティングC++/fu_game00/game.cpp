@@ -138,7 +138,7 @@ void CGame::Update(void)
 {
 	CKey *pKey = CManager::GetKey();
 
-	WaveUpdate();
+	//WaveUpdate();
 
 	/* フェード処理 */
 	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))

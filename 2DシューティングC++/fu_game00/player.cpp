@@ -22,7 +22,6 @@
 //-----------------------------------------------------------------------------
 #define PLAYER_MOVE					(5.0f)
 #define PLAYER_JUNP					(20.0f)
-#define PLAYER_BULLET				(CBullet::BULLET_PLAYER)
 #define PLAYER_RETURN_FLOOR			(SCREEN_HEIGHT - m_size.y)
 #define MOVE_DECELERATION			(D3DXVECTOR3(1.0f, 0.02f, 0.0f))
 
@@ -170,7 +169,6 @@ void CPlayer::SetStock(void)
 			break;
 		}
 	}
-
 }
 
 //=============================================================================
@@ -226,11 +224,11 @@ void CPlayer::PlayerAction(void)
 	// 弾の発射
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true)	// トリガー・Kが押されたとき
 	{
-		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT, PLAYER_BULLET);	// バレットの生成
+		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT);	// バレットの生成
 	}
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD4) == true)	// トリガー・Kが押されたとき
 	{
-		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_LEFT, PLAYER_BULLET);	// バレットの生成
+		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_LEFT);	// バレットの生成
 	}
 }
 

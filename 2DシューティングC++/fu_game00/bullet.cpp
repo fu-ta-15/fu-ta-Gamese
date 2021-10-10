@@ -15,13 +15,11 @@
 //-----------------------------------------------------------------------------
 // インクルードファイル
 //-----------------------------------------------------------------------------
-CEnemy *CBullet::m_pBoss = NULL;
 
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
-#define BULLET_TEXTURE		("data/TEXTURE/FlowerShot.png")
-#define P_ENEMY				(pEnemy[nCntEnemy])
+#define BULLET_TEXTURE		("data/TEXTURE/Spark002.png")
 
 //=============================================================================
 // コンストラクタ
@@ -40,7 +38,7 @@ CBullet::~CBullet()
 //=============================================================================
 // バレットの生成
 //=============================================================================
-CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move, BULLET type)
+CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move)
 {
 	/* バレットの要素を設定 */
 	CBullet* pBullet = new CBullet;		// インスタンス生成
@@ -48,7 +46,6 @@ CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D
 	pBullet->m_pos = pos;					// 位置を設定
 	pBullet->m_size = size;					// サイズを設定
 	pBullet->m_move = move;					// 移動量を設定
-	pBullet->m_type = type;					// 弾のタイプ
 	pBullet->CreateTexture(BULLET_TEXTURE);	// テクスチャ
 	pBullet->m_Collision = false;			// 当たり判定
 	pBullet->m_bUse = true;					// 生存確認
@@ -90,15 +87,7 @@ void CBullet::Update(void)
 
 		CScene2D::SetPos(m_pos);		// 位置の更新
 
-		switch (m_type)
-		{// 誰のバレットか
-		case CBullet::BULLET_PLAYER:	// プレイヤーの弾
-			m_Collision = CollisionBullet(m_pos,m_size);	// 当たり判定確認
-			break;
-
-		default:
-			break;
-		}
+		m_Collision = CollisionBullet(m_pos,m_size);	// 当たり判定確認
 
 		if (m_Collision == true)
 		{// 当たった場合 
@@ -113,7 +102,10 @@ void CBullet::Update(void)
 //=============================================================================
 void CBullet::Draw(void)
 {
-	CScene2D::Draw();	// ポリゴンの描画
+	if (m_bUse == true)
+	{// している場合
+		CScene2D::Draw();	// ポリゴンの描画
+	}
 }
 
 //=============================================================================
@@ -123,11 +115,11 @@ bool CBullet::CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	D3DXVECTOR3 posEnemy;							// 敵の位置
 	D3DXVECTOR3 sizeEnemy;							// 敵のサイズ
-	int EnemyNum = CScene::GetObjeNum(OBJ_ENEMY);	// 画面にいる敵の数の取得
 
 	CScene *pScene = CScene::GetScene(OBJ_ENEMY);
 
 	m_Collision = false;	// 当たり判定は無し
+
 	for (int nCntEnemy = 0; nCntEnemy < MAX_OBJECT; nCntEnemy++)
 	{
 		if (pScene != NULL)

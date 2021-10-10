@@ -104,7 +104,6 @@ HRESULT CTutorial::Init(void)
 	m_pOperation[KEY_A]->CreateTexture("data/TEXTURE/Move_a.png");
 	m_pOperation[KEY_D]->CreateTexture("data/TEXTURE/Move_d.png");
 	m_pOperation[KEY_W]->CreateTexture("data/TEXTURE/Move_w.png");
-	m_pOperation[KEY_NUM_4]->CreateTexture("data/TEXTURE/Bullet_4.png");
 	m_pOperation[KEY_NUM_6]->CreateTexture("data/TEXTURE/Bullet_6.png");
 
 	pSound->PlaySound(CSound::SOUND_LABEL_BGM001);
@@ -137,7 +136,6 @@ void CTutorial::Update(void)
 	// 初めて押されたキーの確認
 	OnKeyOperat(pKey);
 	OperatUpdate();
-
 }
 
 //=============================================================================
@@ -174,7 +172,6 @@ void CTutorial::OnKeyOperat(CKey *pKey)
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_A))			{ m_bButton[KEY_A] = true; }
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_D))			{ m_bButton[KEY_D] = true; }
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_W))			{ m_bButton[KEY_W] = true; }
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD4))	{ m_bButton[KEY_NUM_4] = true; }
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6))	{ m_bButton[KEY_NUM_6] = true; }
 }
 

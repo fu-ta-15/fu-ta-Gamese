@@ -27,6 +27,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gauge.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="keyinput.cpp" />
     <ClCompile Include="main.cpp" />
@@ -38,6 +39,7 @@
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="polygon.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
@@ -71,6 +73,7 @@
     <ClInclude Include="particle.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="polygon.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />

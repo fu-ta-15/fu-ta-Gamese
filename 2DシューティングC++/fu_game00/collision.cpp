@@ -153,23 +153,9 @@ D3DXVECTOR3 CCollision::WaveCollision(const D3DXVECTOR3 start, const D3DXVECTOR3
 	float Xpercent = 100 - pos_x;
 	float Ypercent = 100 - pos_y;
 
-	switch (coltype)
-	{
-	case CCollision::TYPE_COL_Y:
+	tagPos.y = LengthPos.y *(pos_x / 100);
 
-		tagPos.y = LengthPos.y *(pos_x / 100);
-		tagPos.x = nowpos.x;
-
-		break;
-	case CCollision::TYPE_COL_X:
-
-		tagPos.x = LengthPos.x * Ypercent;
-		tagPos.y = nowpos.y;
-
-		break;
-	default:
-		break;
-	}
+	tagPos.x = LengthPos.x * (pos_y / 100);
 
 	if (start.y < end.y)
 	{
