@@ -1,9 +1,4 @@
 ﻿  enemy.cpp
-  コードを生成中...
-  スキップ中... (関連する変更は検出されませんでした)
-  tutorial.cpp
-  title.cpp
-  normalenemy.cpp
-  game.cpp
+cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.pdb (Full PDB)

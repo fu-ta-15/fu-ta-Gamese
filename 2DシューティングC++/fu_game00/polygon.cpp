@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// シーン処理 [scene.cpp]
+// ポリゴン処理 [polygon.cpp]
 // Author : SUZUKI FUUTA
 //
 //*****************************************************************************
@@ -26,14 +26,14 @@ CPolygon::CPolygon()
 }
 
 //=============================================================================
-// コンストラクタ
+// デストラクタ
 //=============================================================================
 CPolygon::~CPolygon()
 {
 }
 
 //=============================================================================
-// コンストラクタ
+// ポリゴンのクリエイト
 //=============================================================================
 CPolygon * CPolygon::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 {
@@ -43,11 +43,11 @@ CPolygon * CPolygon::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 	pPolygon->SetSize(size);
 	pPolygon->Init();
 
-	return nullptr;
+	return pPolygon;
 }
 
 //=============================================================================
-// コンストラクタ
+// テクスチャの読み込み
 //=============================================================================
 HRESULT CPolygon::CreateTexture(const LPCSTR pSrcFile)
 {
@@ -61,7 +61,7 @@ HRESULT CPolygon::CreateTexture(const LPCSTR pSrcFile)
 }
 
 //=============================================================================
-// コンストラクタ
+// 初期化
 //=============================================================================
 HRESULT CPolygon::Init(void)
 {
@@ -110,7 +110,7 @@ HRESULT CPolygon::Init(void)
 }
 
 //=============================================================================
-// コンストラクタ
+// 終了処理
 //=============================================================================
 void CPolygon::Uninit(void)
 {
@@ -127,14 +127,14 @@ void CPolygon::Uninit(void)
 }
 
 //=============================================================================
-// コンストラクタ
+// 更新処理
 //=============================================================================
 void CPolygon::Update(void)
 {
 }
 
 //=============================================================================
-// コンストラクタ
+// 描画処理
 //=============================================================================
 void CPolygon::Draw(void)
 {
@@ -155,7 +155,7 @@ void CPolygon::Draw(void)
 }
 
 //=============================================================================
-// コンストラクタ
+// 位置の設定
 //=============================================================================
 void CPolygon::SetPos(const D3DXVECTOR3 pos)
 {
@@ -176,7 +176,7 @@ void CPolygon::SetPos(const D3DXVECTOR3 pos)
 }
 
 //=============================================================================
-// コンストラクタ
+// サイズの設定
 //=============================================================================
 void CPolygon::SetSize(const D3DXVECTOR3 size)
 {
@@ -197,7 +197,7 @@ void CPolygon::SetSize(const D3DXVECTOR3 size)
 }
 
 //=============================================================================
-// コンストラクタ
+// 色の設定
 //=============================================================================
 void CPolygon::SetCol(const D3DXCOLOR col)
 {
@@ -218,7 +218,7 @@ void CPolygon::SetCol(const D3DXCOLOR col)
 }
 
 //=============================================================================
-// コンストラクタ
+// テクスチャ座標の更新
 //=============================================================================
 void CPolygon::SetTex(const D3DXVECTOR2 tex, const D3DXVECTOR2 fnumber)
 {
@@ -242,7 +242,51 @@ void CPolygon::SetTex(const D3DXVECTOR2 tex, const D3DXVECTOR2 fnumber)
 }
 
 //=============================================================================
-// コンストラクタ
+// Xサイズの変更
+//=============================================================================
+void CPolygon::SizeChangeX(float AddSize, POLYGON_MOVE type)
+{
+	VERTEX_2D *pVtx;
+
+	//頂点バッファのロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	switch (type)
+	{
+	case CPolygon::POLYGON_CENTER:
+		// 各頂点の座標
+		pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x + AddSize, m_pos.y + m_size.y, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(m_pos.x - m_size.x + AddSize, m_pos.y - m_size.y, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(m_pos.x + m_size.x - AddSize, m_pos.y + m_size.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x - AddSize, m_pos.y - m_size.y, 0.0f);
+		break;
+
+	case CPolygon::POLYGON_LIGHT:
+		// 各頂点の座標
+		pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(m_pos.x + m_size.x - AddSize, m_pos.y + m_size.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x - AddSize, m_pos.y - m_size.y, 0.0f);
+		break;
+
+	case CPolygon::POLYGON_LEFT:
+		// 各頂点の座標
+		pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x + AddSize, m_pos.y + m_size.y, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(m_pos.x - m_size.x + AddSize, m_pos.y - m_size.y, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, 0.0f);
+		break;
+
+	default:
+		break;
+	}
+
+	//バッファのアンロック
+	m_pVtxBuff->Unlock();
+}
+
+//=============================================================================
+// 位置の取得
 //=============================================================================
 D3DXVECTOR3 CPolygon::GetPos(void)
 {
@@ -250,7 +294,7 @@ D3DXVECTOR3 CPolygon::GetPos(void)
 }
 
 //=============================================================================
-// コンストラクタ
+// 色の取得
 //=============================================================================
 D3DCOLOR CPolygon::GetCol(void)
 {

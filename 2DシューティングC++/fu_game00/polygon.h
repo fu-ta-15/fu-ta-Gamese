@@ -19,6 +19,15 @@
 class CPolygon
 {
 public:
+
+	typedef enum POLYGON_MOVE
+	{
+		POLYGON_CENTER = 0,
+		POLYGON_LIGHT,
+		POLYGON_LEFT,
+		POLYGON_MAX
+	}POLYGON_MOVE;
+
 	CPolygon();
 	~CPolygon();
 
@@ -35,6 +44,7 @@ public:
 	void SetSize(const D3DXVECTOR3 size);
 	void SetCol(const D3DXCOLOR col);
 	void SetTex(const D3DXVECTOR2 tex, const D3DXVECTOR2 fnumber);
+	void SizeChangeX(float AddSize, POLYGON_MOVE type);
 
 	// GETä÷êî
 	D3DXVECTOR3 GetPos(void);

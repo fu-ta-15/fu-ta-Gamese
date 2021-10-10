@@ -144,9 +144,6 @@
     <ClCompile Include="collision.cpp">
       <Filter>game\effect</Filter>
     </ClCompile>
-    <ClCompile Include="gauge.cpp">
-      <Filter>main\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="polygon.cpp">
       <Filter>main\polygon\ソースファイル</Filter>
     </ClCompile>
@@ -240,9 +237,6 @@
       <Filter>game\effect</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
-      <Filter>game\effect</Filter>
-    </ClInclude>
-    <ClInclude Include="gauge.h">
       <Filter>game\effect</Filter>
     </ClInclude>
     <ClInclude Include="polygon.h">
