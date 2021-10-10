@@ -79,7 +79,6 @@ void CEnemy::Update(void)
 		}
 		else if (this->GetEnemyType() == ENEMY_WHITE)
 		{
-			GET_PLAYER->SetStock();
 			this->Release();
 		}
 	}

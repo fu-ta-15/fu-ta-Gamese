@@ -17,25 +17,6 @@
 #include "tutorial.h"
 #include "move.h"
 
-//-----------------------------------------------------------------------------
-// マクロ変数
-//-----------------------------------------------------------------------------
-#define PLAYER_MOVE					(5.0f)
-#define PLAYER_JUNP					(20.0f)
-#define PLAYER_RETURN_FLOOR			(SCREEN_HEIGHT - m_size.y)
-#define MOVE_DECELERATION			(D3DXVECTOR3(1.0f, 0.02f, 0.0f))
-
-#define BULLET_SIZE					(D3DXVECTOR3(20.0f, 20.0f, 0.0f))
-#define BULLET_MOVE					(10.0f)
-#define BULLET_MOVE_RIGHT			(D3DXVECTOR3(BULLET_MOVE, 0.0f, 0.0f))
-#define BULLET_MOVE_LEFT			(D3DXVECTOR3(-BULLET_MOVE, 0.0f, 0.0f))
-
-#define GRAVITY						(1.0f)
-#define PLAYER_COLL_POS				(D3DXVECTOR3(m_pos.x, m_pos.y + m_size.y, m_pos.z))
-
-#define MESH_GAME					(CGame::GetMesh())
-#define MESH_TUTORIAL				(CTutorial::GetMesh())
-
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -65,6 +46,7 @@ CPlayer * CPlayer::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 		pPlayer->m_size = size;			// サイズの設定
 		pPlayer->m_fStayTime = 0.0f;	// とどまっている時間
 		pPlayer->m_col = WhiteColor;	// 白カラー
+		pPlayer->m_nLife = PLAYER_LIFE;	// 体力
 		pPlayer->m_state = STATE_NONE;	// 状態
 		pPlayer->m_bAlive = true;		// 使用中
 		pPlayer->m_bUse = true;			// 使用中
@@ -80,24 +62,14 @@ CPlayer * CPlayer::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 //=============================================================================
 HRESULT CPlayer::Init(void)
 {
-
 	m_tex = D3DXVECTOR2(2.0f, 0.0f);
 	m_number = D3DXVECTOR2(0.0f, 0.0f);
 	m_nAnimeCnt = 0;
-	m_fStockTime = 0.0f;
 
 	// ポリゴンの生成
 	CScene2D::Init(m_pos, m_size);
 	CScene2D::CreateTexture("data/TEXTURE/player0.png");
 	CScene2D::SetTex(m_tex, m_number);
-
-	for (int nCnt = 0; nCnt < MAX_STOCK; nCnt++)
-	{
-		m_pGaugeStock[nCnt] = CScene2D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 20.0f, 0.0f));
-		m_pGaugeStock[nCnt]->CreateTexture("data/TEXTURE/Spark002.png");
-		m_pGaugeStock[nCnt]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-		m_bStock[nCnt] = false;
-	}
 
 	m_pShield = CEffect::Create(m_pos, m_size * 2);
 	m_pShield->CreateTexture("data/TEXTURE/Shockwave.png");
@@ -123,12 +95,13 @@ void CPlayer::Update(void)
 
 	if (m_state == STATE_NONE)
 	{
-		// アクション
-		PlayerAction();
+		PlayerAction();	// アクション
 	}
 
 	// 移動量の加算
 	m_move.y += GRAVITY;
+
+	// 移動量の加算
 	m_pos += m_move;
 
 	// 移動量の制御
@@ -142,7 +115,6 @@ void CPlayer::Update(void)
 
 	// 状態管理
 	PlayerState();
-	StockUpdate();
 
 	CScene2D::SetUse(m_bUse);	// 存在している
 	CScene2D::SetPos(m_pos);	// 位置の設定（更新）
@@ -157,39 +129,6 @@ void CPlayer::Draw(void)
 {
 	// ポリゴンの描画
 	CScene2D::Draw();
-}
-
-void CPlayer::SetStock(void)
-{
-	for (int nCnt = 0; nCnt < MAX_STOCK; nCnt++)
-	{
-		if (m_bStock[nCnt] == false)
-		{
-			m_bStock[nCnt] = true;
-			break;
-		}
-	}
-}
-
-//=============================================================================
-// ストックの更新
-//=============================================================================
-void CPlayer::StockUpdate(void)
-{
-	for (int nCnt = 0; nCnt < MAX_STOCK; nCnt++)
-	{
-		if (m_bStock[nCnt] == true)
-		{
-			m_fStockTime += 0.05f;
-
-			D3DXVECTOR3 pos;
-			pos.x = CMove::CosWave(m_pos.x, m_size.x + 40.0f, 100.0f, m_fStockTime + (nCnt * 10));
-			pos.y = CMove::SinWave(m_pos.y, m_size.y + 40.0f + m_move.y, 100.0f, m_fStockTime + (nCnt * 10));
-
-			m_pGaugeStock[nCnt]->SetPos(pos);
-			m_pGaugeStock[nCnt]->SetCol(WhiteColor);
-		}
-	}
 }
 
 //=============================================================================
@@ -225,10 +164,6 @@ void CPlayer::PlayerAction(void)
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true)	// トリガー・Kが押されたとき
 	{
 		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT);	// バレットの生成
-	}
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD4) == true)	// トリガー・Kが押されたとき
-	{
-		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_LEFT);	// バレットの生成
 	}
 }
 
