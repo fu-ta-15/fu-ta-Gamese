@@ -37,26 +37,6 @@ CNormalEnemy::~CNormalEnemy()
 //=============================================================================
 // 通常の敵の生成
 //=============================================================================
-CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, ENEMYTYPE type)
-{
-	CNormalEnemy *pNormalEnemy = NULL;
-
-	if (pNormalEnemy == NULL)
-	{// NULLチェック
-		pNormalEnemy = new CNormalEnemy;
-		pNormalEnemy->m_move = ENEMY_TYPE1_MOVE;  // 移動量
-		pNormalEnemy->m_bCollision = false;		  // 当たり判定
-		pNormalEnemy->SetPos(pos);				  // 位置
-		pNormalEnemy->SetSize(size);			  // サイズ
-		pNormalEnemy->SetLife(ENEMY_LIFE);		  // 体力
-		pNormalEnemy->SetType(type);			  // 種類
-		pNormalEnemy->SetCol(TYPE1_COLOR);		  // 色
-		pNormalEnemy->Init();					  // 初期化
-	}
-
-	return pNormalEnemy;
-}
-
 CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, ENEMYTYPE type, EnemyMove movetype)
 {
 	CNormalEnemy *pNormalEnemy = NULL;
@@ -166,8 +146,8 @@ void CNormalEnemy::UpdateBlack(void)
 	case CNormalEnemy::MOVE_3:
 		m_fCosWaveCnt += 0.35f;
 		m_fSinWaveCnt += 0.035f;
-		m_pos.x = CMove::CosWave(pBoss->GetPos().x, 120.0f, 13.5f, m_fSinWaveCnt);
-		m_pos.y = CMove::SinWave(pBoss->GetPos().y, 120.0f, 14.0f, m_fSinWaveCnt);
+		m_pos.x = CMove::CosWave(pBoss->GetPos().x, 140.0f, 13.5f, m_fSinWaveCnt);
+		m_pos.y = CMove::SinWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fSinWaveCnt);
 		break;
 	default:
 		break;

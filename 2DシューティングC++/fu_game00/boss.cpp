@@ -25,7 +25,7 @@
 															
 #define SHILED_TEXTUER	("data/TEXTURE/AuroraRing.png")			// シールドテクスチャのリンク
 #define SHILED_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))	// 色
-
+#define SHILED_SIZE		(m_size*2.5f)
 
 //-----------------------------------------------------------------------------
 // 静的変数
@@ -37,6 +37,12 @@ bool CBoss::m_bBoss_Alive = true;	// 生存しているかどうか
 //=============================================================================
 CBoss::CBoss()
 {
+	this->m_pDamage = NULL;		// ダメージエフェクト
+	this->m_pShield = NULL;		// シールドエフェクト
+	this->m_bShield = false;	// シールド出すか出さないか
+	this->m_bDamage = false;	// ダメージ受けているかいないか
+	this->m_State = STATE_NONE;	// 状態
+	m_bBoss_Alive = true;		// 生存する
 }
 
 //=============================================================================
@@ -56,17 +62,11 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 	if (pBoss == NULL)
 	{// NULLチェック
 		pBoss = new CBoss;
-		pBoss->m_pDamage = NULL;		// ダメージエフェクト
-		pBoss->m_pShield = NULL;		// シールドエフェクト
 		pBoss->SetPos(pos);				// 位置
 		pBoss->SetSize(size);			// サイズ
 		pBoss->SetLife(nLife);			// ライフ
 		pBoss->SetCol(WhiteColor);		// 色
 		pBoss->SetType(ENEMY_TYPE2);	// タイプ
-		pBoss->m_State = STATE_NONE;	// 状態
-		pBoss->m_bShield = false;		// シールド出すか出さないか
-		pBoss->m_bDamage = false;		// ダメージ受けているかいないか
-		m_bBoss_Alive = true;			// 生存する
 		pBoss->Init();					// 初期化
 	}
 
@@ -167,15 +167,15 @@ void CBoss::DamageBoss(void)
 		if (m_pDamage == NULL)
 		{// NULLチェック
 			m_State = STATE_NOT_DAMAGE;					   // ダメージ受け付けない状態
-			m_pDamage = CEffect::Create(m_pos, m_size);	   // エフェクト生成
+			m_pDamage = CEffect::Create(m_pos, m_size);	   // 生成
 			m_pDamage->CreateTexture(DAMAGE_TEXTUER);	   // テクスチャの設定
 			m_pDamage->SetColor(DAMAGE_COLOR);			   // 色の設定
 			m_StateCol = m_pDamage->GetColor();			   // 色の取得
 			m_fA_Damage = 0.065f;						   // 透明度加算用
 		}
 		if (m_pDamage != NULL)
-		{
-			m_pDamage->SetPos(m_pos);
+		{// NULLじゃなかったら
+			m_pDamage->SetPos(m_pos);	// 位置を更新
 		}
 	}
 }
@@ -189,15 +189,15 @@ void CBoss::NotDamageBoss(void)
 	{// シールド展開中
 		if (m_pShield == NULL)
 		{// NULLチェック
-			m_pShield = CEffect::Create(m_pos, m_size*2);	  // エフェクトの生成
-			m_pShield->CreateTexture(SHILED_TEXTUER);	  // テクスチャ設定
-			m_pShield->SetColor(SHILED_COLOR);			  // 色の設定
-			m_ShieldCol = m_pShield->GetColor();		  // 色の取得
-			m_fA_Shield = 0.04f;						  // 透明度加算用
+			m_pShield = CEffect::Create(m_pos, SHILED_SIZE); // 生成
+			m_pShield->CreateTexture(SHILED_TEXTUER);		 // テクスチャ設定
+			m_pShield->SetColor(SHILED_COLOR);				 // 色の設定
+			m_ShieldCol = m_pShield->GetColor();			 // 色の取得
+			m_fA_Shield = 0.04f;							 // 透明度加算用
 		}
 		if (m_pShield != NULL)
-		{
-			m_pShield->SetPos(m_pos);
+		{// NULLじゃなかったら
+			m_pShield->SetPos(m_pos);	// 位置を更新
 		}
 	}
 }

@@ -90,7 +90,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pFade->Init();
 
 	// フェードしてからタイトルへ
-	m_pFade->SetFade(MODE_TITLE);
+	m_pFade->SetFade(MODE_GAME);
 
 	return S_OK;
 }
@@ -121,12 +121,12 @@ void CManager::Uninit(void)
 		delete m_pKey;			// メモリの破棄
 		m_pKey = NULL;			// メモリのクリア
 	}
-	//if (m_pSound != NULL)
-	//{
-	//	m_pSound->Uninit();
-	//	delete m_pSound;
-	//	m_pSound = NULL;
-	//}
+	if (m_pSound != NULL)
+	{
+		m_pSound->Uninit();
+		delete m_pSound;
+		m_pSound = NULL;
+	}
 
 	// シーンの全削除
 	CScene::ReleaseAll();
