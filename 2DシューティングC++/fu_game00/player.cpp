@@ -66,11 +66,20 @@ HRESULT CPlayer::Init(void)
 	m_number = D3DXVECTOR2(0.0f, 0.0f);
 	m_nAnimeCnt = 0;
 
-	// ポリゴンの生成
+	// プレイヤー表示設定
 	CScene2D::Init(m_pos, m_size);
 	CScene2D::CreateTexture("data/TEXTURE/player0.png");
 	CScene2D::SetTex(m_tex, m_number);
 
+	// ライフの設定
+	for (int nCntLife = 0; nCntLife < 10; nCntLife++)
+	{
+		D3DXVECTOR3 pos = D3DXVECTOR3(50.0f, 100.0f + (15 * nCntLife), 0.0f);
+		D3DXVECTOR3 size = D3DXVECTOR3(10.0f,5.0f, 0.0f);
+		m_pLife[nCntLife] = CScene2D::Create(pos, size);
+	}
+
+	// バリアの設定
 	m_pShield = CEffect::Create(m_pos, m_size * 2);
 	m_pShield->CreateTexture("data/TEXTURE/Shockwave.png");
 	return S_OK;

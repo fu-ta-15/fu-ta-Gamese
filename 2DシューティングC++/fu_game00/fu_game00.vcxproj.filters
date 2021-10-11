@@ -11,14 +11,6 @@
     <Filter Include="main">
       <UniqueIdentifier>{b62de430-2f3d-4f36-a8b2-d3241377a135}</UniqueIdentifier>
     </Filter>
-    <Filter Include="main\ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="main\ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="game\Character">
       <UniqueIdentifier>{457edea2-33a9-4ca1-a0aa-afe3e6da67d4}</UniqueIdentifier>
     </Filter>
@@ -55,19 +47,30 @@
     <Filter Include="main\polygon\ヘッダーファイル">
       <UniqueIdentifier>{5efb7ba9-5b10-48a2-862d-2584e698664d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="main\system">
+      <UniqueIdentifier>{076df8a9-eea5-4693-a331-d4fc8d7bf6b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\system\ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="main\system\ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>main\ソース ファイル</Filter>
+      <Filter>main\system\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="renderer.cpp">
-      <Filter>main\ソース ファイル</Filter>
+      <Filter>main\system\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="scene.cpp">
-      <Filter>main\ソース ファイル</Filter>
+      <Filter>main\system\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="manager.cpp">
-      <Filter>main\ソース ファイル</Filter>
+      <Filter>main\system\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="title.cpp">
       <Filter>main\mode\ソースフ ァイル</Filter>
@@ -94,10 +97,10 @@
       <Filter>main\Input\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="fade.cpp">
-      <Filter>main\ソース ファイル</Filter>
+      <Filter>main\system\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sound.cpp">
-      <Filter>main\ソース ファイル</Filter>
+      <Filter>main\system\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="effect.cpp">
       <Filter>main\polygon\ソースファイル</Filter>
@@ -147,19 +150,22 @@
     <ClCompile Include="polygon.cpp">
       <Filter>main\polygon\ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
-      <Filter>main\ヘッダー ファイル</Filter>
+      <Filter>main\system\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="renderer.h">
-      <Filter>main\ヘッダー ファイル</Filter>
+      <Filter>main\system\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="scene.h">
-      <Filter>main\ヘッダー ファイル</Filter>
+      <Filter>main\system\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="manager.h">
-      <Filter>main\ヘッダー ファイル</Filter>
+      <Filter>main\system\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="title.h">
       <Filter>main\mode\ヘッダー ファイル</Filter>
@@ -186,10 +192,10 @@
       <Filter>main\Input\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="fade.h">
-      <Filter>main\ヘッダー ファイル</Filter>
+      <Filter>main\system\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sound.h">
-      <Filter>main\ヘッダー ファイル</Filter>
+      <Filter>main\system\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="effect.h">
       <Filter>main\polygon\ヘッダーファイル</Filter>
@@ -207,7 +213,7 @@
       <Filter>main\mode\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="material.h">
-      <Filter>main\ヘッダー ファイル</Filter>
+      <Filter>main\system\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="boss.h">
       <Filter>game\Character</Filter>
@@ -241,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="polygon.h">
       <Filter>main\polygon\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>game\effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -99,9 +99,7 @@ private:
 	D3DXVECTOR3			m_pos;				// 位置
 	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置
 	D3DXVECTOR3			m_move;				// 移動量
-	D3DXVECTOR3			m_StockMove;		// ストックの移動量
 	D3DXVECTOR3			m_size;				// サイズ
-	D3DXVECTOR3			m_moveBullet;		// バレットの移動量
 	D3DXVECTOR2			m_tex;				// テクスチャの分割数
 	D3DXVECTOR2			m_number;			// テクスチャ何番目か
 	D3DXCOLOR			m_col;				// 色
@@ -109,6 +107,7 @@ private:
 	StateType			m_state;
 
 	CEffect				*m_pShield;
+	CScene2D			*m_pLife[PLAYER_LIFE/10];
 };
 
 

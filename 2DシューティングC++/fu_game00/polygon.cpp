@@ -41,7 +41,7 @@ CPolygon * CPolygon::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 
 	pPolygon->SetPos(pos);
 	pPolygon->SetSize(size);
-	pPolygon->Init();
+	pPolygon->Init(pos,size);
 
 	return pPolygon;
 }
@@ -63,8 +63,10 @@ HRESULT CPolygon::CreateTexture(const LPCSTR pSrcFile)
 //=============================================================================
 // 初期化
 //=============================================================================
-HRESULT CPolygon::Init(void)
+HRESULT CPolygon::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 {
+	m_bUse = true;
+
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
@@ -141,17 +143,20 @@ void CPolygon::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
+	if (m_bUse == true)
+	{
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
 
-	//頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
+		//頂点フォーマットの設定
+		pDevice->SetFVF(FVF_VERTEX_2D);
 
-	//テクスチャの設定
-	pDevice->SetTexture(0, m_pTex);
+		//テクスチャの設定
+		pDevice->SetTexture(0, m_pTex);
 
-	// 描画設定
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+		// 描画設定
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	}
 }
 
 //=============================================================================
@@ -239,6 +244,14 @@ void CPolygon::SetTex(const D3DXVECTOR2 tex, const D3DXVECTOR2 fnumber)
 
 	//バッファのアンロック
 	m_pVtxBuff->Unlock();
+}
+
+//=============================================================================
+// ポリゴンの使用
+//=============================================================================
+void CPolygon::SetUse(bool bUse)
+{
+	m_bUse = bUse;
 }
 
 //=============================================================================

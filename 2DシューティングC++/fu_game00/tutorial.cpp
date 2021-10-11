@@ -85,11 +85,9 @@ HRESULT CTutorial::Init(void)
 {
 	CSound *pSound = CManager::GetSound();
 
-	WaveInit();
-
 	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);									// 背景
-	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE);  // 地面
-	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);							 // プレイヤー
+	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE);	// 地面
+	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);							// プレイヤー
 
 	for (int nCnt = 0; nCnt < OPERA_MAX; nCnt++)
 	{// 操作説明画像
@@ -132,7 +130,6 @@ void CTutorial::Update(void)
 	{// RETURNキーが押されたら
 		CManager::GetFade()->SetFade(CManager::MODE_GAME);	// GAME・MODEへ
 	}
-	WaveUpdate();
 	// 初めて押されたキーの確認
 	OnKeyOperat(pKey);
 	OperatUpdate();
@@ -145,24 +142,6 @@ void CTutorial::Draw(void)
 {
 }
 
-void CTutorial::WaveInit(void)
-{
-	m_WaveInfo.fCenterpos = 600.0f;
-	m_WaveInfo.fCycle = 20.0f;
-	m_WaveInfo.fHeight = 25.0f;
-}
-
-void CTutorial::WaveUpdate(void)
-{
-	m_fCntTime += 0.02f;
-
-	for (int nVtx = 0; nVtx < m_pField->GetVtxNum() / 2; nVtx++)
-	{
-		D3DXVECTOR3 pos = ZeroVector3;
-		pos.y = CMove::SinWave(WAVE_POS, WAVE_HEIGHT, WAVE_CYCLE, WAVE_TIME);
-		m_pField->SetWavePos(nVtx, pos.y);
-	}
-}
 
 //=============================================================================
 // そのキーが初めて押されたらメッシュを揺らすための確認
@@ -190,9 +169,9 @@ void CTutorial::OperatUpdate(void)
 			for (int nVtx = 0; nVtx < m_pOperation[nCnt]->GetVtxNum()/2; nVtx++)
 			{// 波を起こす処理
 				D3DXVECTOR3 pos = ZeroVector3;
-				pos.y = CMove::SinWave(100.0f, 20.0f, 60.0f, m_nCntTimeOP + nVtx);
+				pos.y = CMove::SinWave(100.0f, 10.0f, 60.0f, m_nCntTimeOP + nVtx);
 				m_pOperation[nCnt]->SetWavePos(nVtx, pos.y);
-				pos.y += 100.0f;
+				pos.y += 70.0f;
 				m_pOperation[nCnt]->SetWavePos(nVtx + (m_pOperation[nCnt]->GetVtxNum() / 2), pos.y);
 			}
 		}

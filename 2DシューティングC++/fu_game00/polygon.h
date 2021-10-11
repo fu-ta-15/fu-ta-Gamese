@@ -34,7 +34,7 @@ public:
 	static CPolygon *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
 	HRESULT CreateTexture(const LPCSTR pSrcFile);
 
-	HRESULT Init(void);
+	HRESULT Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
@@ -44,6 +44,7 @@ public:
 	void SetSize(const D3DXVECTOR3 size);
 	void SetCol(const D3DXCOLOR col);
 	void SetTex(const D3DXVECTOR2 tex, const D3DXVECTOR2 fnumber);
+	void SetUse(bool bUse);
 	void SizeChangeX(float AddSize, POLYGON_MOVE type);
 
 	// GET関数
@@ -65,6 +66,7 @@ private:
 	float						m_fAnimeY;				// アニメーション座標Y
 	float						m_fAnimeX;				// アニメーション座標X
 
+	bool						m_bUse;
 };
 
 
