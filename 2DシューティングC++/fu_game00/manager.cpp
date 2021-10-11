@@ -90,7 +90,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pFade->Init();
 
 	// フェードしてからタイトルへ
-	m_pFade->SetFade(MODE_GAME);
+	m_pFade->SetFade(MODE_TUTORIAL);
 
 	return S_OK;
 }
@@ -226,7 +226,9 @@ void CManager::CreateMode(MODE mode)
 	case MODE_GAME:		// ゲーム
 		if (m_pGame == NULL)
 		{
-			m_pGame = CGame::Create();			
+			m_pGame = CGame::Create();		
+			m_pPause = CPause::Create();	// ポーズを生成
+
 		}
 		break;
 	case MODE_RESULT:	// リザルト
@@ -294,14 +296,13 @@ void CManager::PauseUpdate(void)
 		{// Pが押されたとき
 			m_bPause = m_bPause ? false : true;	// falseかtrueに切り替える
 		}
-		if (m_bPause == true && m_pPause == NULL)
+		if (m_bPause == true)
 		{// ポーズが開始されたとき
-			m_pPause = CPause::Create();	// ポーズを生成
+			m_pPause->SetPause(m_bPause);
 		}
-		else if (m_bPause == false && m_pPause != NULL)
+		else if (m_bPause == false)
 		{
-			m_pPause->Uninit();
-			m_pPause = NULL;
+			m_pPause->SetPause(m_bPause);
 		}
 	}
 }

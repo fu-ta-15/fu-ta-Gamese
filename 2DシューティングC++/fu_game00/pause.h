@@ -25,6 +25,7 @@ public:
 	{
 		MENU_RETRY = 0,
 		MENU_TITLE,
+		MENU_QUIT,
 		MENU_MAX
 	}PAUSEMENU;
 
@@ -46,6 +47,7 @@ private:
 
 	D3DXVECTOR2					m_tex;					// テクスチャ座標
 	D3DXVECTOR3					m_pos;					// 位置
+	D3DXVECTOR3					m_ButtonPos;			// Buttonの位置
 	D3DXVECTOR3					m_rot;					// 角度
 	D3DXVECTOR3					m_size;					// サイズ
 	D3DXVECTOR3					m_move;					// 移動量

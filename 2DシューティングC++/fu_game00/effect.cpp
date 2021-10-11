@@ -102,7 +102,7 @@ void CEffect::Update(void)
 {
 	//m_pos = CScene2D::GetPos();
 
-	//if (m_nLife <= 0)
+	//if (m_fLife <= 0)
 	//{
 	//	Uninit();
 	//}

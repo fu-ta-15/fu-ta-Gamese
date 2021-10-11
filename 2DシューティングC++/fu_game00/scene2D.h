@@ -47,6 +47,7 @@ public:
 	// GET関数
 	D3DXVECTOR3 GetPos(void);
 	D3DCOLOR GetCol(void);
+	bool GetUse(void) { return m_bUse; }
 
 private:
 	// ポリゴンに使用するメンバ変数

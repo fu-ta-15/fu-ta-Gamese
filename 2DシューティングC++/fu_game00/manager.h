@@ -73,6 +73,7 @@ public:
 	static CKey *GetKey(void);
 	static CFade * CManager::GetFade(void){ return m_pFade; }
 	static CSound *GetSound(void) { return m_pSound; }
+	static CPause *GetPause(void) { return m_pPause; }
 
 private:
 	void PauseUpdate(void);

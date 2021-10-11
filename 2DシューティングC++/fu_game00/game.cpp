@@ -115,7 +115,6 @@ HRESULT CGame::Init(void)
 
 	pSound->PlaySound(CSound::SOUND_LABEL_BGM002);
 
-	WaveInit();
 	return S_OK;
 }
 
@@ -173,39 +172,3 @@ void CGame::Draw(void)
 	
 }
 
-//=============================================================================
-// ウェーブの情報の初期設定
-//=============================================================================
-void CGame::WaveInit(void)
-{
-	m_WaveInfo.fCenterpos = 600.0f;
-	m_WaveInfo.fCycle = 70.0f;
-	m_WaveInfo.fHeight = 25.0f;
-}
-
-//=============================================================================
-// ウェーブの更新
-//=============================================================================
-void CGame::WaveUpdate(void)
-{
-	m_fWaveTime += ADD_WAVETIME;	// カウントアップ
-
-	if (m_pPlayer->GetStay() == true)
-	{// プレイヤーが動いていない判定の場合
-		if (((int)m_fWaveTime % 3) == 0)
-		{// 特定の時間の場合
-			WAVE_HEIGHT += 0.05f;	// 波の高低差を上げる
-		}
-	}
-	if (m_pPlayer->GetDamage() == true)
-	{// プレイヤー自身にダメージを受けたら
-		WAVE_POS += 0.5f;	// 波自体の位置を下げる
-	}
-
-	for (int nVtx = 0; nVtx < m_pField->GetVtxNum() / 2; nVtx++)
-	{// メッシュの各頂点に位置情報を更新
-		D3DXVECTOR3 pos = ZeroVector3;
-		pos.y = CMove::SinWave(WAVE_POS, WAVE_HEIGHT, WAVE_CYCLE, WAVE_TIME);
-		m_pField->SetWavePos(nVtx, pos.y);
-	}
-}

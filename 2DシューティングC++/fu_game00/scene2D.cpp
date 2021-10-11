@@ -30,7 +30,7 @@ CScene2D::CScene2D(ObjType type) : CScene(type)
 	m_size = ZeroVector3;
 	m_move = ZeroVector3;
 	m_col = WhiteColor;
-
+	m_bUse = true;
 	m_fAngle = 0.0f;
 }
 
@@ -276,17 +276,20 @@ void CScene2D::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
+	if (m_bUse == true)
+	{
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
 
-	//頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
+		//頂点フォーマットの設定
+		pDevice->SetFVF(FVF_VERTEX_2D);
 
-	//テクスチャの設定
-	pDevice->SetTexture(0, m_pTex);
+		//テクスチャの設定
+		pDevice->SetTexture(0, m_pTex);
 
-	// 描画設定
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+		// 描画設定
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	}
 }
 
 //=============================================================================
@@ -360,10 +363,7 @@ void CScene2D::SetCol(const D3DXCOLOR col)
 //=============================================================================
 void CScene2D::SetUse(const bool bUse)
 {
-	if (bUse == false)
-	{
-		Release();
-	}
+	m_bUse = bUse;
 }
 
 //=============================================================================

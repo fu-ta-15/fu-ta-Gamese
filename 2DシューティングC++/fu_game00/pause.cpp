@@ -21,7 +21,7 @@
 #define PAUSE_POS		(D3DXVECTOR3(WIDTH_HALF, HEIGHT_HALF, 0.0f))
 #define PAUSE_COL		(D3DXCOLOR(0.7f,0.7f,0.7f,0.6f))
 #define BUTTON_COL		(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f))
-#define BUTTON_POS		(D3DXVECTOR3(WIDTH_HALF, HEIGHT_HALF, 0.0f))
+#define BUTTON_POS		(D3DXVECTOR3(WIDTH_HALF, HEIGHT_HALF-200, 0.0f))
 #define BUTTON_SIZE		(D3DXVECTOR3(200.0f, 50.0f, 0.0f))
 #define PAUSE_OBJ_NUM	(CPause::MENU_MAX)
 #define MENU_SELECTCOL	(D3DXCOLOR(0.4f,0.4f,0.4f,1.0f))
@@ -71,6 +71,7 @@ HRESULT CPause::Init(void)
 {
 	m_col = PAUSE_COL;	 // 色
 	m_pos = PAUSE_POS;	 // 位置
+	m_ButtonPos = BUTTON_POS;
 	m_size = PAUSE_SIZE; // サイズ
 
 	// ポーズBGの作成
@@ -79,14 +80,23 @@ HRESULT CPause::Init(void)
 	m_pScene2D->SetCol(m_col);			 // 色の設定
 	
 	m_pPauseButton[0] = new CScene2D(PAUSE_BUTTON1);
-	m_pPauseButton[0]->Init(m_pos, BUTTON_SIZE);
+	m_pPauseButton[0]->Init(m_ButtonPos, BUTTON_SIZE);
 	m_pPauseButton[0]->SetCol(MENU_SELECTCOL);
+	m_pPauseButton[0]->CreateTexture("data/TEXTURE/retry.png");
 
-	m_pos.y += 150;
+	m_ButtonPos.y += 150;
 
 	m_pPauseButton[1] = new CScene2D(PAUSE_BUTTON2);
-	m_pPauseButton[1]->Init(m_pos, BUTTON_SIZE);
+	m_pPauseButton[1]->Init(m_ButtonPos, BUTTON_SIZE);
 	m_pPauseButton[1]->SetCol(WhiteColor);
+	m_pPauseButton[1]->CreateTexture("data/TEXTURE/quit.png");
+
+	m_ButtonPos.y += 150;
+
+	m_pPauseButton[2] = new CScene2D(PAUSE_BUTTON3);
+	m_pPauseButton[2]->Init(m_ButtonPos, BUTTON_SIZE);
+	m_pPauseButton[2]->SetCol(WhiteColor);
+	m_pPauseButton[2]->CreateTexture("data/TEXTURE/continue.png");
 
 	return S_OK;
 }
@@ -117,15 +127,17 @@ void CPause::Update(void)
 	/* ポーズの切り替え */
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_UP) == true)			// プレス・Dが押されたとき
 	{
-		m_nMenuID = (m_nMenuID + 1) % 2;
-	}
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_DOWN) == true)			// プレス・Dが押されたとき
-	{
 		m_nMenuID -= 1;
 		if (m_nMenuID < 0)
 		{
-			m_nMenuID = 1;
+			m_nMenuID = 2;
 		}
+
+	}
+	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_DOWN) == true)			// プレス・Dが押されたとき
+	{
+		m_nMenuID = (m_nMenuID + 1) % 3;
+
 	}
 	SelectMenu(m_nMenuID);
 
@@ -175,6 +187,11 @@ void CPause::MenuOk(const int nMenuID)
 		break;
 
 	case MENU_TITLE:
+		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+		Uninit();
+		break;
+
+	case MENU_QUIT:
 		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 		Uninit();
 		break;

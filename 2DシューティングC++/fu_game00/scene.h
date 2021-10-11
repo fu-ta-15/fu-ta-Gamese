@@ -39,6 +39,7 @@ public:
 		PAUSE_BG = 0,
 		PAUSE_BUTTON1,
 		PAUSE_BUTTON2,
+		PAUSE_BUTTON3,
 		PAUSE_MAX
 	};
 
@@ -63,6 +64,7 @@ public:
 	void SetSize(D3DXVECTOR3 size);			// サイズの設定
 	void SetCol(D3DXCOLOR col);				// 色の設定
 	void SetBool(bool bflag);				// 何かのフラグ
+	static void SetPause(bool bPause) { m_bPause = bPause; }
 
 	/* Get関数 */
 	static int GetObjeNum(ObjType type);						// 特定のオブジェクト数

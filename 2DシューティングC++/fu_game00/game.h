@@ -51,17 +51,12 @@ public:
 
 private:
 
-	void WaveInit(void);
-	void WaveUpdate(void);
-
 	static CPlayer		*m_pPlayer;
 	static CScore		*m_pScore;
 	static CTime		*m_pTime;
 	static CBoss		*m_pBoss;
 	static CScene2D		*m_pBg;
 	static CMesh		*m_pField;
-	float				m_fWaveTime = 0.0f;
-	CMove::WaveInfo		m_WaveInfo;
 };
 
 

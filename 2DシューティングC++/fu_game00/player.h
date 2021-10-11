@@ -17,6 +17,8 @@
 // マクロ変数
 //-----------------------------------------------------------------------------
 #define PLAYER_LIFE					(100)
+#define PLAYER_LIFE_STOCK			(PLAYER_LIFE/10)
+#define PLAYER_BULLET_STOCK			(10)
 #define PLAYER_MOVE					(5.0f)
 #define PLAYER_JUNP					(20.0f)
 #define PLAYER_RETURN_FLOOR			(SCREEN_HEIGHT - m_size.y)
@@ -63,15 +65,13 @@ public:
 	// Set関数
 	void SetCollEnemy(bool bcoll)	{ m_bCollEnemy = bcoll; }
 	void SetState(StateType state)	{ m_state = state; }
-	void SetLife(int nLife)			{ m_nLife = nLife; }
+	void SetLife(float fLife)			{ m_fLife = fLife; }
 
 	// Get関数
 	D3DXVECTOR3 GetSize(void)		{ return m_size; }
 	StateType GetState(void)		{ return m_state; }
-	bool GetStay(void)				{ return m_bStay; }
 	bool GetDamage(void)			{ return m_bDamage; }
-	bool GetAlive(void)				{ return m_bAlive; }
-	int GetLife(void)				{ return m_nLife; }
+	float GetLife(void)				{ return m_fLife; }
 
 private:
 	void PosControl(void);
@@ -82,19 +82,19 @@ private:
 	void PlayerAnime(void);
 	void PlayerState(void);
 	void DamagePlayer(void);
+	void PlayerLife(void);
+	void PlayerBullet(void);
 
 	int					m_nAnimeCnt;		// アニメーションカウンター
 	int					m_nDamageCnt;		// ダメージカウント
-	int					m_nLife;			// ライフ
-	float				m_fStayTime;		// とどまってる時間
+	int					m_nBullet;
+	float				m_fLife;			// ライフ
 
 	bool				m_bUse;				// 生存確認
 	bool				m_bJunp;			// ジャンプ
-	bool				m_bStay;			// 止まっているかどうか
 	bool				m_bCollEnemy;		// 敵との当たり判定
 	bool				m_bFall;			// 落下判定
 	bool				m_bDamage;			// ダメージの判定
-	bool				m_bAlive;			// 生きているかどうか
 
 	D3DXVECTOR3			m_pos;				// 位置
 	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置
@@ -107,8 +107,8 @@ private:
 	StateType			m_state;
 
 	CEffect				*m_pShield;
-	CScene2D			*m_pLife[PLAYER_LIFE/10];
-	CScene2D			*m_pWeapon[10];
+	CScene2D			*m_pLife[PLAYER_LIFE_STOCK];
+	CScene2D			*m_pWeapon[PLAYER_BULLET_STOCK];
 };
 
 

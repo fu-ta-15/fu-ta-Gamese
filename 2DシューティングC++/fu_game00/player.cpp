@@ -22,6 +22,12 @@
 //=============================================================================
 CPlayer::CPlayer() : CScene2D(OBJ_PLAYER)
 {
+	this->m_col = WhiteColor;		// 色情報
+	this->m_fLife = PLAYER_LIFE;	// 体力
+	this->m_state = STATE_NONE;		// 状態
+	this->m_bUse = true;			// 使用中
+	this->m_nBullet = PLAYER_BULLET_STOCK;
+	this->m_pShield = NULL;			// シールド
 }
 
 //=============================================================================
@@ -44,13 +50,6 @@ CPlayer * CPlayer::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 		pPlayer = new CPlayer;			// インスタンス生成
 		pPlayer->m_pos = pos;			// 位置の設定
 		pPlayer->m_size = size;			// サイズの設定
-		pPlayer->m_fStayTime = 0.0f;	// とどまっている時間
-		pPlayer->m_col = WhiteColor;	// 白カラー
-		pPlayer->m_nLife = PLAYER_LIFE;	// 体力
-		pPlayer->m_state = STATE_NONE;	// 状態
-		pPlayer->m_bAlive = true;		// 使用中
-		pPlayer->m_bUse = true;			// 使用中
-		pPlayer->m_pShield = NULL;		// シールド
 		pPlayer->Init();				// 初期化処理
 	}
 	// 情報を返す
@@ -72,21 +71,23 @@ HRESULT CPlayer::Init(void)
 	CScene2D::SetTex(m_tex, m_number);
 
 	// ライフの設定
-	for (int nCntLife = 0; nCntLife < 10; nCntLife++)
+	for (int nCntLife = 0; nCntLife < PLAYER_LIFE_STOCK; nCntLife++)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(50.0f, 100.0f + (10 * nCntLife), 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(50.0f, 190.0f - (10 * nCntLife), 0.0f);
 		D3DXVECTOR3 size = D3DXVECTOR3(10.0f,5.0f, 0.0f);
 		m_pLife[nCntLife] = CScene2D::Create(pos, size);
 		m_pLife[nCntLife]->CreateTexture("data/TEXTURE/lifeBlock.png");
 	}
 
-	for (int nCntWeapon = 0; nCntWeapon < 10; nCntWeapon++)
+	// ウェポンの設定
+	for (int nCntWeapon = 0; nCntWeapon < PLAYER_BULLET_STOCK; nCntWeapon++)
 	{
 		D3DXVECTOR3 pos = D3DXVECTOR3(80.0f, 100.0f + (10 * nCntWeapon), 0.0f);
 		D3DXVECTOR3 size = D3DXVECTOR3(10.0f, 5.0f, 0.0f);
 		m_pWeapon[nCntWeapon] = CScene2D::Create(pos, size);
 		m_pWeapon[nCntWeapon]->CreateTexture("data/TEXTURE/BulletBlock.png");
 	}
+
 	// シールドの設定
 	m_pShield = CEffect::Create(m_pos, m_size * 2);
 	m_pShield->CreateTexture("data/TEXTURE/Shockwave.png");
@@ -115,6 +116,7 @@ void CPlayer::Update(void)
 		PlayerAction();	// アクション
 	}
 
+	PlayerLife();
 	// 移動量の加算
 	m_move.y += GRAVITY;
 
@@ -178,9 +180,10 @@ void CPlayer::PlayerAction(void)
 	PlayerMove();
 
 	// 弾の発射
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true)	// トリガー・Kが押されたとき
+	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true && m_nBullet > 0)	// トリガー・Kが押されたとき
 	{
 		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT);	// バレットの生成
+		PlayerBullet();
 	}
 }
 
@@ -230,20 +233,6 @@ void CPlayer::PlayerMoveControl(void)
 {
 	// 移動・回転量の減衰
 	m_move = CMove::MoveControl(m_move, MOVE_DECELERATION);
-
-	if (m_move.x == 0.0f && m_bJunp != true)
-	{// 移動していなかったら
-		m_fStayTime++;	// カウントUP
-	}
-	if (m_move.x != 0.0f || m_bJunp != false)
-	{// 移動していたら
-		m_bStay = false;
-		m_fStayTime = 0.0f;
-	}
-	if (m_fStayTime >= 120.0f)
-	{// 時間が来たら
-		m_bStay = true;
-	}
 }
 
 //=============================================================================
@@ -369,7 +358,38 @@ void CPlayer::DamagePlayer(void)
 
 	if ((m_nDamageCnt % 15) == 0)
 	{// カウントが一定まで来たら
+		m_fLife -= (m_fLife * 0.056f + 0.45f);
+		printf("ライフ  %.3f\n",m_fLife);
 		m_state = STATE_NONE;	 // 状態を戻す
 		m_nDamageCnt = 0.0f;	 // カウントを初期化する
+	}
+}
+
+void CPlayer::PlayerLife(void)
+{
+	for (int nCntLife = 0; nCntLife < PLAYER_LIFE_STOCK; nCntLife++)
+	{
+		if (m_fLife < nCntLife * 10)
+		{
+			if (m_pLife[nCntLife] != NULL)
+			{
+				m_pLife[nCntLife]->Release();
+				m_pLife[nCntLife] = NULL;
+				break;
+			}
+		}
+	}
+}
+
+void CPlayer::PlayerBullet(void)
+{
+	for (int nCntWeapon = 0; nCntWeapon < PLAYER_BULLET_STOCK; nCntWeapon++)
+	{
+		if (m_pWeapon[nCntWeapon]->GetUse() != false)
+		{
+			m_nBullet -= 1;
+			m_pWeapon[nCntWeapon]->SetUse(false);
+			break;
+		}
 	}
 }

@@ -30,12 +30,7 @@
 #define FIELD_VERTICAL	(40)
 #define FIELD_SIDE		(0)
 
-#define WAVE_POS		(m_WaveInfo.fCenterpos)
-#define WAVE_CYCLE		(m_WaveInfo.fCycle)
-#define WAVE_HEIGHT		(m_WaveInfo.fHeight)
-#define WAVE_TIME		((m_fCntTime + nVtx))
-
-#define OPE_POS			(D3DXVECTOR3((10.0f+(285.0f*nCnt)), 100.0f, 0.0f))
+#define OPE_POS			(D3DXVECTOR3((100.0f+(150.0f*nCnt)), 100.0f, 0.0f))
 #define OPE_SIZE		(D3DXVECTOR3(70.0f, 70.0f, 0.0f))
 #define OPE_VERTICAL	(30)
 #define OPE_SIDE		(0)
