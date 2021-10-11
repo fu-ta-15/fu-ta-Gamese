@@ -79,7 +79,13 @@ HRESULT CPlayer::Init(void)
 		m_pLife[nCntLife] = CScene2D::Create(pos, size);
 	}
 
-	// バリアの設定
+	for (int nCntWeapon = 0; nCntWeapon < 10; nCntWeapon++)
+	{
+		D3DXVECTOR3 pos = D3DXVECTOR3(80.0f, 100.0f + (15 * nCntWeapon), 0.0f);
+		D3DXVECTOR3 size = D3DXVECTOR3(10.0f, 5.0f, 0.0f);
+		m_pWeapon[nCntWeapon] = CScene2D::Create(pos, size);
+	}
+	// シールドの設定
 	m_pShield = CEffect::Create(m_pos, m_size * 2);
 	m_pShield->CreateTexture("data/TEXTURE/Shockwave.png");
 	return S_OK;
@@ -103,7 +109,7 @@ void CPlayer::Update(void)
 	CKey *pKey = CManager::GetKey();
 
 	if (m_state == STATE_NONE)
-	{
+	{// 何もない状態の時
 		PlayerAction();	// アクション
 	}
 

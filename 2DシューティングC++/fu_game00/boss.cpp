@@ -78,6 +78,13 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 //=============================================================================
 HRESULT CBoss::Init(void)
 {
+	for (int nCntLife = 0; nCntLife < (BOSS_LIFE/10); nCntLife++)
+	{
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH-200.0f + (15 * nCntLife), 100.0f, 0.0f);
+		D3DXVECTOR3 size = D3DXVECTOR3(10.0f, 5.0f, 0.0f);
+		m_pLife[nCntLife] = CScene2D::Create(pos, size);
+	}
+
 	CEnemy::Init();	// ‰Šú‰»
 
 	return S_OK;

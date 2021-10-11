@@ -62,6 +62,8 @@ private:
 	BOSS_STATE			m_State;
 	CEffect				*m_pDamage;
 	CEffect				*m_pShield;
+	CScene2D			*m_pLife[BOSS_LIFE / 10];
+
 	bool				m_bShield;
 	bool				m_bDamage;
 

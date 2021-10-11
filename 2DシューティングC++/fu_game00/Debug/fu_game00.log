@@ -1,4 +1,3 @@
-﻿  player.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\player.cpp(363): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+﻿  boss.cpp
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.pdb (Full PDB)

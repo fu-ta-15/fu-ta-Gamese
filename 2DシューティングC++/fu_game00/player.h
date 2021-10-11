@@ -108,6 +108,7 @@ private:
 
 	CEffect				*m_pShield;
 	CScene2D			*m_pLife[PLAYER_LIFE/10];
+	CScene2D			*m_pWeapon[10];
 };
 
 
