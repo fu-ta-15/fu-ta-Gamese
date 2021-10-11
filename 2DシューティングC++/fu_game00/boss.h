@@ -13,6 +13,12 @@
 #include "enemy.h"
 #include "effect.h"
 
+
+//-----------------------------------------------------------------------------
+// É}ÉNÉçïœêî
+//-----------------------------------------------------------------------------
+#define BOSS_LIFE_STOCK		(BOSS_LIFE / 10)
+
 class CBoss : public CEnemy
 {
 public:
@@ -54,6 +60,7 @@ public:
 
 	BOSS_STATE GetState(void)			{ return m_State; }
 	bool GetShield(void)				{ return m_bShield; }
+	float GetLife(void)					{ return m_fLife; }
 	static void SetAlive(bool bAlive)	{ m_bBoss_Alive = bAlive; }
 	static bool GetAlive(void)			{ return m_bBoss_Alive; }
 
@@ -63,7 +70,7 @@ private:
 	BOSS_STATE			m_State;
 	CEffect				*m_pDamage;
 	CEffect				*m_pShield;
-	CScene2D			*m_pLife[BOSS_LIFE / 10];
+	CScene2D			*m_pLife[BOSS_LIFE_STOCK];
 
 	bool				m_bShield;
 	bool				m_bDamage;
@@ -74,7 +81,8 @@ private:
 	float				m_fA_Shield = 0.0f;
 	int					m_nDamageCnt = 0;
 	int					m_nCnt = 0;
-	float					m_fMoveTime = 0;
+	float				m_fMoveTime = 0;
+	float				m_fLife;
 };
 
 #endif // !_BOSS_H_

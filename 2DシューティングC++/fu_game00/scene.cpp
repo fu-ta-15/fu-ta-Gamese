@@ -18,7 +18,6 @@ CScene *CScene::m_apScene[OBJ_MAX][MAX_OBJECT] = {};
 CScene *CScene::m_pPauseScene = NULL;
 CScene *CScene::m_pPauseObj[PAUSE_MAX] = {};
 int CScene::m_nNumAll[OBJ_MAX] = {};
-bool CScene::m_bPause = false;
 
 CScene *CScene::m_pTop[OBJ_MAX] = {};
 CScene *CScene::m_pCur[OBJ_MAX] = {};
@@ -72,7 +71,7 @@ CScene::CScene(PauseType type)
 //=============================================================================
 CScene::CScene(bool bpause)
 {
-	if (m_pPauseScene == NULL)
+	if (bpause == true && m_pPauseScene == NULL)
 	{// ポーズを行う合図
 		m_pPauseScene = this;
 	}
@@ -140,7 +139,7 @@ void CScene::ReleaseAll(void)
 //=============================================================================
 void CScene::UpdateAll(void)
 {
-	if (m_bPause != true)
+	if (m_pPauseScene == NULL)
 	{
 		for (int nCntType = 0; nCntType < OBJ_MAX; nCntType++)
 		{
@@ -181,7 +180,7 @@ void CScene::UpdateAll(void)
 			}
 		}
 	}
-	if (m_bPause == true)
+	if (m_pPauseScene != NULL)
 	{
 		m_pPauseScene->Update();
 		for (int nCntPause = 0; nCntPause < PAUSE_MAX; nCntPause++)
@@ -217,7 +216,7 @@ void CScene::DrawAll(void)
 			} while (pScene != NULL);
 		}
 	}
-	if (m_bPause == true)
+	if (m_pPauseScene != NULL)
 	{
 		for (int nCntPause = 0; nCntPause < PAUSE_MAX; nCntPause++)
 		{

@@ -64,7 +64,7 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 		pBoss = new CBoss;
 		pBoss->SetPos(pos);				// 位置
 		pBoss->SetSize(size);			// サイズ
-		pBoss->SetLife(nLife);			// ライフ
+		pBoss->m_fLife = nLife;			// ライフ
 		pBoss->SetCol(WhiteColor);		// 色
 		pBoss->SetType(ENEMY_TYPE2);	// タイプ
 		pBoss->Init();					// 初期化
@@ -79,7 +79,7 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 HRESULT CBoss::Init(void)
 {
 	// ライフ設定
-	for (int nCntLife = 0; nCntLife < (BOSS_LIFE/10); nCntLife++)
+	for (int nCntLife = 0; nCntLife < BOSS_LIFE_STOCK; nCntLife++)
 	{
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH-100.0f, 100.0f + (10 * nCntLife), 0.0f);
 		D3DXVECTOR3 size = D3DXVECTOR3(10.0f, 5.0f, 0.0f);
@@ -122,6 +122,12 @@ void CBoss::Update(void)
 		break;
 	}
 
+	if (m_fLife <= 0)
+	{
+		m_bBoss_Alive = false;
+		Release();
+	}
+
 	// ボスの更新
 	UpdateBoss();		// 普通の更新
 	DamageBoss();		// ダメージ状態更新
@@ -150,6 +156,19 @@ void CBoss::UpdateBoss(void)
 	srand((unsigned)time(NULL));	// 現在時刻の情報で初期化
 
 	m_pos = CScene2D::GetPos();		// 位置の取得
+
+	for (int nCntLife = 0; nCntLife < BOSS_LIFE_STOCK; nCntLife++)
+	{
+		if (m_fLife < nCntLife * 10)
+		{
+			if (m_pLife[nCntLife] != NULL)
+			{
+				m_pLife[nCntLife]->Release();
+				m_pLife[nCntLife] = NULL;
+				break;
+			}
+		}
+	}
 
 	int nCntRand = 0;				// 乱数保管用
 
@@ -180,6 +199,8 @@ void CBoss::DamageBoss(void)
 			m_pDamage->SetColor(DAMAGE_COLOR);			   // 色の設定
 			m_StateCol = m_pDamage->GetColor();			   // 色の取得
 			m_fA_Damage = 0.065f;						   // 透明度加算用
+			m_fLife -= (m_fLife*0.17f + 0.425f);
+			printf("体力：%.3f", m_fLife);
 		}
 		if (m_pDamage != NULL)
 		{// NULLじゃなかったら

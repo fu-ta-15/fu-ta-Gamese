@@ -39,7 +39,7 @@ CScene2D::CScene2D(ObjType type) : CScene(type)
 //=============================================================================
 CScene2D::CScene2D(PauseType type) : CScene(type)
 {
-	
+
 }
 
 //=============================================================================
@@ -56,6 +56,7 @@ CScene2D * CScene2D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 {
 	CScene2D *pScene2D = new CScene2D(OBJ_NONE);
 
+	pScene2D->m_bUse = true;
 	pScene2D->Init(pos, size);
 
 	return pScene2D;

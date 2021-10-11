@@ -71,6 +71,7 @@ public:
 	D3DXVECTOR3 GetSize(void)		{ return m_size; }
 	StateType GetState(void)		{ return m_state; }
 	bool GetDamage(void)			{ return m_bDamage; }
+	bool GetAlive(void)				{ return m_bAlive; }
 	float GetLife(void)				{ return m_fLife; }
 
 private:
@@ -95,6 +96,7 @@ private:
 	bool				m_bCollEnemy;		// 敵との当たり判定
 	bool				m_bFall;			// 落下判定
 	bool				m_bDamage;			// ダメージの判定
+	bool				m_bAlive;
 
 	D3DXVECTOR3			m_pos;				// 位置
 	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置

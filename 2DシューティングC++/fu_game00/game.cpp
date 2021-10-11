@@ -144,7 +144,7 @@ void CGame::Update(void)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
-	if (/*m_pTime->GetTime() == 0 ||*/ CBoss::GetAlive() == false)
+	if (m_pPlayer->GetAlive() == false || m_pBoss->GetAlive() == false)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}

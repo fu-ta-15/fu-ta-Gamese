@@ -22,12 +22,13 @@
 //=============================================================================
 CPlayer::CPlayer() : CScene2D(OBJ_PLAYER)
 {
-	this->m_col = WhiteColor;		// 色情報
-	this->m_fLife = PLAYER_LIFE;	// 体力
-	this->m_state = STATE_NONE;		// 状態
-	this->m_bUse = true;			// 使用中
-	this->m_nBullet = PLAYER_BULLET_STOCK;
-	this->m_pShield = NULL;			// シールド
+	this->m_col = WhiteColor;				// 色情報
+	this->m_fLife = PLAYER_LIFE;			// 体力
+	this->m_state = STATE_NONE;				// 状態
+	this->m_bUse = true;					// 使用中
+	this->m_nBullet = PLAYER_BULLET_STOCK;	// 弾のストック
+	this->m_pShield = NULL;					// シールド
+	this->m_bAlive = true;					// 生存中
 }
 
 //=============================================================================
@@ -115,6 +116,11 @@ void CPlayer::Update(void)
 	{// 何もない状態の時
 		PlayerAction();	// アクション
 	}
+	if (m_fLife < 0)
+	{
+		m_bAlive = false;
+		m_bUse = false;
+	}
 
 	PlayerLife();
 	// 移動量の加算
@@ -180,7 +186,7 @@ void CPlayer::PlayerAction(void)
 	PlayerMove();
 
 	// 弾の発射
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true && m_nBullet > 0)	// トリガー・Kが押されたとき
+	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true /*&& m_nBullet > 0*/)	// トリガー・Kが押されたとき
 	{
 		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT);	// バレットの生成
 		PlayerBullet();
@@ -196,20 +202,20 @@ void CPlayer::PlayerMove(void)
 	CKey *pKey = CManager::GetKey();
 
 	/* プレイヤーの移動 */
-	if (pKey->GetState(CKey::STATE_PRESSE, DIK_D) == true)	// プレス・Dが押されたとき
-	{
+	if (pKey->GetState(CKey::STATE_PRESSE, DIK_D) == true)	
+	{// プレス・Dが押されたとき
 		m_nAnimeCnt++;
 		m_move.x += PLAYER_MOVE;	// 移動量の更新
 	}
-	if (pKey->GetState(CKey::STATE_PRESSE, DIK_A) == true)	// プレス・Aが押されたとき
-	{
+	if (pKey->GetState(CKey::STATE_PRESSE, DIK_A) == true)	
+	{// プレス・Aが押されたとき
 		m_nAnimeCnt++;
 		m_move.x -= PLAYER_MOVE;	// 移動量の更新
 	}
 
 	/* プレイヤーのジャンプ */
-	if (pKey->GetState(CKey::STATE_PRESSE, DIK_W) == true)	// トリガー・SPACEが押されたとき
-	{
+	if (pKey->GetState(CKey::STATE_PRESSE, DIK_W) == true)	
+	{// トリガー・SPACEが押されたとき
 		if (m_bJunp == false)
 		{// ジャンプ可能ならば
 			m_move.y -= PLAYER_JUNP;// 移動量の更新
@@ -358,8 +364,7 @@ void CPlayer::DamagePlayer(void)
 
 	if ((m_nDamageCnt % 15) == 0)
 	{// カウントが一定まで来たら
-		m_fLife -= (m_fLife * 0.056f + 0.45f);
-		printf("ライフ  %.3f\n",m_fLife);
+		m_fLife -= (m_fLife * 0.056f + 1.2f);
 		m_state = STATE_NONE;	 // 状態を戻す
 		m_nDamageCnt = 0.0f;	 // カウントを初期化する
 	}

@@ -78,26 +78,27 @@ HRESULT CPause::Init(void)
 	m_pScene2D = new CScene2D(PAUSE_BG); // ƒ|ƒŠƒSƒ“‚Ìì¬
 	m_pScene2D->Init(m_pos, m_size);	 // ‰Šú‰»ˆ—
 	m_pScene2D->SetCol(m_col);			 // F‚Ìİ’è
+	m_pScene2D->SetUse(true);
 	
 	m_pPauseButton[0] = new CScene2D(PAUSE_BUTTON1);
 	m_pPauseButton[0]->Init(m_ButtonPos, BUTTON_SIZE);
 	m_pPauseButton[0]->SetCol(MENU_SELECTCOL);
 	m_pPauseButton[0]->CreateTexture("data/TEXTURE/retry.png");
-
+	m_pPauseButton[0]->SetUse(true);
 	m_ButtonPos.y += 150;
 
 	m_pPauseButton[1] = new CScene2D(PAUSE_BUTTON2);
 	m_pPauseButton[1]->Init(m_ButtonPos, BUTTON_SIZE);
 	m_pPauseButton[1]->SetCol(WhiteColor);
 	m_pPauseButton[1]->CreateTexture("data/TEXTURE/quit.png");
-
+	m_pPauseButton[1]->SetUse(true);
 	m_ButtonPos.y += 150;
 
 	m_pPauseButton[2] = new CScene2D(PAUSE_BUTTON3);
 	m_pPauseButton[2]->Init(m_ButtonPos, BUTTON_SIZE);
 	m_pPauseButton[2]->SetCol(WhiteColor);
 	m_pPauseButton[2]->CreateTexture("data/TEXTURE/continue.png");
-
+	m_pPauseButton[2]->SetUse(true);
 	return S_OK;
 }
 

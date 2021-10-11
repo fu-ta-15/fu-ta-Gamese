@@ -122,18 +122,11 @@ void CEnemy::CollisionEnemy(void)
 
 			if (pBoss->GetState() == BOSS_NONE && pBoss->GetShield() == false)
 			{
-				pBoss->DamegeLife(1);
 				pBoss->SetState(BOSS_DAMAGE);
 			}
 			else if (pBoss->GetState() == BOSS_NOT_DAMAGE)
 			{
 				pBoss->SetShield(true);
-			}
-
-			if (pBoss->GetLife() == 0)
-			{
-				pBoss->SetAlive(false);
-				pBoss->Release();
 			}
 			break;
 		}
