@@ -74,16 +74,18 @@ HRESULT CPlayer::Init(void)
 	// ライフの設定
 	for (int nCntLife = 0; nCntLife < 10; nCntLife++)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(50.0f, 100.0f + (15 * nCntLife), 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(50.0f, 100.0f + (10 * nCntLife), 0.0f);
 		D3DXVECTOR3 size = D3DXVECTOR3(10.0f,5.0f, 0.0f);
 		m_pLife[nCntLife] = CScene2D::Create(pos, size);
+		m_pLife[nCntLife]->CreateTexture("data/TEXTURE/lifeBlock.png");
 	}
 
 	for (int nCntWeapon = 0; nCntWeapon < 10; nCntWeapon++)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(80.0f, 100.0f + (15 * nCntWeapon), 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(80.0f, 100.0f + (10 * nCntWeapon), 0.0f);
 		D3DXVECTOR3 size = D3DXVECTOR3(10.0f, 5.0f, 0.0f);
 		m_pWeapon[nCntWeapon] = CScene2D::Create(pos, size);
+		m_pWeapon[nCntWeapon]->CreateTexture("data/TEXTURE/BulletBlock.png");
 	}
 	// シールドの設定
 	m_pShield = CEffect::Create(m_pos, m_size * 2);

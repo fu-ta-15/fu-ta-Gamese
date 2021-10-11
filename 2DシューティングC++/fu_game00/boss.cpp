@@ -78,11 +78,13 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 //=============================================================================
 HRESULT CBoss::Init(void)
 {
+	// ライフ設定
 	for (int nCntLife = 0; nCntLife < (BOSS_LIFE/10); nCntLife++)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH-200.0f + (15 * nCntLife), 100.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH-100.0f, 100.0f + (10 * nCntLife), 0.0f);
 		D3DXVECTOR3 size = D3DXVECTOR3(10.0f, 5.0f, 0.0f);
 		m_pLife[nCntLife] = CScene2D::Create(pos, size);
+		m_pLife[nCntLife]->CreateTexture("data/TEXTURE/BossLife.png");
 	}
 
 	CEnemy::Init();	// 初期化
@@ -105,6 +107,8 @@ void CBoss::Update(void)
 {
 
 	CEnemy::Update();
+
+	// 現在の状態
 	switch (m_State)
 	{// 現在の状態
 	case NONE:
@@ -123,13 +127,10 @@ void CBoss::Update(void)
 	DamageBoss();		// ダメージ状態更新
 	NotDamageBoss();	// ダメージNO！状態更新
 	StateUpdate();		// 状態の公人
-
-	m_fMoveTime += 0.54f;
-	m_pos.y = CMove::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
+	MoveBoss();			// 移動処理
 
 	// 位置の更新
 	CScene2D::SetPos(m_pos);
-
 }
 
 //=============================================================================
@@ -207,6 +208,15 @@ void CBoss::NotDamageBoss(void)
 			m_pShield->SetPos(m_pos);	// 位置を更新
 		}
 	}
+}
+
+//=============================================================================
+// 移動処理
+//=============================================================================
+void CBoss::MoveBoss(void)
+{
+	m_fMoveTime += 0.54f;
+	m_pos.y = CMove::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
 }
 
 //=============================================================================

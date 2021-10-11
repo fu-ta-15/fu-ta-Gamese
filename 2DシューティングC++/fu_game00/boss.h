@@ -44,6 +44,7 @@ public:
 	void UpdateBoss(void);
 	void DamageBoss(void);
 	void NotDamageBoss(void);
+	void MoveBoss(void);
 
 	void StateUpdate(void);
 
