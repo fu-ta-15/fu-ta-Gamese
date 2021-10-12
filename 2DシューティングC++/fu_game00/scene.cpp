@@ -14,25 +14,15 @@
 //-----------------------------------------------------------------------------
 // 静的メンバ変数
 //-----------------------------------------------------------------------------
-CScene *CScene::m_apScene[OBJ_MAX][MAX_OBJECT] = {};
 CScene *CScene::m_pPauseScene = NULL;
 CScene *CScene::m_pPauseObj[PAUSE_MAX] = {};
-int CScene::m_nNumAll[OBJ_MAX] = {};
-
 CScene *CScene::m_pTop[OBJ_MAX] = {};
 CScene *CScene::m_pCur[OBJ_MAX] = {};
 
 //=============================================================================
-// コンストラクタ
-//=============================================================================
-CScene::CScene()
-{
-}
-
-//=============================================================================
 // オブジェクトのコンストラクタ
 //=============================================================================
-CScene::CScene(ObjType type)
+CScene::CScene(Priority type)
 {
 	m_type = type;
 	m_bDeath = false;
@@ -51,7 +41,6 @@ CScene::CScene(ObjType type)
 
 	// 自身を最後尾
 	m_pCur[m_type] = this;
-	m_nNumAll[m_type]++;
 
 }
 
@@ -206,6 +195,7 @@ void CScene::DrawAll(void)
 			do
 			{
 				CScene *pSceneNext = pScene->m_pNext;
+
 				if (pScene->m_bDeath != true)
 				{
 					// 更新処理
@@ -216,6 +206,7 @@ void CScene::DrawAll(void)
 			} while (pScene != NULL);
 		}
 	}
+
 	if (m_pPauseScene != NULL)
 	{
 		for (int nCntPause = 0; nCntPause < PAUSE_MAX; nCntPause++)
@@ -226,149 +217,6 @@ void CScene::DrawAll(void)
 			}
 		}
 	}
-}
-
-//=============================================================================
-// 位置の設定（特定のオブジェクトの位置を知るため）
-//=============================================================================
-void CScene::SetPos(D3DXVECTOR3 pos)
-{
-	m_pos = pos;
-}
-
-//=============================================================================
-// サイズの設定（特定のオブジェクトのサイズを知るため）
-//=============================================================================
-void CScene::SetSize(D3DXVECTOR3 size)
-{
-	m_size = size;
-}
-
-//=============================================================================
-// 色の設定（特定のオブジェクトのサイズを知るため）
-//=============================================================================
-void CScene::SetCol(D3DXCOLOR col)
-{
-	m_col = col;
-}
-
-//=============================================================================
-// flagの設定
-//=============================================================================
-void CScene::SetBool(bool bflag)
-{
-	m_bBool = bflag;
-}
-
-//=============================================================================
-// 特定のオブジェクトの数を取得
-//=============================================================================
-int CScene::GetObjeNum(ObjType type)
-{
-	//int Num = 0;
-	//for (int nCntObj = 0; nCntObj < MAX_OBJECT; nCntObj++)
-	//{
-	//	if (m_apScene[type][nCntObj] != NULL)
-	//	{
-	//		Num++;
-	//	}
-	//	else
-	//	{
-	//	}
-	//}
-	return m_nNumAll[type];
-}
-
-//=============================================================================
-// 特定のオブジェクトの位置を取得
-//=============================================================================
-D3DXVECTOR3 CScene::GetPos(ObjType type, int nID)
-{
-	D3DXVECTOR3 pos;
-	if (m_apScene[type][nID] == NULL)
-	{
-		pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	}
-	else if(m_apScene[type][nID] != NULL)
-	{
-		pos = m_apScene[type][nID]->m_pos;
-	}
-	
-	return pos;
-}
-
-//=============================================================================
-// 特定のオブジェクトサイズを取得
-//=============================================================================
-D3DXVECTOR3 CScene::GetSize(ObjType type, int nID)
-{
-	D3DXVECTOR3 size;
-	if (m_apScene[type][nID] == NULL)
-	{
-		size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	}
-	else if(m_apScene[type][nID] != NULL)
-	{
-		size = m_apScene[type][nID]->m_size;
-	}
-	return size;
-}
-
-//=============================================================================
-// 特定のオブジェクト色を取得
-//=============================================================================
-D3DXCOLOR CScene::GetCol(ObjType type, int nID)
-{
-	D3DXCOLOR col;
-	if (m_apScene[type][nID] == NULL)
-	{
-		col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-	}
-	else if (m_apScene[type][nID] != NULL)
-	{
-		col = m_apScene[type][nID]->m_col;
-	}
-	return col;
-}
-
-D3DXVECTOR3 CScene::GetPos(void)
-{
-	return this->m_pos;
-}
-
-D3DXVECTOR3 CScene::GetSize(void)
-{
-	return this->m_size;
-}
-
-D3DXCOLOR CScene::GetCol(void)
-{
-	return this->m_col;
-}
-
-bool CScene::GetBool(void)
-{
-	return m_bBool;
-}
-
-CScene * CScene::GetSceneNext(void)
-{
-	CScene *pScene;
-
-	if (this->m_pNext != NULL)
-	{
-		pScene = this->m_pNext;
-	}
-	else
-	{
-		pScene = NULL;
-	}
-	return pScene;
-}
-
-CScene * CScene::GetScene(ObjType type)
-{
-	return m_pTop[type];
 }
 
 //=============================================================================
@@ -408,19 +256,6 @@ void CScene::DeathRelease(void)
 	}
 
 	delete this;
-}
-
-//=============================================================================
-// 特定のオブジェクトの個々の削除
-//=============================================================================
-void CScene::ObjRelease(ObjType type, int nID)
-{
-	//if (m_apScene[type][nID] != NULL)
-	//{
-	//	delete m_apScene[type][nID];
-	//	m_apScene[type][nID] = NULL;
-	//	m_nNumAll--;
-	//}
 }
 
 //=============================================================================

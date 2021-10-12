@@ -19,8 +19,7 @@
 class CScene2D : public CScene
 {
 public:
-	CScene2D();
-	CScene2D(ObjType type);
+	CScene2D(Priority type);
 	CScene2D(PauseType type);
 	~CScene2D();
 

@@ -40,6 +40,7 @@ public:
 	static bool OutProduct(const D3DXVECTOR3 lineStart1, const D3DXVECTOR3 lineEnd1, const D3DXVECTOR3 point);
 	static D3DXVECTOR3 WaveCollision(const D3DXVECTOR3 start, const D3DXVECTOR3 end, const D3DXVECTOR3 nowpos, COLLISION coltype);
 
+
 private:
 
 };

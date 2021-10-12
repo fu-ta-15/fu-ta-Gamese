@@ -27,18 +27,14 @@ public:
 	static D3DXVECTOR3 MoveControl(D3DXVECTOR3 move, D3DXVECTOR3 deceleration);
 	static float MoveSnake(float pos, float move, float Uplimit, float Downlimit, float Speed);
 	static D3DXVECTOR3 TargetPosMove(D3DXVECTOR3 tagpos, D3DXVECTOR3 mypos, float Decele);
+
 	static float SinWave(const float CenterPos, const float nHeight, const float nCycle, const float nTime);
 	static float CosWave(const float CenterPos, const float nHeight, const float nCycle, const float nTime);
+	static float SinMove(const float nHeight, const float nCycle, const float nTime);
+	static float CosMove(const float nHeight, const float nCycle, const float nTime);
 
 	static float HomingMove(float Angle, float fSpeed);
 	static float AnglePoint(float PointX, float PointY);
-
-	typedef struct
-	{
-		float fCenterpos;
-		float fHeight;
-		float fCycle;
-	}WaveInfo;
 
 private:
 

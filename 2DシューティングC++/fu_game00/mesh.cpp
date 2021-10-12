@@ -38,7 +38,7 @@ CMesh::CMesh() : CScene(OBJ_NONE)
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CMesh::CMesh(ObjType type) : CScene(type)
+CMesh::CMesh(Priority type) : CScene(type)
 {
 	m_pVtxBuff = NULL;
 	m_pTexture = NULL;

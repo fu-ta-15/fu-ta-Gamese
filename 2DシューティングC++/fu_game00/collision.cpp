@@ -72,24 +72,24 @@ D3DXVECTOR3 CCollision::MeshCollision(const D3DXVECTOR3 lineStart1, const D3DXVE
 //=============================================================================
 D3DXVECTOR3 CCollision::CrossProduct(const D3DXVECTOR3 v1, const D3DXVECTOR3 v2)
 {
-	D3DXVECTOR3 VecF;						// 進行ベクトル
-	float VecN;								// 壁の法線ベクトル(法線のため1固定）
+	D3DXVECTOR3 VecF;	// 進行ベクトル
+	float VecN;			// 壁の法線ベクトル(法線のため1固定）
 
-	float VecAX;							// 未知の値（内積で使う値）X
-	float VecAZ;							// 未知の値（内積で使う値）Z
+	float VecAX;		// 未知の値（内積で使う値）X
+	float VecAZ;		// 未知の値（内積で使う値）Z
 
-	float VecPX;							// 壁に平行なベクトル X
-	float VecPZ;							// 壁に平行なベクトル Z
+	float VecPX;		// 壁に平行なベクトル X
+	float VecPZ;		// 壁に平行なベクトル Z
 
-	float VecWX;	// 壁ずりベクトル						// 反射ベクトル X
-	float VecWY;	// 壁ずりベクトル						// 反射ベクトル Z
+	float VecWX;		// 反射ベクトル X
+	float VecWY;		// 反射ベクトル Z
 
 
 	// 進行ベクトルの代入
 	VecF = v1;
 
 	// 垂直ベクトル
-	VecN = -1.0f;
+	VecN = 1.0f;
 
 	// 内積で使用する未知の数値を求める
 	VecAX = -VecF.x * VecN;
@@ -181,3 +181,4 @@ D3DXVECTOR3 CCollision::WaveCollision(const D3DXVECTOR3 start, const D3DXVECTOR3
 	}
 	return tagPos;
 }
+

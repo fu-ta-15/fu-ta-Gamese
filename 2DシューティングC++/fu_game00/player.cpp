@@ -28,6 +28,7 @@ CPlayer::CPlayer() : CScene2D(OBJ_PLAYER)
 	this->m_bUse = true;					// 使用中
 	this->m_nBullet = PLAYER_BULLET_STOCK;	// 弾のストック
 	this->m_pShield = NULL;					// シールド
+	this->m_nBulletTime = 0;
 	this->m_bAlive = true;					// 生存中
 }
 
@@ -116,13 +117,10 @@ void CPlayer::Update(void)
 	{// 何もない状態の時
 		PlayerAction();	// アクション
 	}
-	if (m_fLife < 0)
-	{
-		m_bAlive = false;
-		m_bUse = false;
-	}
 
+	// ライフの管理
 	PlayerLife();
+
 	// 移動量の加算
 	m_move.y += GRAVITY;
 
@@ -182,14 +180,31 @@ void CPlayer::PlayerAction(void)
 	// キーボード情報取得
 	CKey *pKey = CManager::GetKey();
 
+	// 弾復活用のタイム
+	m_nBulletTime++;
+
+	// 弾の復活
+	if ((m_nBulletTime % 35) == 0)
+	{
+		for (int nCntWeapon = PLAYER_BULLET_STOCK; nCntWeapon > 0; nCntWeapon--)
+		{
+			if (m_pWeapon[nCntWeapon - 1]->GetUse() != true)
+			{
+				m_nBullet += 1;
+				m_pWeapon[nCntWeapon - 1]->SetUse(true);
+				break;
+			}
+		}
+	}
+
 	// 移動
 	PlayerMove();
 
 	// 弾の発射
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true /*&& m_nBullet > 0*/)	// トリガー・Kが押されたとき
-	{
+	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true && m_nBullet > 0)	
+	{// トリガー・NUM6 が押されたとき
 		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT);	// バレットの生成
-		PlayerBullet();
+		PlayerBullet();											// プレイヤーの弾消費
 	}
 }
 
@@ -225,8 +240,8 @@ void CPlayer::PlayerMove(void)
 	/* プレイヤーの落下減速 */
 	if (m_bJunp == true)
 	{// ジャンプ中かつ、重力がプラスの時
-		if (pKey->GetState(CKey::STATE_PRESSE, DIK_W) == true)	// トリガー・SPACEが押されたとき
-		{
+		if (pKey->GetState(CKey::STATE_PRESSE, DIK_W) == true)	
+		{// プレス・SPACEが押されたとき
 			m_move.y -= 0.6f;	// 重力の減速
 		}
 	}
@@ -375,14 +390,19 @@ void CPlayer::PlayerLife(void)
 	for (int nCntLife = 0; nCntLife < PLAYER_LIFE_STOCK; nCntLife++)
 	{
 		if (m_fLife < nCntLife * 10)
-		{
+		{// ライフが一定の値を超えたら
 			if (m_pLife[nCntLife] != NULL)
-			{
+			{// ライフを削除
 				m_pLife[nCntLife]->Release();
 				m_pLife[nCntLife] = NULL;
 				break;
 			}
 		}
+	}
+	if (m_fLife < 0)
+	{// ライフがゼロになったら
+		m_bAlive = false;
+		m_bUse = false;
 	}
 }
 
@@ -391,9 +411,9 @@ void CPlayer::PlayerBullet(void)
 	for (int nCntWeapon = 0; nCntWeapon < PLAYER_BULLET_STOCK; nCntWeapon++)
 	{
 		if (m_pWeapon[nCntWeapon]->GetUse() != false)
-		{
-			m_nBullet -= 1;
-			m_pWeapon[nCntWeapon]->SetUse(false);
+		{// 使用した分のポリゴンが残っていたら
+			m_nBullet -= 1;							// ストックの減らす
+			m_pWeapon[nCntWeapon]->SetUse(false);	// そのポリゴンを使用していない状態にする
 			break;
 		}
 	}

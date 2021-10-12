@@ -19,12 +19,21 @@
 //-----------------------------------------------------------------------------
 #define ENEMY_TYPE1_MOVE		(D3DXVECTOR3(-2.5f, -5.0f, 0.0f))
 #define TYPE1_COLOR				(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f))
+#define PLAYER_GET_POS			(CGame::GetPlayer()->GetPos())
+
+
+//-----------------------------------------------------------------------------
+// 静的メンバ変数
+//-----------------------------------------------------------------------------
+bool CNormalEnemy::m_bHomingTime = false;
+
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CNormalEnemy::CNormalEnemy()
+CNormalEnemy::CNormalEnemy() : CEnemy(OBJ_ENEMY)
 {
+	this->m_nMoveChangeCnt = 0;
 }
 
 //=============================================================================
@@ -99,6 +108,7 @@ void CNormalEnemy::Update(void)
 		// 黒い敵
 	case ENEMY_BLACK:
 		UpdateBlack();	// 更新
+		BlackMove();
 		break;
 		// 白い敵
 	case ENEMY_WHITE:
@@ -107,7 +117,13 @@ void CNormalEnemy::Update(void)
 	default:
 		break;
 	}
+
 	CEnemy::Update();
+
+	if (m_pos.x - m_size.x > SCREEN_WIDTH || m_pos.x + m_size.x < 0.0f)
+	{// 画面外処理
+		Release();
+	}
 }
 
 //=============================================================================
@@ -123,35 +139,80 @@ void CNormalEnemy::Draw(void)
 //=============================================================================
 void CNormalEnemy::UpdateBlack(void)
 {
+	// カウントアップ
+	m_nMoveChangeCnt++;
+
+	if ((m_nMoveChangeCnt % 1200) == 0)
+	{// 指定の値で割って余りが０の場合
+		if (m_bHomingTime == false)
+		{// ホーミングタイムではなかったら
+			m_bHomingTime = true;
+		}
+		else
+		{// ホーミングタイムだったら
+			m_bHomingTime = false;
+		}
+		m_nMoveChangeCnt = 0;	// カウント初期化
+	}
+
+	if (m_bHomingTime == true)
+	{// ホーミングタイム
+		if ((m_nMoveChangeCnt%Rand(60, 20)) == 0)
+		{// 指定の値で割って余りがゼロの場合
+			float fAngle = CMove::AnglePoint(m_pos.x - PLAYER_GET_POS.x, m_pos.y - PLAYER_GET_POS.y);
+			m_move.x = CMove::HomingMove(sinf(D3DX_PI + fAngle), 2.0f);
+			m_move.y = CMove::HomingMove(cosf(D3DX_PI - fAngle), 2.0f);
+			m_MoveType = MOVE1;
+		}
+	}
+}
+
+//=============================================================================
+// タイプBLACKの移動処理
+//=============================================================================
+void CNormalEnemy::BlackMove(void)
+{
 	float fAngle = CMove::AnglePoint(m_pos.x - CGame::GetPlayer()->GetPos().x, m_pos.y - CGame::GetPlayer()->GetPos().y);
 	CBoss *pBoss = CGame::GetBoss();
 
 	switch (m_MoveType)
 	{
-	case CNormalEnemy::MOVE_0:
+	case MOVE0:
 		m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 100.0f, 550.0f, 5.5f);
 		m_pos += m_move;	// 位置に移動量を加算
 		break;
-	case CNormalEnemy::MOVE_1:
-		m_move.x = CMove::HomingMove(sinf(D3DX_PI + fAngle), 2.0f);
-		m_move.y = CMove::HomingMove(cosf(D3DX_PI - fAngle), 2.0f);
+
+	case MOVE1:
 		m_pos += m_move;	// 位置に移動量を加算
 		break;
-	case CNormalEnemy::MOVE_2:
+
+	case MOVE2:
 		m_fSinWaveCnt += 0.035f;
 		m_pos.x = CMove::CosWave(m_pos.x, 15.0f, 3.5f, m_fSinWaveCnt);
 		m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, 80.0f, 400.0f, 5.5f);
 		m_pos += m_move;	// 位置に移動量を加算
 		break;
-	case CNormalEnemy::MOVE_3:
-		m_fCosWaveCnt += 0.35f;
+
+	case MOVE3:
+		m_fCosWaveCnt += 0.035f;
 		m_fSinWaveCnt += 0.035f;
-		m_pos.x = CMove::CosWave(pBoss->GetPos().x, 140.0f, 13.5f, m_fSinWaveCnt);
-		m_pos.y = CMove::SinWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fSinWaveCnt);
+
+		m_pos.x = CMove::SinWave(pBoss->GetPos().x, 140.0f, 14.0f, m_fSinWaveCnt);
+		m_pos.y = CMove::CosWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fCosWaveCnt);
 		break;
+
+	case MOVE4:
+		m_fCosWaveCnt += 0.035f;
+		m_fSinWaveCnt += 0.035f;
+
+		m_pos.x += CMove::SinMove(2.5f, 14.0f, m_fSinWaveCnt);
+		m_pos.y += CMove::CosMove(2.5f, 14.0f, m_fCosWaveCnt);
+		break;
+
 	default:
 		break;
 	}
+
 	CScene2D::SetPos(m_pos);	// 移動量の更新
 }
 

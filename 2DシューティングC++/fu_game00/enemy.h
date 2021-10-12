@@ -19,7 +19,7 @@
 #define MAX_ENEMY		(256)
 
 #define ENEMY_POS		(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT / 2, 0.0f))
-#define ENEMY_SIZE		(D3DXVECTOR3(15.0f, 15.0f, 0.0f))
+#define ENEMY_SIZE		(D3DXVECTOR3(17.0f, 17.0f, 0.0f))
 #define ENEMY_MOVE		(D3DXVECTOR3(-2.0f, 0.0f, 0.0f))
 #define ENEMY_LIFE		(2)
 
@@ -32,9 +32,9 @@
 #define BOSS_SIZE		(D3DXVECTOR3(BOSS_SIZE_X, BOSS_SIZE_Y, 0.0f))
 #define BOSS_LIFE		(150)
 
-#define ENEMY_TYPE0		(CEnemy::ENEMY_BLACK)
-#define ENEMY_TYPE1		(CEnemy::ENEMY_WHITE)
-#define ENEMY_TYPE2		(CEnemy::ENEMY_BOSS)
+#define ENEMY_TYPE0			(CEnemy::ENEMY_BLACK)
+#define ENEMY_TYPE1			(CEnemy::ENEMY_WHITE)
+#define ENEMY_TYPE2			(CEnemy::ENEMY_BOSS)
 
 #define ENEMY_TEXTURE0	("data/TEXTURE/Enemy0_1.png")	
 
@@ -57,7 +57,7 @@ public:
 	//-----------------------------------------------------------------------------
 	// ÉÅÉìÉoä÷êî
 	//-----------------------------------------------------------------------------
-	CEnemy();
+	CEnemy(Priority type);
 	~CEnemy();
 
 	HRESULT Init(void);
@@ -82,6 +82,9 @@ public:
 	// Getä÷êî
 	ENEMY GetEnemyType(void)			{ return m_type; }
 	int GetLife(void)					{ return m_nLife; }
+
+
+	int Rand(int nValue, int AddnValue) { return rand() % nValue + AddnValue; }
 
 protected:
 

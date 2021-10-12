@@ -1,38 +1,4 @@
-﻿  scene.cpp
-  manager.cpp
-  コードを生成中...
-cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
-  コンパイル中...
-  boss.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\boss.cpp(67): warning C4244: '=': 'const int' から 'float' への変換です。データが失われる可能性があります。
-  bullet.cpp
-  collision.cpp
-  effect.cpp
-  enemy.cpp
-  fade.cpp
-  game.cpp
-  gauge.cpp
-  main.cpp
-  mesh.cpp
-  normalenemy.cpp
-  particle.cpp
-  pause.cpp
-  player.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\player.cpp(369): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-  polygon.cpp
-  renderer.cpp
-  result.cpp
-  scene2D.cpp
-  score.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\score.cpp(109): warning C4101: 'aNumber': ローカル変数は 1 度も使われていません。
-  time.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\time.cpp(122): warning C4101: 'aNumber': ローカル変数は 1 度も使われていません。
-  コードを生成中...
-  コンパイル中...
-  title.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\title.cpp(151): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
-  tutorial.cpp
-c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\tutorial.cpp(167): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
-  コードを生成中...
+﻿  boss.cpp
+c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\boss.cpp(73): warning C4244: '=': 'const int' から 'float' への変換です。データが失われる可能性があります。
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.pdb (Full PDB)

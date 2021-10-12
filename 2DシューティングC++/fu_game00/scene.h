@@ -24,11 +24,12 @@ class CScene
 {
 public:
 	// オブジェクトタイプ
-	typedef enum ObjType	
+	typedef enum Priority	
 	{
 		OBJ_NONE = 0,	// シンプルオブジェクト
 		OBJ_BULLET,		// バレットオブジェクト
 		OBJ_PLAYER,		// プレイヤーオブジェクト
+		OBJ_BOSS,		// ボスオブジェクト
 		OBJ_ENEMY,		// 敵オブジェクト
 		OBJ_EFFECT,
 		OBJ_MAX
@@ -43,69 +44,56 @@ public:
 		PAUSE_MAX
 	};
 
-	CScene();								// コンストラクタ
-	CScene(ObjType type);					// オーバロードされたコンストラクタ
-	CScene(PauseType type);					// オーバロードされたコンストラクタ
-	CScene(bool bpause);					// オーバロードされたコンストラクタ
+	CScene(Priority type);					
+	CScene(PauseType type);					
+	CScene(bool bpause);					
 
 	// 仮想純粋関数
-	virtual ~CScene();						// デストラクタ
-	virtual HRESULT Init(void)	= 0;		// 初期化処理
-	virtual void Uninit(void)	= 0;		// 終了処理
-	virtual void Update(void)	= 0;		// 更新処理
-	virtual void Draw(void)		= 0;		// 描画処理
+	virtual ~CScene();						
+	virtual HRESULT Init(void)	= 0;		
+	virtual void Uninit(void)	= 0;		
+	virtual void Update(void)	= 0;		
+	virtual void Draw(void)		= 0;		
 
-	static void ReleaseAll(void);			// すべてのオブジェクト削除
-	static void UpdateAll(void);			// すべてのオブジェクトの更新
-	static void DrawAll(void);				// すべてのオブジェクトの更新
+	static void ReleaseAll(void);			
+	static void UpdateAll(void);			
+	static void DrawAll(void);				
+
+	void Release(void);						
+	void DeathRelease(void);				
+	static void PauseRelease(void);			
+
 
 	/* Set関数 */
-	void SetPos(D3DXVECTOR3 pos);			// 位置の設定
-	void SetSize(D3DXVECTOR3 size);			// サイズの設定
-	void SetCol(D3DXCOLOR col);				// 色の設定
-	void SetBool(bool bflag);				// 何かのフラグ
+	void SetPos(D3DXVECTOR3 pos)	{ m_pos = pos; }		// 位置の設定
+	void SetSize(D3DXVECTOR3 size)	{ m_size = size; }		// サイズの設定
+	void SetCol(D3DXCOLOR col)		{ m_col = col; }		// 色の設定
+	void SetBool(bool bflag)		{ m_bBool = bflag; }	// 何かのフラグ
 
 	/* Get関数 */
-	static int GetObjeNum(ObjType type);						// 特定のオブジェクト数
-	static D3DXVECTOR3 GetPos(ObjType type, int nID);			// 特定のオブジェクトの位置取得
-	static D3DXVECTOR3 GetSize(ObjType type, int nID);			// 特定のオブジェクトのサイズ取得
-	static D3DXCOLOR GetCol(ObjType type, int nID);
-
-	D3DXVECTOR3 GetPos(void);			// 特定のオブジェクトの位置取得
-	D3DXVECTOR3 GetSize(void);			// 特定のオブジェクトのサイズ取得
-	D3DXCOLOR GetCol(void);				// 色の取得
-	bool GetBool(void);
-	CScene *GetSceneNext(void);
-
-	static CScene *GetScene(ObjType type);
-
-	void Release(void);									// 個々のオブジェクトの削除
-	void DeathRelease(void);
-	static void ObjRelease(ObjType type, int nID);				// 特定のオブジェクトの削除
-	static void PauseRelease(void);
-
+	D3DXVECTOR3 GetPos(void)	{ return m_pos; }			// 特定のオブジェクトの位置取得
+	D3DXVECTOR3 GetSize(void)	{ return m_size; }			// 特定のオブジェクトのサイズ取得
+	D3DXCOLOR GetCol(void)		{ return m_col; }			// 色の取得
+	bool GetBool(void)			{ return m_bBool; }			// フラグの取得
+	CScene *GetSceneNext(void)	{ return this->m_pNext; }	// 次のシーンオブジェクトの取得
+	static CScene *GetScene(Priority type) { 				// シーンオブジェクトの先頭の取得
+		return m_pTop[type]; }
 
 protected:
 
 private:
-	static CScene		*m_apScene[OBJ_MAX][MAX_OBJECT];   // シーンの静的変数
-	static CScene		*m_pPauseScene;					   // シーンを止める静的変数
+	static CScene		*m_pTop[OBJ_MAX];			// 先頭のオブジェクトへのポインタ
+	static CScene		*m_pCur[OBJ_MAX];			// 現在（最後尾）のオブジェクトへのポインタ
+	static CScene		*m_pPauseScene;				// シーンを止める静的変数
 	static CScene		*m_pPauseObj[PAUSE_MAX];
-	static bool			 m_bPause;
-	ObjType				 m_type;						   // オブジェクタイプ
-	D3DXVECTOR3			 m_pos;							   // 位置
-	D3DXVECTOR3			 m_size;						   // サイズ
-	D3DXCOLOR			 m_col;							   // 色
+	CScene				*m_pPrev;					// 前のオブジェクトへのポインタ
+	CScene				*m_pNext;					// 次のオブジェクトへのポインタ
+	Priority			 m_type;					// オブジェクタイプ
+	D3DXVECTOR3			 m_pos;						// 位置
+	D3DXVECTOR3			 m_size;					// サイズ
+	D3DXCOLOR			 m_col;						// 色
 	bool				 m_bBool;
-	int					 m_nID;							   // 特定のナンバー
-
-
-	static CScene		*m_pTop[OBJ_MAX];		// 先頭のオブジェクトへのポインタ
-	static CScene		*m_pCur[OBJ_MAX];		// 現在（最後尾）のオブジェクトへのポインタ
-	static int			 m_nNumAll[OBJ_MAX];	// すべてのオブジェクト数
-	CScene				*m_pPrev;				// 前のオブジェクトへのポインタ
-	CScene				*m_pNext;				// 次のオブジェクトへのポインタ
-	bool				 m_bDeath;				// 死亡フラグ
+	bool				 m_bDeath;					// 死亡フラグ
 };
 
 

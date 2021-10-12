@@ -89,6 +89,7 @@ private:
 	int					m_nAnimeCnt;		// アニメーションカウンター
 	int					m_nDamageCnt;		// ダメージカウント
 	int					m_nBullet;
+	int					m_nBulletTime;		// バレットタイム
 	float				m_fLife;			// ライフ
 
 	bool				m_bUse;				// 生存確認

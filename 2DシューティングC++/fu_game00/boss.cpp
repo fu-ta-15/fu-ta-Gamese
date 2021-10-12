@@ -12,6 +12,8 @@
 #include "manager.h"
 #include "renderer.h"
 #include "move.h"
+#include "collision.h"
+#include "enemy.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -26,6 +28,9 @@
 #define SHILED_TEXTUER	("data/TEXTURE/AuroraRing.png")			// シールドテクスチャのリンク
 #define SHILED_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))	// 色
 #define SHILED_SIZE		(m_size*2.5f)
+#define LIFE_POS		(D3DXVECTOR3(SCREEN_WIDTH - 100.0f, 100.0f + (10 * nCntLife), 0.0f))
+#define LIFE_SIZE		(D3DXVECTOR3(10.0f, 5.0f, 0.0f))
+#define CreateEnemy		(CNormalEnemy::Create)
 
 //-----------------------------------------------------------------------------
 // 静的変数
@@ -35,14 +40,15 @@ bool CBoss::m_bBoss_Alive = true;	// 生存しているかどうか
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CBoss::CBoss()
+CBoss::CBoss() : CEnemy(OBJ_ENEMY)
 {
-	this->m_pDamage = NULL;		// ダメージエフェクト
-	this->m_pShield = NULL;		// シールドエフェクト
-	this->m_bShield = false;	// シールド出すか出さないか
-	this->m_bDamage = false;	// ダメージ受けているかいないか
-	this->m_State = STATE_NONE;	// 状態
-	m_bBoss_Alive = true;		// 生存する
+	this->m_pDamage = NULL;			// ダメージエフェクト
+	this->m_pShield = NULL;			// シールドエフェクト
+	this->m_bShield = false;		// シールド出すか出さないか
+	this->m_bDamage = false;		// ダメージ受けているかいないか
+	this->m_State = STATE_NONE;		// 状態
+	this->m_LifeState = LIFE_RATE_0;// ライフの状態
+	m_bBoss_Alive = true;			// 生存する
 }
 
 //=============================================================================
@@ -78,11 +84,13 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 //=============================================================================
 HRESULT CBoss::Init(void)
 {
+	srand((unsigned)time(NULL));	// 現在時刻の情報で初期化
+
 	// ライフ設定
 	for (int nCntLife = 0; nCntLife < BOSS_LIFE_STOCK; nCntLife++)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH-100.0f, 100.0f + (10 * nCntLife), 0.0f);
-		D3DXVECTOR3 size = D3DXVECTOR3(10.0f, 5.0f, 0.0f);
+		D3DXVECTOR3 pos = LIFE_POS;
+		D3DXVECTOR3 size = LIFE_SIZE;
 		m_pLife[nCntLife] = CScene2D::Create(pos, size);
 		m_pLife[nCntLife]->CreateTexture("data/TEXTURE/BossLife.png");
 	}
@@ -134,9 +142,11 @@ void CBoss::Update(void)
 	NotDamageBoss();	// ダメージNO！状態更新
 	StateUpdate();		// 状態の公人
 	MoveBoss();			// 移動処理
+	SummonsEnemy();
 
 	// 位置の更新
 	CScene2D::SetPos(m_pos);
+	CScene2D::SetSize(m_size);
 }
 
 //=============================================================================
@@ -153,34 +163,33 @@ void CBoss::Draw(void)
 //=============================================================================
 void CBoss::UpdateBoss(void)
 {
-	srand((unsigned)time(NULL));	// 現在時刻の情報で初期化
-
-	m_pos = CScene2D::GetPos();		// 位置の取得
-
+	// ライフブロックの更新
 	for (int nCntLife = 0; nCntLife < BOSS_LIFE_STOCK; nCntLife++)
 	{
 		if (m_fLife < nCntLife * 10)
-		{
-			if (m_pLife[nCntLife] != NULL)
+		{// ライフが区切りの値を越えたら
+			switch (nCntLife)
 			{
-				m_pLife[nCntLife]->Release();
-				m_pLife[nCntLife] = NULL;
+			case 12:
+				m_LifeState = LIFE_RATE_2;
+				break;
+			case 7:
+				m_LifeState = LIFE_RATE_5;
+				break;
+			case 2:
+				m_LifeState = LIFE_RATE_8;
+				break;
+			default:
+				break;
+			}
+
+			if (m_pLife[nCntLife] != NULL)
+			{// NULLチェック
+				m_pLife[nCntLife]->Release();  // ライフのブロック削除
+				m_pLife[nCntLife] = NULL;	   // NULL代入
 				break;
 			}
 		}
-	}
-
-	int nCntRand = 0;				// 乱数保管用
-
-	nCntRand = rand() % 60 + 10;	// 乱数生成
-	m_nCnt++;						// カウント加算
-
-	int nRandEne0 = rand() % 80 + nCntRand;
-	int nEnemy0 = rand() % 20 + 11;
-
-	if ((m_nCnt % nRandEne0) == nEnemy0)
-	{
-		CNormalEnemy::Create(m_pos, ENEMY_SIZE, ENEMY_TYPE0, CNormalEnemy::MOVE_3);
 	}
 }
 
@@ -194,13 +203,14 @@ void CBoss::DamageBoss(void)
 		if (m_pDamage == NULL)
 		{// NULLチェック
 			m_State = STATE_NOT_DAMAGE;					   // ダメージ受け付けない状態
+			m_fA_Damage = 0.065f;						   // 透明度加算用
+			m_fLife -= (m_fLife * 0.17f + 0.425f);		   // 体力の減少
+
 			m_pDamage = CEffect::Create(m_pos, m_size);	   // 生成
 			m_pDamage->CreateTexture(DAMAGE_TEXTUER);	   // テクスチャの設定
 			m_pDamage->SetColor(DAMAGE_COLOR);			   // 色の設定
 			m_StateCol = m_pDamage->GetColor();			   // 色の取得
-			m_fA_Damage = 0.065f;						   // 透明度加算用
-			m_fLife -= (m_fLife*0.17f + 0.425f);
-			printf("体力：%.3f", m_fLife);
+
 		}
 		if (m_pDamage != NULL)
 		{// NULLじゃなかったら
@@ -237,7 +247,50 @@ void CBoss::NotDamageBoss(void)
 void CBoss::MoveBoss(void)
 {
 	m_fMoveTime += 0.54f;
-	m_pos.y = CMove::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
+
+	switch (m_LifeState)
+	{
+	case CBoss::LIFE_RATE_0:
+		m_pos.y = CMove::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
+		break;
+
+	case CBoss::LIFE_RATE_2:
+
+		break;
+
+	case CBoss::LIFE_RATE_5:
+		
+		break;
+
+	case CBoss::LIFE_RATE_8:
+		
+		break;
+
+	default:
+		break;
+	}
+	CScene2D::SetPos(m_pos);
+
+}
+
+//=============================================================================
+// 敵の召喚
+//=============================================================================
+void CBoss::SummonsEnemy(void)
+{
+	m_pos = CScene2D::GetPos();		// 位置の取得
+
+	int nCntRand = 0;				// 乱数保管用
+
+	nCntRand += Rand(60, 10);		// 乱数生成
+	m_nCnt++;						// カウント加算
+
+	int nEnemy0 = Rand(19, 45);
+
+	if ((m_nCnt % nCntRand) == nEnemy0)
+	{
+		CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
+	}
 }
 
 //=============================================================================
@@ -246,40 +299,38 @@ void CBoss::MoveBoss(void)
 void CBoss::StateUpdate(void)
 {
 	if (m_pShield != NULL)
-	{
+	{// シールド展開中
 		// カラーの更新
 		m_pShield->SetColor(m_ShieldCol);
-
 		m_ShieldCol.a += m_fA_Shield;
 
 		if (m_ShieldCol.a >= 0.7f)
-		{
-			m_fA_Shield = -0.005f;
+		{// α値が一定を越えたら
+			m_fA_Shield = -0.005f;	// 減算
 		}
 		if (m_ShieldCol.a < 0.0f)
-		{
-			m_pShield->Uninit();
-			m_pShield = NULL;
-			m_bShield = false;
+		{// α値が一定を越えたら
+			m_pShield->Uninit();	// 終了処理
+			m_pShield = NULL;		// NULL代入
+			m_bShield = false;		// FALSE代入
 		}
 	}
 	if (m_pDamage != NULL)
-	{
+	{// ダメージ状態
 		// カラーの更新
 		m_pDamage->SetColor(m_StateCol);
-
 		m_StateCol.a += m_fA_Damage;
 
 		if (m_StateCol.a >= 0.7f)
-		{
-			m_fA_Damage = -0.005f;
+		{// α値が一定を越えたら
+			m_fA_Damage = -0.005f;	// 減算
 		}
 		if (m_StateCol.a <= 0.0f)
-		{
-			m_pDamage->Uninit();
-			m_pDamage = NULL;
-			m_State = STATE_NONE;
-			m_bDamage = false;
+		{// α値が一定を越えたら
+			m_pDamage->Uninit();	// 終了処理
+			m_pDamage = NULL;		// NULL代入
+			m_bDamage = false;		// FALSE代入
+			m_State = STATE_NONE;	// 状態を戻す
 		}
 	}
 }

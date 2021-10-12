@@ -19,6 +19,10 @@
 //-----------------------------------------------------------------------------
 #define BOSS_LIFE_STOCK		(BOSS_LIFE / 10)
 
+
+//-----------------------------------------------------------------------------
+// ÉNÉâÉX
+//-----------------------------------------------------------------------------
 class CBoss : public CEnemy
 {
 public:
@@ -33,6 +37,14 @@ public:
 
 	}BOSS_STATE;
 
+	typedef enum LIFE_STATE
+	{
+		LIFE_RATE_0 = 0,
+		LIFE_RATE_2,
+		LIFE_RATE_5,
+		LIFE_RATE_8,
+		LIFE_RATE_MAX
+	}LIFE_STATE;
 
 	//-----------------------------------------------------------------------------
 	// ÉÅÉìÉoä÷êî
@@ -51,6 +63,7 @@ public:
 	void DamageBoss(void);
 	void NotDamageBoss(void);
 	void MoveBoss(void);
+	void SummonsEnemy(void);
 
 	void StateUpdate(void);
 
@@ -59,24 +72,29 @@ public:
 	void SetShieldAlpha(float fAlpha)	{ m_fA_Shield = fAlpha; }
 
 	BOSS_STATE GetState(void)			{ return m_State; }
+	LIFE_STATE GetLifeState(void)		{ return m_LifeState; }
 	bool GetShield(void)				{ return m_bShield; }
 	float GetLife(void)					{ return m_fLife; }
 	static void SetAlive(bool bAlive)	{ m_bBoss_Alive = bAlive; }
 	static bool GetAlive(void)			{ return m_bBoss_Alive; }
 
 private:
-	static bool			m_bBoss_Alive;
 
-	BOSS_STATE			m_State;
+
 	CEffect				*m_pDamage;
 	CEffect				*m_pShield;
 	CScene2D			*m_pLife[BOSS_LIFE_STOCK];
 
+	static bool			m_bBoss_Alive;
+
+	BOSS_STATE			m_State;
+	LIFE_STATE			m_LifeState;
+	D3DXCOLOR			m_StateCol;
+	D3DXCOLOR			m_ShieldCol;
+
 	bool				m_bShield;
 	bool				m_bDamage;
 
-	D3DXCOLOR			m_StateCol;
-	D3DXCOLOR			m_ShieldCol;
 	float				m_fA_Damage = 0.0f;
 	float				m_fA_Shield = 0.0f;
 	int					m_nDamageCnt = 0;

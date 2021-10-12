@@ -24,7 +24,7 @@ public:
 	// ÉÅÉìÉoä÷êî
 	//-------------------------------------------------------------------------
 	CMesh();
-	CMesh(ObjType type);
+	CMesh(Priority type);
 	~CMesh();
 
 	static CMesh *Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
