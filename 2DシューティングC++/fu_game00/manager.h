@@ -66,6 +66,7 @@ public:
 
 	// SetŠÖ”
 	static void SetMode(MODE mode);
+	static void SetPause(bool bPause) { m_bPause = bPause; }
 
 	// GetŠÖ”
 	static MODE GetMode(void);									

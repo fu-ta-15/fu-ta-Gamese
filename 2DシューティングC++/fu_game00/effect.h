@@ -34,21 +34,22 @@ public:
 	~CEffect();
 
 	static CEffect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
-
-	void Unload();
-	HRESULT Load(const LPCSTR pSrcFile);
+	static CEffect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVECTOR3 move);
 
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	void CollisionField(void);
+
 	// Setä÷êî
-	void SetColor(D3DXCOLOR col);
-	void SetMove(D3DXVECTOR3 move);
-	void SetLife(int nLife);
-	void SetUse(bool bUse);
-	void SetPos(D3DXVECTOR3 pos);
+	void SetColor(D3DXCOLOR col)		{ m_col = col; }
+	void SetMove(D3DXVECTOR3 move)		{ m_move = move; }
+	void SetLife(int nLife)				{ m_nLife = nLife; }
+	void SetUse(bool bUse)				{ m_bUse = bUse; }
+	void SetGravity(bool bGravity)		{ m_bGravity = bGravity; }
+	void SetPos(D3DXVECTOR3 pos)		{ m_pos = pos; }
 
 	// Getä÷êî
 	D3DXCOLOR GetColor(void)	{ return m_col; }
@@ -58,7 +59,6 @@ public:
 	bool GetUse(void)			{ return m_bUse; }
 
 private:
-	static LPDIRECT3DTEXTURE9	m_pTexture;
 	D3DRENDERSTATETYPE			m_State;
 	DWORD						m_Value;
 	EFFECT_TYPE					m_type;
@@ -67,6 +67,8 @@ private:
 	D3DXVECTOR3					m_move;
 	D3DXCOLOR					m_col;
 	bool						m_bUse;
+	bool						m_bMove;
+	bool						m_bGravity;
 	int							m_nLife;
 
 };

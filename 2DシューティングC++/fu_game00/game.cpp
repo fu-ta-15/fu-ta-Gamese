@@ -22,6 +22,7 @@
 #include "mesh.h"
 #include "move.h"
 #include "sound.h"
+#include "result.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -138,19 +139,15 @@ void CGame::Update(void)
 	CKey *pKey = CManager::GetKey();
 
 	/* フェード処理 */
-	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))
+	if (m_pPlayer->GetAlive() == false || pKey->GetState(CKey::STATE_RELEASE, DIK_1))
 	{
+		CResult::GameEndResult(false);
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
-	if (m_pPlayer->GetAlive() == false || m_pBoss->GetAlive() == false)
+	if (m_pBoss->GetAlive() == false || pKey->GetState(CKey::STATE_RELEASE, DIK_2))
 	{
+		CResult::GameEndResult(true);
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
-	}
-
-	/* スコアの加算 */
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_Y))
-	{
-		m_pScore->AddScore(12);
 	}
 
 	/* タイマー処理 */

@@ -92,7 +92,7 @@ CMesh * CMesh::Create(const int nVertical, const int nSide, const D3DXVECTOR3 po
 HRESULT CMesh::CreateTexture(const LPCSTR pSrcFile)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, pSrcFile, &m_pTexture);
@@ -106,7 +106,7 @@ HRESULT CMesh::CreateTexture(const LPCSTR pSrcFile)
 HRESULT CMesh::Init(void)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	m_nVtx = VertexCreate(m_nVertical, m_nSide);			// 総合頂点数
 	m_nIdx = IndexCreate(m_nVertical, m_nSide);				// 総合インデックス
@@ -197,7 +197,7 @@ void CMesh::Update(void)
 void CMesh::Draw(void)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	// 頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));

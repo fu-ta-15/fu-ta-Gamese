@@ -58,7 +58,7 @@ CScene2D * CScene2D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 HRESULT CScene2D::CreateTexture(const LPCSTR pSrcFile)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, pSrcFile, &m_pTex);
@@ -77,7 +77,7 @@ HRESULT CScene2D::Init(void)
 	m_fAngle = atan2f(m_size.x, m_size.y);
 
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	//頂点バッファの生成
 	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4, D3DUSAGE_WRITEONLY, FVF_VERTEX_2D, D3DPOOL_MANAGED, &m_pVtxBuff, NULL)))
@@ -129,7 +129,7 @@ HRESULT CScene2D::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 	m_size = size;
 
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	//頂点バッファの生成
 	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4, D3DUSAGE_WRITEONLY, FVF_VERTEX_2D, D3DPOOL_MANAGED, &m_pVtxBuff, NULL)))
@@ -183,7 +183,7 @@ HRESULT CScene2D::AnimationInit(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, c
 	m_fAnimeY = tex.y;
 
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	//頂点バッファの生成
 	if (FAILED(pDevice->CreateVertexBuffer(CREATE_POLYGON, D3DUSAGE_WRITEONLY, FVF_VERTEX_2D, D3DPOOL_MANAGED, &m_pVtxBuff, NULL)))
@@ -268,7 +268,7 @@ void CScene2D::Update(void)
 void CScene2D::Draw(void)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
 	if (m_bUse == true)
 	{

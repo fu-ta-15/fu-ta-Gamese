@@ -62,6 +62,8 @@ CManager::~CManager()
 //=============================================================================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
+	srand((unsigned)time(NULL));	// 現在時刻の情報で初期化
+
 	m_pRenderer = new CRenderer;
 
 	// レンダラ初期化
@@ -90,7 +92,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pFade->Init();
 
 	// フェードしてからタイトルへ
-	m_pFade->SetFade(MODE_TUTORIAL);
+	m_pFade->SetFade(MODE_GAME);
 
 	return S_OK;
 }

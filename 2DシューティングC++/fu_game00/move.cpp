@@ -28,13 +28,13 @@ D3DXVECTOR3 CMove::MoveControl(D3DXVECTOR3 move, D3DXVECTOR3 deceleration)
 //=============================================================================
 float CMove::MoveSnake(float pos, float move, float Uplimit, float Downlimit,float Speed)
 {
-	if (pos > Downlimit)
+	if (pos < Downlimit)
 	{
-		move = -move;
+		move = Speed;
 	}
-	else if (pos < Uplimit)
+	if (pos > Uplimit)
 	{
-		move = (move) * -1;
+		move = -Speed;
 	}
 	return move;
 }

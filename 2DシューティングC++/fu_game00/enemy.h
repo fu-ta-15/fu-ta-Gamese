@@ -12,6 +12,7 @@
 //-----------------------------------------------------------------------------
 #include "scene2D.h"
 #include "bullet.h"
+#include "particle.h"
 
 //-----------------------------------------------------------------------------
 // 敵の派生クラスに使用するためのマクロ変数
@@ -36,7 +37,7 @@
 #define ENEMY_TYPE1			(CEnemy::ENEMY_WHITE)
 #define ENEMY_TYPE2			(CEnemy::ENEMY_BOSS)
 
-#define ENEMY_TEXTURE0	("data/TEXTURE/Enemy0_1.png")	
+#define ENEMY_TEXTURE0	("data/TEXTURE/SnowCrystals_M.png")	
 
 //-----------------------------------------------------------------------------
 // クラス
@@ -68,6 +69,7 @@ public:
 	// 当たり判定処理
 	void CollisionEnemy(void);
 	bool CollisionPlayer(void);
+	void CollisionField(void);
 
 	// ダメージ
 	void DamegeLife(int nDamege)		{ m_nLife -= nDamege; }
@@ -87,6 +89,8 @@ public:
 	int Rand(int nValue, int AddnValue) { return rand() % nValue + AddnValue; }
 
 protected:
+	CParticle *m_pDeath;
+	CParticle *m_pField;
 
 	D3DXVECTOR3				m_pos;							// 位置
 	D3DXVECTOR3				m_size;							// サイズ

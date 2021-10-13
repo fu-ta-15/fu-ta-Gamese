@@ -14,24 +14,26 @@
 #include "boss.h"
 #include "player.h"
 #include "collision.h"
+#include "mesh.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
-#define BOSS				(CGame::GetBoss())
-#define BOSS_DAMAGE			(CBoss::STATE_DAMAGE)
-#define BOSS_NOT_DAMAGE		(CBoss::STATE_NOT_DAMAGE)
-#define BOSS_NONE			(CBoss::STATE_NONE)
-#define BOSS_GET_LIFE		(CGame::GetBoss()->GetLife())
-#define ENEMY_ID			(m_paEnemy[nID])
-#define ENEMY_CNT			(m_paEnemy[nCnt])
+#define BOSS						(CGame::GetBoss())
+#define BOSS_DAMAGE					(CBoss::STATE_DAMAGE)
+#define BOSS_NOT_DAMAGE				(CBoss::STATE_NOT_DAMAGE)
+#define BOSS_NONE					(CBoss::STATE_NONE)
+#define BOSS_GET_LIFE				(CGame::GetBoss()->GetLife())
+#define ENEMY_ID					(m_paEnemy[nID])
+#define ENEMY_CNT					(m_paEnemy[nCnt])
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CEnemy::CEnemy(Priority type) : CScene2D(type)
 {
-
+	m_pDeath = NULL;
+	m_pField = NULL;
 }
 
 //=============================================================================
@@ -79,6 +81,7 @@ void CEnemy::Update(void)
 	}
 	// 弾との当たり判定
 	CollisionEnemy();
+	CollisionField();
 }
 
 //=============================================================================
@@ -147,4 +150,38 @@ bool CEnemy::CollisionPlayer(void)
 	bCollision = CCollision::CollisionCycle(m_pos, pos, size.x);
 
 	return bCollision;
+}
+
+void CEnemy::CollisionField(void)
+{
+	CMesh* pMesh = NULL;
+	pMesh = MESH_GAME;
+
+	// 頂点情報の取得
+	VERTEX_2D *pVtx = pMesh->GetVERTEX();
+
+	// 底辺の中心座標設定
+	D3DXVECTOR3 posA = D3DXVECTOR3(m_pos.x, m_pos.y + m_size.y, 0.0f);
+
+	// 外積当たり判定
+	bool bOutPro = false;
+
+	for (int nCnt = 0; nCnt < pMesh->GetVtxNum() / 2; nCnt++)
+	{// メッシュポリゴン上辺のみ算出
+		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
+		{// 二つの頂点と点の外積判定
+			bOutPro = CCollision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
+		}
+		if (bOutPro == true)
+		{// 点が二点より下にいたら
+			Release();
+			m_pDeath = CParticle::Create(m_pos, m_size*0.6f, CParticle::TYPE_EXPLOSION);
+			m_pDeath->SetTexture("data/TEXTURE/Fog2001.png");
+			m_pDeath->SetParticle(10);
+			m_pField = CParticle::Create(m_pos, m_size*0.4f, CParticle::TYPE_EXPLOSION);
+			m_pField->SetTexture("data/TEXTURE/Crystal001.png");
+			m_pField->SetParticle(50);
+			break;
+		}
+	}
 }

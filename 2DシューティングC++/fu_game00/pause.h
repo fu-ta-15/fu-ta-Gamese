@@ -27,8 +27,8 @@ public:
 	typedef enum PAUSEMENU
 	{
 		MENU_RETRY = 0,
-		MENU_TITLE,
 		MENU_QUIT,
+		MENU_CONTINUE,
 		MENU_MAX
 	}PAUSEMENU;
 

@@ -183,17 +183,16 @@ void CPause::MenuOk(const int nMenuID)
 	switch (nMenuID)
 	{
 	case MENU_RETRY:
-		CManager::GetFade()->SetFade(CManager::MODE_GAME);
-		Uninit();
-		break;
-
-	case MENU_TITLE:
-		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
-		Uninit();
+		CManager::SetPause(false);
 		break;
 
 	case MENU_QUIT:
 		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+		Uninit();
+		break;
+
+	case MENU_CONTINUE:
+		CManager::GetFade()->SetFade(CManager::MODE_GAME);
 		Uninit();
 		break;
 

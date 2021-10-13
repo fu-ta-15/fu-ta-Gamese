@@ -120,8 +120,10 @@ void CTutorial::Uninit(void)
 void CTutorial::Update(void)
 {
 	CKey *pKey = CManager::GetKey();
+	CFade::FADE Fade = CFade::GetFade();   // フェード情報
 
-	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))
+
+	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE) && Fade == CFade::FADE_NONE)
 	{// RETURNキーが押されたら
 		CManager::GetFade()->SetFade(CManager::MODE_GAME);	// GAME・MODEへ
 	}

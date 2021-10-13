@@ -92,15 +92,18 @@ private:
 	D3DXCOLOR			m_StateCol;
 	D3DXCOLOR			m_ShieldCol;
 
+	D3DXVECTOR3			m_OldPos;
+	float				m_fLife;
+
 	bool				m_bShield;
 	bool				m_bDamage;
+	float				m_fA_Damage;
+	float				m_fA_Shield;
 
-	float				m_fA_Damage = 0.0f;
-	float				m_fA_Shield = 0.0f;
-	int					m_nDamageCnt = 0;
-	int					m_nCnt = 0;
-	float				m_fMoveTime = 0;
-	float				m_fLife;
+	int					m_nDamageCnt;
+	int					m_nEnemyCnt;
+	int					m_nBossTime;
+	float				m_fMoveTime;
 };
 
 #endif // !_BOSS_H_

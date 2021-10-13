@@ -11,14 +11,9 @@
 //　インクルードファイル
 //=============================================================================
 #include "scene.h"
+#include "scene2D.h"
 
-#define MAX_RANKING		(5)
 
-//-----------------------------------------------------------------------------
-//前方宣言
-//-----------------------------------------------------------------------------
-class CScore;
-class CScene2D;
 
 
 class CResult : public CScene
@@ -28,7 +23,6 @@ public:
 	{
 		RESULT_UI_BG = 0,
 		RESULT_UI_LOGO,
-		RESULT_UI_BUTTON,
 		RESULT_UI_MAX
 	}Result;
 
@@ -42,11 +36,12 @@ public:
 	void Update(void);
 	void Draw(void);
 
-private:
-	D3DXVECTOR3 m_pos;
+	static void GameEndResult(bool bEnd) { m_bEndGame = bEnd; }
 
-	static CScore	*m_paRanking[MAX_RANKING];
-	//static CScene2D *m_paResultUI[]
+private:
+	CScene2D *m_ResultUI[RESULT_UI_MAX];
+	static bool m_bEndGame;
+	D3DXVECTOR3 m_pos;
 
 };
 

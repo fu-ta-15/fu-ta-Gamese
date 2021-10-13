@@ -9,17 +9,17 @@
 //-----------------------------------------------------------------------------
 #include "effect.h"
 #include "renderer.h"
-
-//-----------------------------------------------------------------------------
-// 静的変数
-//-----------------------------------------------------------------------------
-LPDIRECT3DTEXTURE9 CEffect::m_pTexture;
+#include "game.h"
+#include "mesh.h"
+#include "collision.h"
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CEffect::CEffect() : CScene2D(OBJ_EFFECT)
 {
+	this->m_bUse = true;
+	this->m_col = WhiteColor;
 }
 
 //=============================================================================
@@ -41,38 +41,30 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 		pEffect = new CEffect;
 		pEffect->m_pos = pos;
 		pEffect->m_size = size;
-		pEffect->m_bUse = true;
+		pEffect->m_bMove = false;
+		pEffect->m_bGravity = false;
 		pEffect->Init();
 	}
 
 	return pEffect;
 }
 
-
-//=============================================================================
-// アンロード
-//=============================================================================
-void CEffect::Unload()
+CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVECTOR3 move)
 {
-	if (m_pTexture != NULL)
-	{// 頂点バッファの開放
-		m_pTexture->Release();
-		m_pTexture = NULL;
+	CEffect *pEffect = NULL;
+
+	if (pEffect == NULL)
+	{
+		pEffect = new CEffect;
+		pEffect->m_pos = pos;
+		pEffect->m_size = size;
+		pEffect->m_move = move;
+		pEffect->m_bMove = true;
+		pEffect->m_bGravity = true;
+		pEffect->Init();
 	}
-}
 
-//=============================================================================
-// ロード
-//=============================================================================
-HRESULT CEffect::Load(const LPCSTR pSrcFile)
-{
-	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, pSrcFile, &m_pTexture);
-
-	return S_OK;
+	return pEffect;
 }
 
 //=============================================================================
@@ -92,7 +84,6 @@ HRESULT CEffect::Init(void)
 void CEffect::Uninit(void)
 {
 	CScene2D::Uninit();
-	Unload();
 }
 
 //=============================================================================
@@ -100,15 +91,30 @@ void CEffect::Uninit(void)
 //=============================================================================
 void CEffect::Update(void)
 {
-	//m_pos = CScene2D::GetPos();
+	if (m_bMove)
+	{
+		if (m_bGravity == true)
+		{
+			m_move.y += 0.45f;
+		}
 
-	//if (m_fLife <= 0)
-	//{
-	//	Uninit();
-	//}
+		m_pos += m_move;
+
+		m_move.x += (0 - m_move.x)*0.025f;
+
+		m_col.a -= 0.035f;
+
+		if (m_col.a < 0)
+		{
+			Release();
+		}
+		CollisionField();
+	}
 
 	CScene2D::SetPos(m_pos);
 	CScene2D::SetSize(m_size);
+	CScene2D::SetCol(m_col);
+	CScene2D::SetUse(m_bUse);
 }
 
 //=============================================================================
@@ -119,54 +125,43 @@ void CEffect::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
-	if (m_bUse == true)
-	{
-		D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
-		CScene2D::Draw();
+	CScene2D::Draw();
 
-		D3D_DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			// 合成方法
-		D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// ソース（描画元）の合成方法の設定
-		D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
+	D3D_DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			// 合成方法
+	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// ソース（描画元）の合成方法の設定
+	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
+}
+
+void CEffect::CollisionField(void)
+{
+	CMesh* pMesh = NULL;
+	pMesh = MESH_GAME;
+
+	// 頂点情報の取得
+	VERTEX_2D *pVtx = pMesh->GetVERTEX();
+
+	// 底辺の中心座標設定
+	D3DXVECTOR3 posA = D3DXVECTOR3(m_pos.x, m_pos.y + m_size.y, 0.0f);
+
+	// 外積当たり判定
+	bool bOutPro = false;
+
+	for (int nCnt = 0; nCnt < pMesh->GetVtxNum() / 2; nCnt++)
+	{// メッシュポリゴン上辺のみ算出
+		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
+		{// 二つの頂点と点の外積判定
+			bOutPro = CCollision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
+		}
+		if (bOutPro == true)
+		{// 点が二点より下にいたら
+
+			m_pos.y = pVtx[nCnt].pos.y - m_size.y;
+
+			break;
+		}
 	}
 
-	//// 減産合成の設定
-	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
-	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 }
 
-//=============================================================================
-// 色の設定
-//=============================================================================
-void CEffect::SetColor(D3DXCOLOR col)
-{
-	m_col = col;
-	CScene2D::SetCol(m_col);
-}
-
-//=============================================================================
-// 移動量の設定
-//=============================================================================
-void CEffect::SetMove(D3DXVECTOR3 move)
-{
-	m_move = move;
-}
-
-//=============================================================================
-// ライフの設定
-//=============================================================================
-void CEffect::SetLife(int nLife)
-{
-	m_nLife = nLife;
-}
-
-void CEffect::SetUse(bool bUse)
-{
-	m_bUse = bUse;
-}
-
-void CEffect::SetPos(D3DXVECTOR3 pos)
-{
-	m_pos = pos;
-}

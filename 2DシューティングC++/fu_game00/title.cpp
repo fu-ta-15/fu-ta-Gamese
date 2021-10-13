@@ -100,11 +100,12 @@ void CTitle::Uninit(void)
 void CTitle::Update(void)
 {
 	CKey *pKey = CManager::GetKey();
+	CFade::FADE Fade = CFade::GetFade();   // フェード情報
 
 	m_nCntTime++;
 
 
-	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE))
+	if (pKey->GetState(CKey::STATE_RELEASE, DIK_SPACE) && Fade == CFade::FADE_NONE)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
 	}

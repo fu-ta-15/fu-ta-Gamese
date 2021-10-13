@@ -20,7 +20,13 @@
 #define ENEMY_TYPE1_MOVE		(D3DXVECTOR3(-2.5f, -5.0f, 0.0f))
 #define TYPE1_COLOR				(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f))
 #define PLAYER_GET_POS			(CGame::GetPlayer()->GetPos())
-
+#define HOMING_TIME1			(1200)
+#define HOMING_TIME2			(900)
+#define HOMING_SPEED			(3.0f)
+#define ANGLE_SIN				(sinf(D3DX_PI + fAngle))
+#define ANGLE_COS				(cosf(D3DX_PI + fAngle))
+#define ANGLE_POINT_X			(m_pos.x - PLAYER_GET_POS.x)
+#define ANGLE_POINT_Y			(m_pos.y - PLAYER_GET_POS.y)
 
 //-----------------------------------------------------------------------------
 // 静的メンバ変数
@@ -34,6 +40,7 @@ bool CNormalEnemy::m_bHomingTime = false;
 CNormalEnemy::CNormalEnemy() : CEnemy(OBJ_ENEMY)
 {
 	this->m_nMoveChangeCnt = 0;
+	this->m_nHomingTime = HOMING_TIME1;
 }
 
 //=============================================================================
@@ -142,27 +149,30 @@ void CNormalEnemy::UpdateBlack(void)
 	// カウントアップ
 	m_nMoveChangeCnt++;
 
-	if ((m_nMoveChangeCnt % 1200) == 0)
+	// ホーミングの開始と終了
+	if ((m_nMoveChangeCnt % m_nHomingTime) == 0)
 	{// 指定の値で割って余りが０の場合
 		if (m_bHomingTime == false)
 		{// ホーミングタイムではなかったら
 			m_bHomingTime = true;
+			m_nHomingTime = HOMING_TIME2;
 		}
 		else
 		{// ホーミングタイムだったら
 			m_bHomingTime = false;
+			m_nHomingTime = HOMING_TIME1;
 		}
 		m_nMoveChangeCnt = 0;	// カウント初期化
 	}
 
 	if (m_bHomingTime == true)
 	{// ホーミングタイム
-		if ((m_nMoveChangeCnt%Rand(60, 20)) == 0)
+		if ((m_nMoveChangeCnt % Rand(60, 20)) == 0)
 		{// 指定の値で割って余りがゼロの場合
-			float fAngle = CMove::AnglePoint(m_pos.x - PLAYER_GET_POS.x, m_pos.y - PLAYER_GET_POS.y);
-			m_move.x = CMove::HomingMove(sinf(D3DX_PI + fAngle), 2.0f);
-			m_move.y = CMove::HomingMove(cosf(D3DX_PI - fAngle), 2.0f);
-			m_MoveType = MOVE1;
+			float fAngle = CMove::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
+			m_move.x = CMove::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
+			m_move.y = CMove::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
+			m_MoveType = MOVE1;												// 移動方法
 		}
 	}
 }
@@ -172,7 +182,10 @@ void CNormalEnemy::UpdateBlack(void)
 //=============================================================================
 void CNormalEnemy::BlackMove(void)
 {
-	float fAngle = CMove::AnglePoint(m_pos.x - CGame::GetPlayer()->GetPos().x, m_pos.y - CGame::GetPlayer()->GetPos().y);
+	// プレイヤーとの角度
+	float fAngle = CMove::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
+
+	// ボスの情報
 	CBoss *pBoss = CGame::GetBoss();
 
 	switch (m_MoveType)

@@ -65,6 +65,7 @@ private:
 	float m_fSinWaveCnt = 0.0f;
 	float m_fCosWaveCnt = 0.0f;
 	int m_nMoveChangeCnt = 0;
+	int m_nHomingTime;
 };
 
 #endif // !_NORMALENEMY_H_
