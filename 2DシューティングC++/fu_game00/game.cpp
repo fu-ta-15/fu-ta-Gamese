@@ -100,9 +100,11 @@ CGame * CGame::Create(void)
 HRESULT CGame::Init(void)
 {
 	CSound *pSound = CManager::GetSound();
+	m_nWaveCnt = 0.0f;
+	m_nWaveHeight = 20.0f;
 
 	m_pBg = CScene2D::Create(BG_POS, BG_SIZE);
-
+	m_LifeMesh = CMesh::Create(100, 0, D3DXVECTOR3(0.0f,HEIGHT_HALF,0.0f), D3DXVECTOR3(SCREEN_WIDTH, 5.0f, 0.0f), CScene::OBJ_NONE2);
 	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE,CScene::OBJ_NONE2);
 	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);
 
@@ -148,6 +150,34 @@ void CGame::Update(void)
 	{
 		CResult::GameEndResult(true);
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+	}
+
+	m_nWaveCnt += 0.52f;
+
+	if (m_pBoss->GetState() == CBoss::STATE_NOT_DAMAGE)
+	{
+		m_nWaveHeight = 100.0f;
+	}
+	else
+	{
+		m_nWaveHeight = 20.0f;
+	}
+
+	for (int nVtx = 0; nVtx < m_LifeMesh->GetVtxNum() / 2; nVtx++)
+	{// 波を起こす処理
+		D3DXVECTOR3 pos = ZeroVector3;
+		if (m_pBoss->GetState() == CBoss::STATE_NOT_DAMAGE)
+		{
+			pos.y = CMove::CosWave(HEIGHT_HALF,rand() % 50-100, 320.0f,  nVtx + rand() % 30 + m_nWaveCnt);
+		}
+		else
+		{
+			pos.y = CMove::CosWave(HEIGHT_HALF,m_nWaveHeight, 240.0f, (m_nWaveCnt * 2) + nVtx);
+		}
+
+		m_LifeMesh->SetVtxPosY(nVtx, pos.y);
+		pos.y += 5;
+		m_LifeMesh->SetVtxPosY(nVtx + (m_LifeMesh->GetVtxNum() / 2), pos.y);
 	}
 
 	/* タイマー処理 */

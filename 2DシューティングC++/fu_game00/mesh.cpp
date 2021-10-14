@@ -169,6 +169,7 @@ void CMesh::Update(void)
 
 	MeshSetCol(m_pVtx);							// 色の設定
 
+
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 }

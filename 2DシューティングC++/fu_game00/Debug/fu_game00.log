@@ -1,3 +1,5 @@
-﻿  game.cpp
+﻿cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
+  game.cpp
+c:\users\student\desktop\fu-ta-gamese\2dシューティングc++\fu_game00\game.cpp(171): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.pdb (Full PDB)

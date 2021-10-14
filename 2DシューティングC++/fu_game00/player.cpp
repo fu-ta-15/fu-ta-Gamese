@@ -310,7 +310,7 @@ void CPlayer::FieldControl(void)
 	{// メッシュポリゴン上辺のみ算出
 		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
 		{// 二つの頂点と点の外積判定
-			bOutPro = CCollision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
+			bOutPro = OUT_PRODUCT(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
 		}
 		if (bOutPro == true)
 		{// 点が二点より下にいたら
@@ -324,7 +324,7 @@ void CPlayer::FieldControl(void)
 			}
 			if (m_bFall == false)
 			{
-				D3DXVECTOR3 m_posOld = CCollision::WaveCollision(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA, CCollision::TYPE_COL_Y);	// 戻す分を算出
+				D3DXVECTOR3 m_posOld = WAVE_COLLISION(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA, COLL_TYPE_Y);	// 戻す分を算出
 				m_move.y = 0.0f;					// 重力ゼロ
 				m_bJunp = false;					// ジャンプ可能
 				m_pos.y = m_posOld.y - m_size.y;	// 画面内まで移動させる
@@ -404,6 +404,9 @@ void CPlayer::DamagePlayer(void)
 	}
 }
 
+//=============================================================================
+// ライフ管理
+//=============================================================================
 void CPlayer::PlayerLife(void)
 {
 	for (int nCntLife = 0; nCntLife < PLAYER_LIFE_STOCK; nCntLife++)
@@ -425,6 +428,9 @@ void CPlayer::PlayerLife(void)
 	}
 }
 
+//=============================================================================
+// バレットの管理
+//=============================================================================
 void CPlayer::PlayerBullet(void)
 {
 	for (int nCntWeapon = 0; nCntWeapon < PLAYER_BULLET_STOCK; nCntWeapon++)

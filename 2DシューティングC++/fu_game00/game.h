@@ -56,6 +56,11 @@ public:
 
 private:
 
+	int					m_RandomHeight;
+	float				m_nWaveHeight;
+	float				m_nWaveCnt;
+	CMesh				*m_LifeMesh;
+
 	static CPlayer		*m_pPlayer;
 	static CScore		*m_pScore;
 	static CTime		*m_pTime;
