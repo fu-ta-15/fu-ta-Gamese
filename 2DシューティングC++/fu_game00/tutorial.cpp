@@ -81,13 +81,13 @@ HRESULT CTutorial::Init(void)
 	CSound *pSound = CManager::GetSound();
 
 	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);									// 背景
-	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE);	// 地面
+	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE,CScene::OBJ_NONE);	// 地面
 	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);							// プレイヤー
 
 	for (int nCnt = 0; nCnt < OPERA_MAX; nCnt++)
 	{// 操作説明画像
 		D3DXVECTOR3 pos = OPE_POS;												   // 位置の更新
-		m_pOperation[nCnt] = CMesh::Create(OPE_VERTICAL, OPE_SIDE, pos, OPE_SIZE); // ポリゴンの生成
+		m_pOperation[nCnt] = CMesh::Create(OPE_VERTICAL, OPE_SIDE, pos, OPE_SIZE,CScene::OBJ_NONE); // ポリゴンの生成
 		m_bButton[nCnt] = false;												   // ウェーブの有無
 	}
 

@@ -12,6 +12,7 @@
 #include "Dinput.h"
 #include "renderer.h"
 #include "manager.h"
+#include "move.h"
 
 //-----------------------------------------------------------------------------
 //　マクロ定義
@@ -26,15 +27,6 @@
 //-----------------------------------------------------------------------------
 
 
-//=============================================================================
-// コンストラクタ
-//=============================================================================
-CMesh::CMesh() : CScene(OBJ_NONE)
-{
-	m_pVtxBuff = NULL;
-	m_pTexture = NULL;
-	m_pIdxBuff = NULL;
-}
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -55,31 +47,16 @@ CMesh::~CMesh()
 //=============================================================================
 // メッシュの生成
 //=============================================================================
-CMesh * CMesh::Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
-{
-	CMesh *pMesh = NULL;
-
-	pMesh = new CMesh;
-	pMesh->SetPos(pos);
-	pMesh->SetSize(size);
-	pMesh->SetSide(nSide);
-	pMesh->SetVertical(nVertical);
-	pMesh->Init();
-
-	return pMesh;
-}
-
-//=============================================================================
-// メッシュの生成
-//=============================================================================
 CMesh * CMesh::Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, CScene::ObjectType type)
 {
 	CMesh *pMesh = NULL;
 
 	pMesh = new CMesh(type);
 	pMesh->SetPos(pos);
+	pMesh->SetMove(ZeroVector3);
 	pMesh->SetSize(size);
 	pMesh->SetSide(nSide);
+	pMesh->m_col = WhiteColor;
 	pMesh->SetVertical(nVertical);
 	pMesh->Init();
 
@@ -110,7 +87,6 @@ HRESULT CMesh::Init(void)
 
 	m_nVtx = VertexCreate(m_nVertical, m_nSide);			// 総合頂点数
 	m_nIdx = IndexCreate(m_nVertical, m_nSide);				// 総合インデックス
-
 	// 頂点バッファの生成
 	if (FAILED(pDevice->CreateVertexBuffer((sizeof(VERTEX_2D) * m_nVtx),
 		D3DUSAGE_WRITEONLY,
@@ -188,7 +164,13 @@ void CMesh::Uninit(void)
 //=============================================================================
 void CMesh::Update(void)
 {
-	
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	MeshSetCol(m_pVtx);							// 色の設定
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
 }
 
 //=============================================================================
@@ -246,6 +228,63 @@ void CMesh::SetVtxPosX(int nID, float posx)
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
 	m_pVtx[nID].pos.x = posx;
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
+}
+
+void CMesh::SetVtxMoveY(int nID, float move)
+{
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	m_pVtx[nID].pos.y += move;
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
+}
+
+void CMesh::SetVtxMoveX(int nID, float move)
+{
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	m_pVtx[nID].pos.x += move;
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
+
+}
+
+
+void CMesh::WavePosY(int nID)
+{
+	m_nWaveCnt++;
+
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	m_pVtx[nID].pos.y += CMove::CosMove(2.0f, 120.0f, m_nWaveCnt);
+
+	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
+	{
+		int nID_Diff = nID - nCnt;
+	}
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
+}
+
+D3DXVECTOR3 CMesh::GetCenterPos(void)
+{
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	D3DXVECTOR3 pos;
+
+	float nV_ID = (float)(m_nVertical - 1) / 2;
+
+	return m_pVtx[m_nVtx / 2].pos;
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
@@ -317,7 +356,6 @@ void CMesh::MeshSetTex(int nVertical, int nSide, VERTEX_2D * pVtx)
 			nCntVertical += 1;		// １進める
 		}
 	}
-
 }
 
 //=============================================================================
@@ -345,6 +383,7 @@ void CMesh::MeshSetPos(int nVertical, int nSide, VERTEX_2D * pVtx)
 			nCntVertical += 1;
 		}
 	}
+	m_PolygonLength = D3DXVECTOR3((((m_size.x / nNumVertical) * 1)), (((m_size.y / nNumSide) * 1)), 0.0f);
 }
 
 //=============================================================================
@@ -367,7 +406,7 @@ void CMesh::MeshSetCol(VERTEX_2D * pVtx)
 	// 頂点カラー・赤・緑・青・アルファ
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++, pVtx++)
 	{
-		pVtx[0].col = D3DCOLOR_RGBA(COLOR_RED, COLOR_GREEN, COLOR_BULUE, COLOR_ALPHA);
+		pVtx[0].col = m_col;
 	}
 }
 
@@ -396,13 +435,4 @@ int CMesh::IndexCreate(int nVertical, int nSide)
 
 	return nIdx;
 }
-
-
-
-
-
-
-
-
-
 

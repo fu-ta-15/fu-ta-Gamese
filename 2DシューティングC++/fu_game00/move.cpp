@@ -68,6 +68,16 @@ float CMove::CosWave(const float CenterPos, const float nHeight, const float nCy
 	return CenterPos + cosf((D3DX_PI * 2) / nCycle * (nTime + nTime)) * nHeight;
 }
 
+float CMove::SinWave(const float fAngle, const float CenterPos, const float nHeight, const float nCycle, const float nTime)
+{
+	return CenterPos + sinf((fAngle + D3DX_PI) / nCycle * (nTime + nTime)) * nHeight;
+}
+
+float CMove::CosWave(const float fAngle, const float CenterPos, const float nHeight, const float nCycle, const float nTime)
+{
+	return CenterPos + cosf((fAngle - D3DX_PI) / nCycle * (nTime + nTime)) * nHeight;
+}
+
 //=============================================================================
 // Sin”g‚ð—˜—p‚µ‚½ˆÚ“®
 //=============================================================================
@@ -82,6 +92,16 @@ float CMove::SinMove(const float nHeight, const float nCycle, const float nTime)
 float CMove::CosMove(const float nHeight, const float nCycle, const float nTime)
 {
 	return cosf((D3DX_PI * 2) / nCycle * (nTime + nTime)) * nHeight;
+}
+
+float CMove::SinMove(const float fAngle, const float nHeight, const float nCycle, const float nTime)
+{
+	return sinf(fAngle + D3DX_PI / nCycle * (nTime + nTime)) * nHeight;
+}
+
+float CMove::CosMove(const float fAngle, const float nHeight, const float nCycle, const float nTime)
+{
+	return cosf(fAngle + D3DX_PI / nCycle * (nTime + nTime)) * nHeight;
 }
 
 //=============================================================================

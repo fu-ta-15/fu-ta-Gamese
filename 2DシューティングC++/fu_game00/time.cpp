@@ -136,7 +136,7 @@ void CTime::SetTime(int nTime)
 void CTime::AddTime(int nValue)
 {
 	m_nTime += nValue;	// ŠÔ‚Ì•ÏX
-	printf("ŠÔF%d\n", m_nTime);
+	//printf("ŠÔF%d\n", m_nTime);
 	SetTime(m_nTime);	// ŠÔİ’è
 }
 

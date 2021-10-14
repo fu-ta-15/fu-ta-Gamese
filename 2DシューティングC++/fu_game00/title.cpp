@@ -73,7 +73,7 @@ HRESULT CTitle::Init(void)
 	CSound *pSound = CManager::GetSound();
 	m_paTitleUI[UI_BG] = CScene2D::Create(CENTER_POS, TITLE_BG_SIZE);
 	m_paTitleUI[UI_BUTTON] = CScene2D::Create(TITLE_BUTTON_POS, TITLE_BUTTON_SIZE);
-	m_pTitleLogo = CMesh::Create(90, 0, TITLE_LOGO_POS, TITLE_LOGO_SIZE);
+	m_pTitleLogo = CMesh::Create(90, 0, TITLE_LOGO_POS, TITLE_LOGO_SIZE, CScene::OBJ_NONE);
 
 	m_paTitleUI[UI_BG]->CreateTexture("data/TEXTURE/BG.jpg");
 	m_paTitleUI[UI_BUTTON]->CreateTexture("data/TEXTURE/Next_Mode.png");

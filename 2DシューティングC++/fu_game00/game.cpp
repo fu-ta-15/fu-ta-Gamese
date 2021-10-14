@@ -103,7 +103,7 @@ HRESULT CGame::Init(void)
 
 	m_pBg = CScene2D::Create(BG_POS, BG_SIZE);
 
-	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE);
+	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE,CScene::OBJ_NONE2);
 	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);
 
 	m_pScore = CScore::Create(SCORE_POS, SCORE_SIZE);

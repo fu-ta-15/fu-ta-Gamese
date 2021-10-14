@@ -30,11 +30,30 @@ public:
 
 	static float SinWave(const float CenterPos, const float nHeight, const float nCycle, const float nTime);
 	static float CosWave(const float CenterPos, const float nHeight, const float nCycle, const float nTime);
+
+	static float SinWave(const float fAngle,const float CenterPos, const float nHeight, const float nCycle, const float nTime);
+	static float CosWave(const float fAngle,const float CenterPos, const float nHeight, const float nCycle, const float nTime);
+
 	static float SinMove(const float nHeight, const float nCycle, const float nTime);
 	static float CosMove(const float nHeight, const float nCycle, const float nTime);
 
+	static float SinMove(const float fAngle, const float nHeight, const float nCycle, const float nTime);
+	static float CosMove(const float fAngle, const float nHeight, const float nCycle, const float nTime);
+
 	static float HomingMove(float Angle, float fSpeed);
 	static float AnglePoint(float PointX, float PointY);
+
+	static float getDistance(float x, float y, float x2, float y2)
+	{
+		float distance = sqrt((x2 - x) * (x2 - x) + (y2 - y) * (y2 - y));
+
+		return (float)distance;
+	}
+
+	static float GetFoce(float Side, float Center, float tension, float delta)
+	{
+		return ((Side - Center)*tension / delta);
+	}
 
 private:
 

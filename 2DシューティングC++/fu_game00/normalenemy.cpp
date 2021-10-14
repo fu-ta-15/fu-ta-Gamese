@@ -24,7 +24,7 @@
 #define HOMING_TIME2			(900)
 #define HOMING_SPEED			(3.0f)
 #define ANGLE_SIN				(sinf(D3DX_PI + fAngle))
-#define ANGLE_COS				(cosf(D3DX_PI + fAngle))
+#define ANGLE_COS				(cosf(D3DX_PI - fAngle))
 #define ANGLE_POINT_X			(m_pos.x - PLAYER_GET_POS.x)
 #define ANGLE_POINT_Y			(m_pos.y - PLAYER_GET_POS.y)
 
