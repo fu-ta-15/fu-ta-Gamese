@@ -48,6 +48,8 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	void SetGravity(void);
+
 	void SetParticle(int EfeectNum);
 	HRESULT SetTexture(const LPCSTR pSrcFile);
 

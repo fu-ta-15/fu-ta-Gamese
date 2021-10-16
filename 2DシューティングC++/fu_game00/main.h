@@ -21,6 +21,7 @@
 #include <dinput.h>
 #include <xaudio2.h>
 #include <XInput.h>
+#include <assert.h>
 
 //-----------------------------------------------------------------------------
 // ライブラリファイルのリンク

@@ -60,7 +60,7 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVEC
 		pEffect->m_size = size;
 		pEffect->m_move = move;
 		pEffect->m_bMove = true;
-		pEffect->m_bGravity = true;
+		pEffect->m_bGravity = false;
 		pEffect->Init();
 	}
 
@@ -100,7 +100,8 @@ void CEffect::Update(void)
 
 		m_pos += m_move;
 
-		m_move.x += (0 - m_move.x)*0.025f;
+		m_move.x += (0 - m_move.x) * 0.025f;
+		m_move.y += (0 - m_move.y) * 0.025f;
 
 		m_col.a -= 0.035f;
 

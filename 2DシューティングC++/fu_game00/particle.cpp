@@ -84,6 +84,17 @@ void CParticle::Draw(void)
 {
 }
 
+void CParticle::SetGravity(void)
+{
+	for (int nCntEffect = 0; nCntEffect < m_EffectNum; nCntEffect++)
+	{
+		if (m_apParticle[nCntEffect] != NULL)
+		{
+			m_apParticle[nCntEffect]->SetGravity(true);
+		}
+	}
+}
+
 void CParticle::SetParticle(int EfeectNum)
 {
 	m_EffectNum = EfeectNum;
@@ -108,8 +119,8 @@ void CParticle::SetParticle(int EfeectNum)
 			break;
 		}
 		// èÓïÒë„ì¸
-		m_move.x = sinf(fAngle - D3DX_PI) * 3.0f;
-		m_move.y = cosf(fAngle + D3DX_PI) * 3.0f;
+		m_move.x = sinf(fAngle + D3DX_PI) * 3.0f;
+		m_move.y = cosf(fAngle - D3DX_PI) * 3.0f;
 		m_move.z = 0.0f;
 
 		if (m_apParticle[nCntEffect] == NULL)

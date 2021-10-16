@@ -14,35 +14,29 @@
 #include "move.h"
 #include "collision.h"
 #include "enemy.h"
+#include "time.h"
+#include "game.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
-#define DAMAGE			(CBoss::STATE_DAMAGE)							// ダメージ状態
-#define NOT_DAMAGE		(CBoss::STATE_NOT_DAMAGE)						// ダメージNO!
-#define NONE			(CBoss::STATE_NONE)								// 何もない状態	
-
 #define DAMAGE_TEXTUER	("data/TEXTURE/stateBoss.png")					// ダメージ状態テクスチャリンク
 #define DAMAGE_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))				// ダメージ状態の色	
 #define DAMAGE_ADD_A	(0.065f)										// ダメージのα値加算値
-
 #define SHILED_TEXTUER	("data/TEXTURE/AuroraRing.png")					// バリアテクスチャリンク
 #define SHILED_COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))				// バリアの色
 #define SHILED_SIZE		(m_size * 2.5f)									// バリアのサイズ
 #define SHILED_ADD_A	(0.04f)											// バリアのα値加算値
-
 #define LIFE_POS_X		(SCREEN_WIDTH - 100.0f)							// ライフのX座標
 #define LIFE_POS_Y		(200.0f - (10 * nCntLife))						// ライフのY座標
 #define LIFE_POS		(D3DXVECTOR3(LIFE_POS_X, LIFE_POS_Y, 0.0f))		// ライフの位置
 #define LIFE_SIZE		(D3DXVECTOR3(10.0f, 5.0f, 0.0f))				// ライフのサイズ
 #define LIFE_TEXTURE	("data/TEXTURE/BossLife.png")					// ライフテクスチャリンク
 #define LIFE_DOWN		((m_fLife * 0.17f + 0.425f))					// ライフの減少計算
-#define LIFE_CNT		(nCntLife * 10)
-
+#define LIFE_CNT		(nCntLife * 10)									// ライフカウント
 #define ADD_MOVE_TIME	(0.54f)											// 移動のカウントの加算値
-#define DECREASE_A		(0.005f)										// α値の減少値
+#define DECREASE_A		(0.008f)										// α値の減少値
 #define ADD_MAX_A		(0.7f)											// α値の最大値
-
 #define CreateEnemy		(CNormalEnemy::Create)							// 敵の生成
 #define CreateEffect	(CEffect::Create)								// エフェクトの生成
 
@@ -82,7 +76,7 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 
 	if (pBoss == NULL)
 	{// NULLチェック
-		pBoss = new CBoss;
+		pBoss = new CBoss;				// インスタンス生成
 		pBoss->SetPos(pos);				// 位置
 		pBoss->SetSize(size);			// サイズ
 		pBoss->m_fLife = nLife;			// ライフ
@@ -99,10 +93,8 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 //=============================================================================
 HRESULT CBoss::Init(void)
 {	
-	m_nDamageCnt = 0;
-	m_nEnemyCnt = 0;
-	m_nBossTime = 0;
-	m_fMoveTime = 0.0f;
+	m_nDamageCnt = 0;	 // ダメージカウント
+	m_fMoveTime = 0.0f;	 // 移動用カウント
 
 	// ライフ設定
 	for (int nCntLife = 0; nCntLife < BOSS_LIFE_STOCK; nCntLife++)
@@ -277,6 +269,7 @@ void CBoss::NotDamageBoss(void)
 //=============================================================================
 void CBoss::MoveBoss(void)
 {
+	// カウント加算
 	m_fMoveTime += ADD_MOVE_TIME;
 
 	switch (m_LifeState)
@@ -313,17 +306,65 @@ void CBoss::MoveBoss(void)
 void CBoss::SummonsEnemy(void)
 {
 	m_pos = CScene2D::GetPos();		// 位置の取得
+	int nFrame = TIME->GetFrame();	// 時間の取得
 
-	int nCntRand = 0;				// 乱数保管用
 
-	nCntRand += Rand(60, 10);		// 乱数生成
-	m_nEnemyCnt++;						// カウント加算
+	switch (m_LifeState)
+	{// 体力の状態
+	case LIFE_RATE_0:
+		if ((nFrame % 130) == 0)
+		{
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
+		}
+		if ((nFrame % 100) == 0)
+		{
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE4);
+		}
+		break;
 
-	int nEnemy0 = Rand(19, 45);
+	case LIFE_RATE_2:
+		if ((nFrame % 120) == 0)
+		{
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
+		}
+		if ((nFrame % 160) == 0)
+		{
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+		}
+		break;
 
-	if ((m_nEnemyCnt % nCntRand) == nEnemy0)
-	{
-		CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
+	case LIFE_RATE_5:
+		if ((nFrame % 156) == 0)
+		{
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+		}
+		if ((nFrame % 150) == 0)
+		{
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE1, MOVE2);
+		}
+
+		break;
+
+	case LIFE_RATE_8:
+		if ((nFrame % 80) == 0)
+		{
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0);
+			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0);
+		}
+
+		break;
+
+	default:
+		break;
 	}
 }
 

@@ -18,7 +18,10 @@
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
-#define BOSS_LIFE_STOCK		(BOSS_LIFE / 10)
+#define BOSS_LIFE_STOCK		(BOSS_LIFE / 10)				// ライフのストック
+#define DAMAGE				(CBoss::STATE_DAMAGE)			// ダメージ状態
+#define NOT_DAMAGE			(CBoss::STATE_NOT_DAMAGE)		// ダメージNO!
+#define NONE				(CBoss::STATE_NONE)				// 何もない状態	
 
 
 //-----------------------------------------------------------------------------
@@ -33,9 +36,7 @@ public:
 		STATE_NONE = 0,
 		STATE_DAMAGE,
 		STATE_NOT_DAMAGE,
-
 		STATE_MAX
-
 	}BOSS_STATE;
 
 	typedef enum LIFE_STATE
@@ -95,15 +96,11 @@ private:
 
 	D3DXVECTOR3			m_OldPos;
 	float				m_fLife;
-
 	bool				m_bShield;
 	bool				m_bDamage;
 	float				m_fA_Damage;
 	float				m_fA_Shield;
-
 	int					m_nDamageCnt;
-	int					m_nEnemyCnt;
-	int					m_nBossTime;
 	float				m_fMoveTime;
 };
 

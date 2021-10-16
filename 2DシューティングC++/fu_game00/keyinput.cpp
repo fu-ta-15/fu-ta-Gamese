@@ -92,5 +92,5 @@ void CKey::Update(void)
 //=============================================================================
 bool CKey::GetState(STATE state, int nKey)
 {
-	return (m_aKeyState[state][nKey] & 0x80) ? true : false;
+	return (m_aKeyState[state][nKey] & 0x80) != 0;
 }

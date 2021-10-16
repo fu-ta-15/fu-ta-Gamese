@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
-#define BOSS						(CGame::GetBoss())
 #define BOSS_DAMAGE					(CBoss::STATE_DAMAGE)
 #define BOSS_NOT_DAMAGE				(CBoss::STATE_NOT_DAMAGE)
 #define BOSS_NONE					(CBoss::STATE_NONE)
@@ -111,7 +110,10 @@ void CEnemy::CollisionEnemy(void)
 
 			if (this->GetLife() == 0)
 			{// ライフがゼロだったら
-				this->m_type = ENEMY_WHITE;
+				m_pDeath = CParticle::Create(m_pos, m_size*0.6f, CParticle::TYPE_EXPLOSION);
+				m_pDeath->SetTexture("data/TEXTURE/Crystal001.png");
+				m_pDeath->SetParticle(60);
+				this->Release();
 			}
 			break;
 
@@ -178,9 +180,11 @@ void CEnemy::CollisionField(void)
 			m_pDeath = CParticle::Create(m_pos, m_size*0.6f, CParticle::TYPE_EXPLOSION);
 			m_pDeath->SetTexture("data/TEXTURE/Fog2001.png");
 			m_pDeath->SetParticle(10);
+			m_pDeath->SetGravity();
 			m_pField = CParticle::Create(m_pos, m_size*0.4f, CParticle::TYPE_EXPLOSION);
 			m_pField->SetTexture("data/TEXTURE/Crystal001.png");
 			m_pField->SetParticle(50);
+			m_pField->SetGravity();
 			break;
 		}
 	}

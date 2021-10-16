@@ -28,38 +28,26 @@ CCollision::~CCollision()
 //=============================================================================
 bool CCollision::CollisionSquare(D3DXVECTOR3 Mypos, D3DXVECTOR3 Mysize, D3DXVECTOR3 Tagepos, D3DXVECTOR3 Tagesize)
 {
-	bool bCol = false;
-
-			if (Mypos.y + Mysize.y > Tagepos.y - Tagesize.y && Mypos.y - Mysize.y < Tagepos.y + Tagesize.y &&
-				Mypos.x + Mysize.x > Tagepos.x - Tagesize.x && Mypos.x - Mysize.x < Tagepos.x + Tagesize.x)
-			{/* 敵の範囲に弾が存在したら */
-				bCol = true;							// 当たり判定は有
-			}
-
-	return bCol;
+	return ((Mypos.y + Mysize.y > Tagepos.y - Tagesize.y) 
+		&& (Mypos.y - Mysize.y < Tagepos.y + Tagesize.y) 
+		&& (Mypos.x + Mysize.x > Tagepos.x - Tagesize.x) 
+		&& (Mypos.x - Mysize.x < Tagepos.x + Tagesize.x));
 }
 
 bool CCollision::CollisionCycle(D3DXVECTOR3 pointpos, D3DXVECTOR3 Cyclepos, float radius)
 {
-	bool bColl = false;
+	float a = pointpos.x - Cyclepos.x;
+	float b = pointpos.y - Cyclepos.y;
+	float c = sqrt(a * a + b * b);
 
-	float A = pointpos.x - Cyclepos.x;
-	float B = pointpos.y - Cyclepos.y;
-	float C = sqrt(A * A + B * B);
-
-	if (C <= radius)
-	{
-		bColl = true;
-	}
-
-	return bColl;
+	return (c <= radius);
 }
 
-D3DXVECTOR3 CCollision::MeshCollision(const D3DXVECTOR3 lineStart1, const D3DXVECTOR3 lineEnd1, const D3DXVECTOR3 point, COLLISION coltype)
+D3DXVECTOR3 CCollision::MeshCollision(const D3DXVECTOR3& lineStart1, const D3DXVECTOR3& lineEnd1, const D3DXVECTOR3& point, COLLISION coltype)
 {
-	D3DXVECTOR3 pos;
+	D3DXVECTOR3 pos = ZeroVector3;
 
-	if (OutProduct(lineStart1, lineEnd1, point) == true)
+	if (OutProduct(lineStart1, lineEnd1, point))
 	{
 		pos = WaveCollision(lineStart1, lineEnd1, point, coltype);
 	}
@@ -68,9 +56,29 @@ D3DXVECTOR3 CCollision::MeshCollision(const D3DXVECTOR3 lineStart1, const D3DXVE
 }
 
 //=============================================================================
+// 外積の当たり判定
+//=============================================================================
+bool CCollision::OutProduct(const D3DXVECTOR3& lineStart1, const D3DXVECTOR3& lineEnd1, const D3DXVECTOR3& point)
+{
+	bool Collision = false;
+
+	float V1_X = (lineEnd1.x - lineStart1.x);
+	float V1_Y = (lineEnd1.y - lineStart1.y);
+
+	float V2_X = (point.x - lineStart1.x);
+	float V2_Y = (point.y - lineStart1.y);
+
+	float L1 = V1_Y * V2_X;
+	float L2 = V2_Y * V1_X;
+	float L3 = L1 - L2;
+
+	return (L3 < 0);
+}
+
+//=============================================================================
 // 内積による反射ベクトル
 //=============================================================================
-D3DXVECTOR3 CCollision::CrossProduct(const D3DXVECTOR3 v1, const D3DXVECTOR3 v2)
+D3DXVECTOR3 CCollision::CrossProduct(const D3DXVECTOR3& v1, const D3DXVECTOR3& v2)
 {
 	D3DXVECTOR3 VecF;	// 進行ベクトル
 	float VecN;			// 壁の法線ベクトル(法線のため1固定）
@@ -83,7 +91,6 @@ D3DXVECTOR3 CCollision::CrossProduct(const D3DXVECTOR3 v1, const D3DXVECTOR3 v2)
 
 	float VecWX;		// 反射ベクトル X
 	float VecWY;		// 反射ベクトル Z
-
 
 	// 進行ベクトルの代入
 	VecF = v1;
@@ -106,40 +113,16 @@ D3DXVECTOR3 CCollision::CrossProduct(const D3DXVECTOR3 v1, const D3DXVECTOR3 v2)
 	return D3DXVECTOR3(VecWX, VecWY, 0.0f);
 }
 
-//=============================================================================
-// 外積の当たり判定
-//=============================================================================
-bool CCollision::OutProduct(const D3DXVECTOR3 lineStart1, const D3DXVECTOR3 lineEnd1, const D3DXVECTOR3 point)
-{
-	bool Collision = false;
-
-	float V1_X = (lineEnd1.x - lineStart1.x);
-	float V1_Y = (lineEnd1.y - lineStart1.y);
-
-	float V2_X = (point.x - lineStart1.x);
-	float V2_Y = (point.y - lineStart1.y);
-
-	float L1 = V1_Y * V2_X;
-	float L2 = V2_Y * V1_X;
-	float L3 = L1 - L2;
-
-	if (L3 < 0)
-	{
-		Collision = true;
-	}
-
-	return Collision;
-}
 
 //=============================================================================
 // Y座標が？の時に求める処理
 //=============================================================================
-D3DXVECTOR3 CCollision::WaveCollision(const D3DXVECTOR3 start, const D3DXVECTOR3 end, const D3DXVECTOR3 nowpos, COLLISION coltype)
+D3DXVECTOR3 CCollision::WaveCollision(const D3DXVECTOR3& start, const D3DXVECTOR3& end, const D3DXVECTOR3& nowpos, COLLISION coltype)
 {
-	D3DXVECTOR3 tagPos = {};
+	D3DXVECTOR3 tagPos = ZeroVector3;		// 
+	D3DXVECTOR3 LengthPos = ZeroVector3;	// 長さ
 	D3DXVECTOR3 startPos = start;
 	D3DXVECTOR3 endPos = end;
-	D3DXVECTOR3 LengthPos;
 
 	float pos_x;
 	float pos_y;
@@ -153,15 +136,14 @@ D3DXVECTOR3 CCollision::WaveCollision(const D3DXVECTOR3 start, const D3DXVECTOR3
 	float Xpercent = 100 - pos_x;
 	float Ypercent = 100 - pos_y;
 
-	tagPos.y = LengthPos.y *(pos_x / 100);
-
 	tagPos.x = LengthPos.x * (pos_y / 100);
+	tagPos.y = LengthPos.y * (pos_x / 100);
 
 	if (start.y < end.y)
 	{
 		tagPos.y = end.y + tagPos.y;
 	}
-	if (start.y > end.y)
+	else if (start.y > end.y)
 	{
 		tagPos.y = start.y + tagPos.y;
 	}
@@ -170,15 +152,15 @@ D3DXVECTOR3 CCollision::WaveCollision(const D3DXVECTOR3 start, const D3DXVECTOR3
 	{
 		tagPos.y = start.y;
 	}
-
-	if (tagPos.y < 0)
+	else if (tagPos.y < 0)
 	{
 		tagPos.y *= -1;
 	}
-	if (tagPos.x < 0)
+	else if (tagPos.x < 0)
 	{
 		tagPos.x *= -1;
 	}
+
 	return tagPos;
 }
 

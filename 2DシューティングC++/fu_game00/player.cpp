@@ -42,6 +42,7 @@
 CPlayer::CPlayer() : CScene2D(OBJ_PLAYER)
 {
 	this->m_col = WhiteColor;				// 色情報
+	this->m_posOld = ZeroVector3;
 	this->m_fLife = PLAYER_LIFE;			// 体力
 	this->m_state = STATE_NONE;				// 状態
 	this->m_bUse = true;					// 使用中
@@ -82,9 +83,9 @@ CPlayer * CPlayer::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 //=============================================================================
 HRESULT CPlayer::Init(void)
 {
-	m_tex = D3DXVECTOR2(2.0f, 0.0f);
-	m_number = D3DXVECTOR2(0.0f, 0.0f);
-	m_nAnimeCnt = 0;
+	m_tex = D3DXVECTOR2(2, 0);
+	m_number = D3DXVECTOR2(1, 0);
+	m_nAnimeCnt = 1;
 
 	// プレイヤー表示設定
 	CScene2D::Init(m_pos, m_size);
@@ -256,6 +257,7 @@ void CPlayer::PlayerMove(void)
 			m_bJunp = true;			// ジャンプ中
 		}
 	}
+
 	/* プレイヤーの落下減速 */
 	if (m_bJunp == true)
 	{// ジャンプ中かつ、重力がプラスの時
@@ -324,7 +326,7 @@ void CPlayer::FieldControl(void)
 			}
 			if (m_bFall == false)
 			{
-				D3DXVECTOR3 m_posOld = WAVE_COLLISION(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA, COLL_TYPE_Y);	// 戻す分を算出
+				m_posOld = WAVE_COLLISION(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA, COLL_TYPE_Y);	// 戻す分を算出
 				m_move.y = 0.0f;					// 重力ゼロ
 				m_bJunp = false;					// ジャンプ可能
 				m_pos.y = m_posOld.y - m_size.y;	// 画面内まで移動させる
@@ -339,7 +341,7 @@ void CPlayer::FieldControl(void)
 //=============================================================================
 void CPlayer::PlayerAnime(void)
 {
-	if ((m_nAnimeCnt % 10) == 0)
+	if ((m_nAnimeCnt % 5) == 0)
 	{// カウントが１０あまり１の時
 		m_number.x += 1;	// テクスチャ座標加算
 		m_nAnimeCnt = 0;
@@ -400,7 +402,7 @@ void CPlayer::DamagePlayer(void)
 	{// カウントが一定まで来たら
 		m_fLife -= (m_fLife * 0.056f + 1.2f);
 		m_state = STATE_NONE;	 // 状態を戻す
-		m_nDamageCnt = 0.0f;	 // カウントを初期化する
+		m_nDamageCnt = 0;	 // カウントを初期化する
 	}
 }
 

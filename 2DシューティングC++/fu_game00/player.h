@@ -86,6 +86,7 @@ private:
 
 	D3DXVECTOR3			m_pos;				// 位置
 	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置
+	D3DXVECTOR3			m_posOld;
 	D3DXVECTOR3			m_move;				// 移動量
 	D3DXVECTOR3			m_size;				// サイズ
 	D3DXVECTOR2			m_tex;				// テクスチャの分割数

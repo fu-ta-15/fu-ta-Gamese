@@ -18,6 +18,8 @@
 //-----------------------------------------------------------------------------
 #define GET_PLAYER		(CGame::GetPlayer())
 #define MESH_GAME		(CGame::GetMesh())
+#define BOSS			(CGame::GetBoss())
+#define TIME			(CGame::GetTime())
 
 
 //-----------------------------------------------------------------------------
@@ -50,16 +52,17 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	static CBoss* GetBoss(void) { return m_pBoss; }
-	static CMesh* GetMesh(void) { return m_pField; }
-	static CPlayer* GetPlayer(void) { return m_pPlayer; }
+	static CBoss* GetBoss(void)		{ return m_pBoss; }
+	static CMesh* GetMesh(void)		{ return m_pField; }
+	static CPlayer* GetPlayer(void)	{ return m_pPlayer; }
+	static CTime* GetTime(void)		{ return m_pTime; }
 
 private:
 
 	int					m_RandomHeight;
-	float				m_nWaveHeight;
+	float				m_fWaveHeight;
 	float				m_nWaveCnt;
-	CMesh				*m_LifeMesh;
+	CMesh				*m_pLifeMesh;
 
 	static CPlayer		*m_pPlayer;
 	static CScore		*m_pScore;

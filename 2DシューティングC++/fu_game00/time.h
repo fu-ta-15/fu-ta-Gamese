@@ -37,12 +37,14 @@ public:
 	void SetTime(int nTime);
 	void AddTime(int nValue);
 	int AddCnt(int nValue);
-	int GetTime();
+	int GetTime(void);
+	int GetFrame(void);
 
 private:
 	CNumber  *m_apNumber[MAX_TIME];
 	int m_nTime;
 	int m_nCntTime;
+	int m_nFrame;
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_size;
 };

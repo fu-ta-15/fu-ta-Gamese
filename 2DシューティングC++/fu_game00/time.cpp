@@ -146,6 +146,7 @@ void CTime::AddTime(int nValue)
 int CTime::AddCnt(int nValue)
 {
 	m_nCntTime += 1;	// カウント更新
+	m_nFrame = m_nCntTime;
 	return m_nCntTime;	// カウント情報を返す
 }
 
@@ -155,4 +156,9 @@ int CTime::AddCnt(int nValue)
 int CTime::GetTime()
 {
 	return m_nTime;
+}
+
+int CTime::GetFrame(void)
+{
+	return m_nFrame;
 }
