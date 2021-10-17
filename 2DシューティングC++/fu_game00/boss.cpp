@@ -287,17 +287,18 @@ void CBoss::MoveBoss(void)
 		break;
 
 	case LIFE_RATE_5:
-		m_pos = CMove::TargetPosMove(D3DXVECTOR3(WIDTH_HALF, HEIGHT_HALF, 0.0f), m_pos, 0.023f);
+
 		break;
 
 	case LIFE_RATE_8:
-		m_pos = CMove::TargetPosMove(D3DXVECTOR3(SCREEN_WIDTH - 100, HEIGHT_HALF, 0.0f), m_pos, 0.023f);
+		
 		break;
 
 	default:
 		break;
 	}
 	CScene2D::SetPos(m_pos);
+
 }
 
 //=============================================================================

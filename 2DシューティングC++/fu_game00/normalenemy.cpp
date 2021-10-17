@@ -57,7 +57,7 @@ CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 siz
 	{// NULLチェック
 		pNormalEnemy = new CNormalEnemy;
 		pNormalEnemy->m_bCollision = false;		 // 当たり判定
-		pNormalEnemy->m_move = ENEMY_TYPE1_MOVE; // 移動量
+		pNormalEnemy->m_move = ENEMY_TYPE1_MOVE;  // 移動量
 		pNormalEnemy->SetPos(pos);				 // 位置
 		pNormalEnemy->SetSize(size);			 // サイズ
 		pNormalEnemy->SetMoveType(movetype);	 // 移動のタイプ
