@@ -66,16 +66,21 @@ void CEnemy::Uninit(void)
 //=============================================================================
 void CEnemy::Update(void)
 {
-	if (this->CollisionPlayer() == true && GET_PLAYER->GetState() != CPlayer::STATE_KNOCKUP)
+	if (this->CollisionPlayer() == true && CGame::GetPlayer()->GetState() != CPlayer::STATE_KNOCKUP)
 	{// プレイヤーとの当たり判定
-		if (this->GetEnemyType() == ENEMY_BLACK)
-		{// 敵が暗い状態
-			GET_PLAYER->SetCollEnemy(true);
+		switch (this->m_type)
+		{
+		case ENEMY_BLACK:
+			CGame::GetPlayer()->SetCollEnemy(true);
 			this->Release();
-		}
-		else if (this->GetEnemyType() == ENEMY_WHITE)
-		{// 敵が明るい状態
+			break;
+
+		case ENEMY_WHITE:
 			this->Release();
+			break;
+
+		default:
+			break;
 		}
 	}
 	// 弾との当たり判定
@@ -144,20 +149,15 @@ void CEnemy::CollisionEnemy(void)
 //=============================================================================
 bool CEnemy::CollisionPlayer(void)
 {
-	bool bCollision = false;
-
 	D3DXVECTOR3 pos = CGame::GetPlayer()->GetPos();
 	D3DXVECTOR3 size = CGame::GetPlayer()->GetSize();
 
-	bCollision = CCollision::CollisionCycle(m_pos, pos, size.x);
-
-	return bCollision;
+	return  CCollision::CollisionCycle(m_pos, pos, size.x);
 }
 
 void CEnemy::CollisionField(void)
 {
-	CMesh* pMesh = NULL;
-	pMesh = MESH_GAME;
+	CMesh* pMesh = MESH_GAME;
 
 	// 頂点情報の取得
 	VERTEX_2D *pVtx = pMesh->GetVERTEX();
@@ -165,27 +165,26 @@ void CEnemy::CollisionField(void)
 	// 底辺の中心座標設定
 	D3DXVECTOR3 posA = D3DXVECTOR3(m_pos.x, m_pos.y + m_size.y, 0.0f);
 
-	// 外積当たり判定
-	bool bOutPro = false;
-
 	for (int nCnt = 0; nCnt < pMesh->GetVtxNum() / 2; nCnt++)
 	{// メッシュポリゴン上辺のみ算出
 		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
 		{// 二つの頂点と点の外積判定
-			bOutPro = CCollision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
-		}
-		if (bOutPro == true)
-		{// 点が二点より下にいたら
-			Release();
-			m_pDeath = CParticle::Create(m_pos, m_size*0.6f, CParticle::TYPE_EXPLOSION);
-			m_pDeath->SetTexture("data/TEXTURE/Fog2001.png");
-			m_pDeath->SetParticle(10);
-			m_pDeath->SetGravity();
-			m_pField = CParticle::Create(m_pos, m_size*0.4f, CParticle::TYPE_EXPLOSION);
-			m_pField->SetTexture("data/TEXTURE/Crystal001.png");
-			m_pField->SetParticle(50);
-			m_pField->SetGravity();
-			break;
+			if (CCollision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA))
+			{// 点が二点より下にいたら
+
+				Release();
+
+				m_pDeath = CParticle::Create(m_pos, m_size*0.6f, CParticle::TYPE_EXPLOSION);
+				m_pDeath->SetTexture("data/TEXTURE/Fog2001.png");
+				m_pDeath->SetParticle(10);
+				m_pDeath->SetGravity();
+
+				m_pField = CParticle::Create(m_pos, m_size*0.4f, CParticle::TYPE_EXPLOSION);
+				m_pField->SetTexture("data/TEXTURE/Crystal001.png");
+				m_pField->SetParticle(50);
+				m_pField->SetGravity();
+				break;
+			}
 		}
 	}
 }

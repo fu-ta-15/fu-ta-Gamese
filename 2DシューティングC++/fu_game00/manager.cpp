@@ -92,7 +92,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pFade->Init();
 
 	// フェードしてからタイトルへ
-	m_pFade->SetFade(MODE_GAME);
+	m_pFade->SetFade(MODE_TITLE);
 
 	return S_OK;
 }
