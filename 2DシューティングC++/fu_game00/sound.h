@@ -26,13 +26,6 @@ public:
 		SOUND_LABEL_BGM002,			// ÉQÅ[ÉÄ
 		SOUND_LABEL_BGM003,			// result
 
-		SOUND_LABEL_SE_PAUSE0,		// íeî≠éÀâπ
-		SOUND_LABEL_SE_PAUSE1,		// ÉqÉbÉgâπ
-		SOUND_LABEL_SE_PAUSE2,		// îöî≠âπ
-		SOUND_LABEL_SE_ATTACK,		// íeî≠éÀâπ
-		SOUND_LABEL_SE_OK,
-		SOUND_LABEL_SE_NO,
-
 		SOUND_LABEL_MAX,
 	} SOUND_LABEL;
 

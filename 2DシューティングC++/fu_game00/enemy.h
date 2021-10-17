@@ -17,27 +17,27 @@
 //-----------------------------------------------------------------------------
 // 敵の派生クラスに使用するためのマクロ変数
 //-----------------------------------------------------------------------------
-#define MAX_ENEMY		(256)
+#define MAX_ENEMY			(256)
 
-#define ENEMY_POS		(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT / 2, 0.0f))
-#define ENEMY_SIZE		(D3DXVECTOR3(17.0f, 17.0f, 0.0f))
-#define ENEMY_MOVE		(D3DXVECTOR3(-2.0f, 0.0f, 0.0f))
-#define ENEMY_LIFE		(2)
+#define ENEMY_POS			(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT / 2, 0.0f))
+#define ENEMY_SIZE			(D3DXVECTOR3(17.0f, 17.0f, 0.0f))
+#define ENEMY_MOVE			(D3DXVECTOR3(-2.0f, 0.0f, 0.0f))
+#define ENEMY_LIFE			(2)
 
-#define BOSS_POS_Y		(368)
-#define BOSS_POS_X		(1066)
-#define BOSS_SIZE_Y		(75)
-#define BOSS_SIZE_X		(75)
+#define BOSS_POS_Y			(368)
+#define BOSS_POS_X			(1066)
+#define BOSS_SIZE_Y			(75)
+#define BOSS_SIZE_X			(75)
 
-#define BOSS_POS		(D3DXVECTOR3(BOSS_POS_X, BOSS_POS_Y, 0.0f))
-#define BOSS_SIZE		(D3DXVECTOR3(BOSS_SIZE_X, BOSS_SIZE_Y, 0.0f))
-#define BOSS_LIFE		(150)
+#define BOSS_POS			(D3DXVECTOR3(BOSS_POS_X, BOSS_POS_Y, 0.0f))
+#define BOSS_SIZE			(D3DXVECTOR3(BOSS_SIZE_X, BOSS_SIZE_Y, 0.0f))
+#define BOSS_LIFE			(150)
 
 #define ENEMY_TYPE0			(CEnemy::ENEMY_BLACK)
 #define ENEMY_TYPE1			(CEnemy::ENEMY_WHITE)
 #define ENEMY_TYPE2			(CEnemy::ENEMY_BOSS)
 
-#define ENEMY_TEXTURE0	("data/TEXTURE/SnowCrystals_M.png")	
+#define ENEMY_TEXTURE0		("data/TEXTURE/SnowCrystals_M.png")	
 
 //-----------------------------------------------------------------------------
 // クラス
@@ -89,8 +89,6 @@ public:
 	int Rand(int nValue, int AddnValue) { return rand() % nValue + AddnValue; }
 
 protected:
-	CParticle *m_pDeath;
-	CParticle *m_pField;
 
 	D3DXVECTOR3				m_pos;							// 位置
 	D3DXVECTOR3				m_size;							// サイズ

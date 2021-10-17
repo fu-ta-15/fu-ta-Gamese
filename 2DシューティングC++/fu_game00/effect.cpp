@@ -49,7 +49,7 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 	return pEffect;
 }
 
-CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVECTOR3 move)
+CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVECTOR3 move, LPDIRECT3DTEXTURE9 ptex)
 {
 	CEffect *pEffect = NULL;
 
@@ -59,6 +59,7 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVEC
 		pEffect->m_pos = pos;
 		pEffect->m_size = size;
 		pEffect->m_move = move;
+		pEffect->SetTexture(ptex);
 		pEffect->m_bMove = true;
 		pEffect->m_bGravity = false;
 		pEffect->Init();

@@ -14,6 +14,7 @@
 #include "manager.h"
 #include "fade.h"
 #include "score.h"
+#include "sound.h"
 
 //-----------------------------------------------------------------------------
 // 静的メンバ変数
@@ -54,6 +55,8 @@ CResult * CResult::Create(void)
 //=============================================================================
 HRESULT CResult::Init(void)
 {
+	CSound *pSound = CManager::GetSound();
+
 	m_ResultUI[0] = CScene2D::Create(CENTER_POS, CENTER_POS);
 	m_ResultUI[0]->CreateTexture("data/TEXTURE/BG.png");
 	m_ResultUI[1] = CScene2D::Create(CENTER_POS, D3DXVECTOR3(200.0f, 200.0f, 0.0f));
@@ -66,6 +69,8 @@ HRESULT CResult::Init(void)
 		m_ResultUI[1]->CreateTexture("data/TEXTURE/fail.png");
 	}
 
+	pSound->PlaySound(CSound::SOUND_LABEL_BGM003);
+
 	return S_OK;
 }
 
@@ -74,6 +79,9 @@ HRESULT CResult::Init(void)
 //=============================================================================
 void CResult::Uninit(void)
 {
+	CSound *pSound = CManager::GetSound();
+	pSound->StopSound();
+
 	//オブジェクトの破棄
 	Release();
 }

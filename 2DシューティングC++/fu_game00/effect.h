@@ -34,7 +34,7 @@ public:
 	~CEffect();
 
 	static CEffect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
-	static CEffect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVECTOR3 move);
+	static CEffect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVECTOR3 move, LPDIRECT3DTEXTURE9 ptex);
 
 	HRESULT Init(void);
 	void Uninit(void);

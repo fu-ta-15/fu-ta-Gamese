@@ -17,14 +17,12 @@
 //-----------------------------------------------------------------------------
 #define MAX_EFFECT_NUM			(256)
 
-//-----------------------------------------------------------------------------
-// クラス
-//-----------------------------------------------------------------------------
-class CParticle
+
+
+namespace Particle
 {
-public:
 	// Particle種類
-	typedef enum ParticleType
+	enum ParticleType
 	{
 		TYPE_NONE = 0,
 		TYPE_EXPLOSION,
@@ -33,37 +31,11 @@ public:
 		TYPE_UP_FAN,
 		TYPE_DOWN_FAN,
 		PARTICLE_MAX
-	}ParticleType;
+	};
 
-	//-----------------------------------------------------------------------------
-	// メンバ関数
-	//-----------------------------------------------------------------------------
-	CParticle();
-	~CParticle();
+	void SetParticle(const D3DXVECTOR3& pos, const D3DXVECTOR3& size, int EfeectNum, ParticleType type, const LPCSTR pSrcFile);
+	LPDIRECT3DTEXTURE9 TextureCreate(LPCSTR pSrcFile, LPDIRECT3DTEXTURE9 pTex);
 
-	static CParticle *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, ParticleType type);
-
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
-
-	void SetGravity(void);
-
-	void SetParticle(int EfeectNum);
-	HRESULT SetTexture(const LPCSTR pSrcFile);
-
-private:
-	LPDIRECT3DTEXTURE9			m_pTex = NULL;			// テクスチャへのポイント
-
-	int				m_EffectNum;
-	D3DXVECTOR3		m_pos;
-	D3DXVECTOR3		m_size;
-	D3DXVECTOR3		m_move;
-
-	ParticleType	m_type;
-
-	CEffect			*m_apParticle[MAX_EFFECT_NUM];
-};
+}
 
 #endif // !_PARTICLE_H_

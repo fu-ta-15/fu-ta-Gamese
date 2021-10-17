@@ -27,7 +27,8 @@ CSound::SOUNDPARAM CSound::m_aParam[CSound::SOUND_LABEL_MAX] =
 { /* {"data/BGM or SE/音声ファイル(wav)",-1(BGM) or 0(SE)} */
 	{ "data/BGM/titleBgm.wav",-1 },
 	{ "data/BGM/tutorialBgm.wav",-1 },
-	{"data/BGM/gameBgm.wav",-1},
+	{ "data/BGM/gameBgm.wav",-1 },
+	{ "data/BGM/resultBgm.wav",-1 },
 };
 //=============================================================================
 // コンストラクタ

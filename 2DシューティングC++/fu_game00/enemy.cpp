@@ -16,6 +16,7 @@
 #include "collision.h"
 #include "mesh.h"
 
+
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
@@ -31,8 +32,6 @@
 //=============================================================================
 CEnemy::CEnemy(Priority type) : CScene2D(type)
 {
-	m_pDeath = NULL;
-	m_pField = NULL;
 }
 
 //=============================================================================
@@ -115,9 +114,6 @@ void CEnemy::CollisionEnemy(void)
 
 			if (this->GetLife() == 0)
 			{// ライフがゼロだったら
-				m_pDeath = CParticle::Create(m_pos, m_size*0.6f, CParticle::TYPE_EXPLOSION);
-				m_pDeath->SetTexture("data/TEXTURE/Crystal001.png");
-				m_pDeath->SetParticle(60);
 				this->Release();
 			}
 			break;
@@ -173,16 +169,7 @@ void CEnemy::CollisionField(void)
 			{// 点が二点より下にいたら
 
 				Release();
-
-				m_pDeath = CParticle::Create(m_pos, m_size*0.6f, CParticle::TYPE_EXPLOSION);
-				m_pDeath->SetTexture("data/TEXTURE/Fog2001.png");
-				m_pDeath->SetParticle(10);
-				m_pDeath->SetGravity();
-
-				m_pField = CParticle::Create(m_pos, m_size*0.4f, CParticle::TYPE_EXPLOSION);
-				m_pField->SetTexture("data/TEXTURE/Crystal001.png");
-				m_pField->SetParticle(50);
-				m_pField->SetGravity();
+				Particle::SetParticle(m_pos, m_size, 30, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 				break;
 			}
 		}
