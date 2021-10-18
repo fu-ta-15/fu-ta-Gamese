@@ -90,6 +90,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hInstance,
 		NULL);
 
+
+
+
+
 	// managerのインスタンスを作成
 	CManager *pManager = NULL;
 	pManager = new CManager;
@@ -97,7 +101,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (pManager != NULL)
 	{
 		// 初期化処理
-		if (FAILED(pManager->Init(hInstance, hWnd, true)))
+		if (FAILED(pManager->Init(hInstance, hWnd, false)))
 		{
 			return -1;
 		}

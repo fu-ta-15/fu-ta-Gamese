@@ -79,7 +79,7 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 		pBoss = new CBoss;				// インスタンス生成
 		pBoss->SetPos(pos);				// 位置
 		pBoss->SetSize(size);			// サイズ
-		pBoss->m_fLife = nLife;			// ライフ
+		pBoss->m_fLife = (float)nLife;	// ライフ
 		pBoss->SetCol(WhiteColor);		// 色
 		pBoss->SetType(ENEMY_TYPE2);	// タイプ
 		pBoss->Init();					// 初期化
