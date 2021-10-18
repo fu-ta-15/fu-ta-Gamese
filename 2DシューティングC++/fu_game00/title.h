@@ -38,7 +38,7 @@ public:
 	void Draw(void);
 
 private:
-	void ButtonUI(void);								// ButtonUIの処理
+	void ButtonUI(void);								
 	void TitleLogo(int nTime);
 
 	static CScene2D*			m_paTitleUI[UI_MAX];	// タイトルUIポリゴン

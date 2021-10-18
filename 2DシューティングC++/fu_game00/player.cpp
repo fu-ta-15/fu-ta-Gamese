@@ -22,19 +22,10 @@
 //-----------------------------------------------------------------------------
 #define PLAYER_MOVE					(5.0f)
 #define PLAYER_JUNP					(20.0f)
-#define PLAYER_RETURN_FLOOR			(SCREEN_HEIGHT - m_size.y)
-#define MOVE_DECELERATION			(D3DXVECTOR3(1.0f, 0.02f, 0.0f))
 
 #define BULLET_SIZE					(D3DXVECTOR3(20.0f, 20.0f, 0.0f))
-#define BULLET_MOVE					(10.0f)
-#define BULLET_MOVE_RIGHT			(D3DXVECTOR3(BULLET_MOVE, 0.0f, 0.0f))
-#define BULLET_MOVE_LEFT			(D3DXVECTOR3(-BULLET_MOVE, 0.0f, 0.0f))
-
-#define GRAVITY						(1.0f)
-#define PLAYER_COLL_POS				(D3DXVECTOR3(m_pos.x, m_pos.y + m_size.y, m_pos.z))
-
-#define MESH_GAME					(CGame::GetMesh())
-#define MESH_TUTORIAL				(CTutorial::GetMesh())
+#define BULLET_MOVE_RIGHT			(D3DXVECTOR3(10.0f, 0.0f, 0.0f))
+#define BULLET_MOVE_LEFT			(D3DXVECTOR3(-10.0f, 0.0f, 0.0f))
 
 //=============================================================================
 // コンストラクタ
@@ -42,13 +33,13 @@
 CPlayer::CPlayer() : CScene2D(OBJ_PLAYER)
 {
 	this->m_col = WhiteColor;				// 色情報
-	this->m_posOld = ZeroVector3;
+	this->m_posOld = ZeroVector3;			// プレイヤーの過去の位置
 	this->m_fLife = PLAYER_LIFE;			// 体力
 	this->m_state = STATE_NONE;				// 状態
 	this->m_bUse = true;					// 使用中
-	this->m_nBullet = PLAYER_BULLET_STOCK;	// 弾のストック
+	this->m_nBullet = 10;					// 弾のストック
 	this->m_pShield = NULL;					// シールド
-	this->m_nBulletTime = 0;
+	this->m_nBulletTime = 0;				// 弾の復活時間のカウント
 	this->m_bAlive = true;					// 生存中
 }
 
@@ -142,7 +133,7 @@ void CPlayer::Update(void)
 	PlayerLife();
 
 	// 移動量の加算
-	m_move.y += GRAVITY;
+	m_move.y += 1.0f;
 
 	// 移動量の加算
 	m_pos += m_move;
@@ -274,7 +265,7 @@ void CPlayer::PlayerMove(void)
 void CPlayer::PlayerMoveControl(void)
 {
 	// 移動・回転量の減衰
-	m_move = CMove::MoveControl(m_move, MOVE_DECELERATION);
+	m_move = Move::MoveControl(m_move, D3DXVECTOR3(1.0f, 0.02f, 0.0f));
 }
 
 //=============================================================================
@@ -282,6 +273,7 @@ void CPlayer::PlayerMoveControl(void)
 //=============================================================================
 void CPlayer::FieldControl(void)
 {
+	// Meshのポインタ
 	CMesh* pMesh = NULL;
 
 	// メッシュポリゴンの情報取得
@@ -289,11 +281,11 @@ void CPlayer::FieldControl(void)
 	{
 		// チュートリアル
 	case CManager::MODE_TUTORIAL:
-		pMesh = MESH_TUTORIAL;
+		pMesh = CTutorial::GetMesh();
 		break;
 		// ゲーム
 	case CManager::MODE_GAME:
-		pMesh = MESH_GAME;
+		pMesh = CGame::GetMesh();
 		break;
 	default:
 		break;
@@ -302,8 +294,9 @@ void CPlayer::FieldControl(void)
 	// 頂点情報の取得
 	VERTEX_2D *pVtx = pMesh->GetVERTEX();
 
+
 	// 底辺の中心座標設定
-	D3DXVECTOR3 posA = PLAYER_COLL_POS;
+	D3DXVECTOR3 posA = D3DXVECTOR3(m_pos.x, m_pos.y + m_size.y, m_pos.z);
 
 	// 外積当たり判定
 	bool bOutPro = false;
@@ -312,9 +305,10 @@ void CPlayer::FieldControl(void)
 	{// メッシュポリゴン上辺のみ算出
 		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
 		{// 二つの頂点と点の外積判定
-			bOutPro = CCollision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
+			bOutPro = Collision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
 		}
-		if (bOutPro == true)
+
+		if (bOutPro)
 		{// 点が二点より下にいたら
 			if (pVtx[nCnt].pos.y > SCREEN_HEIGHT &&  pVtx[nCnt + 1].pos.y > SCREEN_HEIGHT)
 			{
@@ -322,11 +316,7 @@ void CPlayer::FieldControl(void)
 			}
 			else
 			{
-				m_bFall = false;
-			}
-			if (m_bFall == false)
-			{
-				m_posOld = CCollision::WaveCollision(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA, CCollision::TYPE_COL_Y);	// 戻す分を算出
+				m_posOld = Collision::WaveCollision(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);	// 戻す分を算出
 				m_move.y = 0.0f;					// 重力ゼロ
 				m_bJunp = false;					// ジャンプ可能
 				m_pos.y = m_posOld.y - m_size.y;	// 画面内まで移動させる
@@ -395,8 +385,8 @@ void CPlayer::DamagePlayer(void)
 	m_nDamageCnt++;	// カウントアップ
 	
 	// 目的の場所へノックアップ
-	m_pos.x = CMove::TargetPosMove(D3DXVECTOR3(m_KnockUpPos.x, 0.0f, 0.0f), m_pos, 0.035f).x;
-	m_pos.y = CMove::TargetPosMove(D3DXVECTOR3(0.0f, m_KnockUpPos.y, 0.0f), m_pos, 0.015f).y;
+	m_pos.x = Move::TargetPosMove(D3DXVECTOR3(m_KnockUpPos.x, 0.0f, 0.0f), m_pos, 0.035f).x;
+	m_pos.y = Move::TargetPosMove(D3DXVECTOR3(0.0f, m_KnockUpPos.y, 0.0f), m_pos, 0.015f).y;
 
 	if ((m_nDamageCnt % 15) == 0)
 	{// カウントが一定まで来たら

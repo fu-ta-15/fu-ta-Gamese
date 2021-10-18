@@ -17,24 +17,19 @@
 //-----------------------------------------------------------------------------
 //　マクロ定義
 //-----------------------------------------------------------------------------
-#define POLYGON_VTX							(2)
-#define ADD_SIDE_INDEX						(6 + (2 * m_nVertical))
-#define ADD_VER_INDEX						(2 * m_nVertical)
-#define DRAW_INDX							(m_nIdx - 2)
-
-//-----------------------------------------------------------------------------
-//　静的メンバ変数
-//-----------------------------------------------------------------------------
-
+#define POLYGON_VTX							(2)							// ポリゴンの数
+#define ADD_SIDE_INDEX						(6 + (2 * m_nVertical))		// 横線の計算
+#define ADD_VER_INDEX						(2 * m_nVertical)			// 縦線の計算
+#define DRAW_INDX							(m_nIdx - 2)				// 描画するときのポリゴン数
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CMesh::CMesh(Priority type) : CScene(type)
 {
-	m_pVtxBuff = NULL;
-	m_pTexture = NULL;
-	m_pIdxBuff = NULL;
+	m_pVtxBuff = NULL;	 // 頂点バッファのポインタ
+	m_pTexture = NULL;	 // テクスチャのポインタ
+	m_pIdxBuff = NULL;	 // インデックスバッファのポインタ
 }
 
 //=============================================================================
@@ -51,14 +46,17 @@ CMesh * CMesh::Create(const int nVertical, const int nSide, const D3DXVECTOR3 po
 {
 	CMesh *pMesh = NULL;
 
-	pMesh = new CMesh(type);
-	pMesh->SetPos(pos);
-	pMesh->SetMove(ZeroVector3);
-	pMesh->SetSize(size);
-	pMesh->SetSide(nSide);
-	pMesh->m_col = WhiteColor;
-	pMesh->SetVertical(nVertical);
-	pMesh->Init();
+	if (pMesh == NULL)
+	{// NULLチェック
+		pMesh = new CMesh(type);
+		pMesh->SetPos(pos);
+		pMesh->SetMove(ZeroVector3);
+		pMesh->SetSize(size);
+		pMesh->SetSide(nSide);
+		pMesh->m_col = WhiteColor;
+		pMesh->SetVertical(nVertical);
+		pMesh->Init();
+	}
 
 	return pMesh;
 }
@@ -85,8 +83,12 @@ HRESULT CMesh::Init(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
-	m_nVtx = VertexCreate(m_nVertical, m_nSide);			// 総合頂点数
-	m_nIdx = IndexCreate(m_nVertical, m_nSide);				// 総合インデックス
+	// 総合頂点数
+	m_nVtx = VertexCreate(m_nVertical, m_nSide);
+
+	// 総合インデックス
+	m_nIdx = IndexCreate(m_nVertical, m_nSide);				
+
 	// 頂点バッファの生成
 	if (FAILED(pDevice->CreateVertexBuffer((sizeof(VERTEX_2D) * m_nVtx),
 		D3DUSAGE_WRITEONLY,
@@ -100,13 +102,17 @@ HRESULT CMesh::Init(void)
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
-	MeshSetPos(m_nVertical, m_nSide, m_pVtx);		// 位置の設定
+	// 位置の設定
+	MeshSetPos(m_nVertical, m_nSide, m_pVtx);		
 
-	MeshSetRhw(m_pVtx);							// 除算数 1.0fで固定
+	// 除算数 1.0fで固定
+	MeshSetRhw(m_pVtx);							
 
-	MeshSetCol(m_pVtx);							// 色の設定
+	// 色の設定
+	MeshSetCol(m_pVtx);							
 
-	MeshSetTex(m_nVertical, m_nSide, m_pVtx);		// テクスチャの頂点座標の設定
+	// テクスチャの頂点座標の設定
+	MeshSetTex(m_nVertical, m_nSide, m_pVtx);		
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
@@ -119,7 +125,8 @@ HRESULT CMesh::Init(void)
 		&m_pIdxBuff,
 		NULL);
 
-	WORD *pIdx;	// インデックス情報へのポインタ
+	// インデックス情報へのポインタ
+	WORD *pIdx;
 
 	// インデックスバッファをロックし、番号データへのポインタを取得
 	m_pIdxBuff->Lock(0, 0, (void**)&pIdx, 0);
@@ -130,7 +137,7 @@ HRESULT CMesh::Init(void)
 	// インデックスバッファをアンロック
 	m_pIdxBuff->Unlock();
 
-	return S_OK;	// 初期化完了
+	return S_OK;
 }
 
 //=============================================================================
@@ -140,22 +147,26 @@ void CMesh::Uninit(void)
 {
 	// テクスチャの開放
 	if (m_pTexture != NULL)
-	{
+	{// NULLチェック
 		m_pTexture->Release();
 		m_pTexture = NULL;
 	}
+
 	// 頂点バッファの開放
 	if (m_pVtxBuff != NULL)
-	{
+	{// NULLチェック
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
+
 	// インデックスバッファの開放
 	if (m_pIdxBuff != NULL)
-	{
+	{// NULLチェック
 		m_pIdxBuff->Release();
 		m_pIdxBuff = NULL;
 	}
+
+	// 削除
 	Release();
 }
 
@@ -167,7 +178,8 @@ void CMesh::Update(void)
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
-	MeshSetCol(m_pVtx);							// 色の設定
+	// 色の設定
+	MeshSetCol(m_pVtx);							
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
@@ -183,8 +195,10 @@ void CMesh::Draw(void)
 
 	// 頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
+
 	// インデックスバッファをデータストリームに設定
 	pDevice->SetIndices(m_pIdxBuff);
+
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
@@ -198,116 +212,53 @@ void CMesh::Draw(void)
 }
 
 //=============================================================================
-// 頂点に座標を代入
+// 頂点に座標を代入（Y座標）
 //=============================================================================
-void CMesh::SetWavePos(int nID, float pos)
-{
-	// 頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
-
-	m_pVtx[nID].pos.y = pos;
-
-	// 頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-}
-
 void CMesh::SetVtxPosY(int nID, float posy)
 {
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
+	// 座標代入
 	m_pVtx[nID].pos.y = posy;
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 }
 
+//=============================================================================
+// 頂点に座標を代入（X座標）
+//=============================================================================
 void CMesh::SetVtxPosX(int nID, float posx)
 {
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
+	// 座標代入
 	m_pVtx[nID].pos.x = posx;
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 }
 
-void CMesh::SetVtxMoveY(int nID, float move)
-{
-	// 頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
-
-	m_pVtx[nID].pos.y += move;
-
-	// 頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-}
-
-void CMesh::SetVtxMoveX(int nID, float move)
-{
-	// 頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
-
-	m_pVtx[nID].pos.x += move;
-
-	// 頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-
-}
-
-
-void CMesh::WavePosY(int nID)
-{
-	m_nWaveCnt++;
-
-	// 頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
-
-	m_pVtx[nID].pos.y += CMove::CosMove(2.0f, 120.0f, m_nWaveCnt);
-
-	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
-	{
-		int nID_Diff = nID - nCnt;
-	}
-
-	// 頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-}
-
-D3DXVECTOR3 CMesh::GetCenterPos(void)
-{
-	// 頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
-
-	D3DXVECTOR3 pos;
-
-	float nV_ID = (float)(m_nVertical - 1) / 2;
-
-	return m_pVtx[m_nVtx / 2].pos;
-
-	// 頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-}
 
 //=============================================================================
 // メッシュポリゴンの生成準備　頂点に番号振り分け
 //=============================================================================
 HRESULT CMesh::MeshCreate(int nVertical, int nSide, WORD * pIdx)
 {
-	int nT = 0;
-	int nCntSide = nSide;
-	int nCntVertical = ((2 + nVertical));
-	int nWrapBack = 2 + nVertical;
-	int nCntPoly = 0;
-	int nCnt = 0;
+	int nCntSide = nSide;					
+	int nCntVertical = ((2 + nVertical));	
+	int nWrapBack = 2 + nVertical;			
+	int nCntPoly = 0;						
+	int nCnt = 0;							
 
 	for (nCnt = 0; nCnt < m_nIdx / 2; nCnt++)
 	{
 		if (nCntPoly == nWrapBack && nCntSide != 0)
 		{
-			pIdx[0] = nT - 1;
-			pIdx[1] = nT + nWrapBack;
+			pIdx[0] = nCnt - 1;
+			pIdx[1] = nCnt + nWrapBack;
 
 			nCntPoly = 0;
 			nCntSide -= 1;
@@ -320,16 +271,15 @@ HRESULT CMesh::MeshCreate(int nVertical, int nSide, WORD * pIdx)
 		}
 		else
 		{
-			pIdx[0] = nT + nWrapBack;
-			pIdx[1] = nT;
+			pIdx[0] = nCnt + nWrapBack;
+			pIdx[1] = nCnt;
 
-			nT += 1;
 			nCntVertical -= 1;
 			nCntPoly += 1;
 			pIdx += 2;
 		}
 	}
-	return S_OK;	// 初期化完了
+	return S_OK;	
 }
 
 //=============================================================================

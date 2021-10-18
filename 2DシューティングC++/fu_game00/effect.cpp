@@ -49,6 +49,9 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 	return pEffect;
 }
 
+//=============================================================================
+// パーティクル用のエフェクト生成
+//=============================================================================
 CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVECTOR3 move, LPDIRECT3DTEXTURE9 ptex)
 {
 	CEffect *pEffect = NULL;
@@ -136,6 +139,9 @@ void CEffect::Draw(void)
 	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
 }
 
+//=============================================================================
+// 地面との当たり判定
+//=============================================================================
 void CEffect::CollisionField(void)
 {
 	CMesh* pMesh = NULL;
@@ -154,7 +160,7 @@ void CEffect::CollisionField(void)
 	{// メッシュポリゴン上辺のみ算出
 		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
 		{// 二つの頂点と点の外積判定
-			bOutPro = CCollision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
+			bOutPro = Collision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
 		}
 		if (bOutPro == true)
 		{// 点が二点より下にいたら

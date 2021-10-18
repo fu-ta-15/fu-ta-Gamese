@@ -272,26 +272,27 @@ void CBoss::MoveBoss(void)
 	// カウント加算
 	m_fMoveTime += ADD_MOVE_TIME;
 
+	// ライフの状態で移動変更
 	switch (m_LifeState)
 	{// 体力の状態
 	case LIFE_RATE_0:
-		m_pos.y = CMove::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
+		m_pos.y = Move::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
 		break;
 
 	case LIFE_RATE_2:
-		m_move.x = CMove::MoveSnake(m_pos.x, m_move.x, 900.0f, 200.0f, 2.0f);
-		m_move.y = CMove::MoveSnake(m_pos.y, m_move.y, HEIGHT_HALF , 150.0f, 3.0f);
-
-		m_pos.x += m_move.x;
-		m_pos.y += m_move.y;
+		m_pos = Move::TargetPosMove(CENTER_POS, m_pos, 0.0025f);
 		break;
 
 	case LIFE_RATE_5:
 
+		m_pos.y = Move::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
+
 		break;
 
 	case LIFE_RATE_8:
-		
+
+		m_move = Move::TargetPosMove(D3DXVECTOR3(WIDTH_HALF + 200.0f, HEIGHT_HALF - 100.0f, 0.0f), m_pos, 0.0025f);
+
 		break;
 
 	default:
@@ -309,7 +310,7 @@ void CBoss::SummonsEnemy(void)
 	m_pos = CScene2D::GetPos();		// 位置の取得
 	int nFrame = TIME->GetFrame();	// 時間の取得
 
-
+	// 体力の状態で敵の召喚方法変更
 	switch (m_LifeState)
 	{// 体力の状態
 	case LIFE_RATE_0:
@@ -351,7 +352,6 @@ void CBoss::SummonsEnemy(void)
 		{
 			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE1, MOVE2);
 		}
-
 		break;
 
 	case LIFE_RATE_8:
@@ -361,7 +361,6 @@ void CBoss::SummonsEnemy(void)
 			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0);
 			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0);
 		}
-
 		break;
 
 	default:

@@ -13,15 +13,11 @@
 #include "effect.h"
 
 //-----------------------------------------------------------------------------
-// マクロ変数
+// 名前空間
 //-----------------------------------------------------------------------------
-#define MAX_EFFECT_NUM			(256)
-
-
-
 namespace Particle
 {
-	// Particle種類
+	// パーティクルの種類
 	enum ParticleType
 	{
 		TYPE_NONE = 0,
@@ -33,9 +29,11 @@ namespace Particle
 		PARTICLE_MAX
 	};
 
+	// パーティクルの生成
 	void SetParticle(const D3DXVECTOR3& pos, const D3DXVECTOR3& size, int EfeectNum, ParticleType type, const LPCSTR pSrcFile);
-	LPDIRECT3DTEXTURE9 TextureCreate(LPCSTR pSrcFile, LPDIRECT3DTEXTURE9 pTex);
 
+	// テクスチャの設定
+	LPDIRECT3DTEXTURE9 TextureCreate(LPCSTR pSrcFile, LPDIRECT3DTEXTURE9 pTex);
 }
 
 #endif // !_PARTICLE_H_

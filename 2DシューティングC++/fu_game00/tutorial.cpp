@@ -80,15 +80,15 @@ HRESULT CTutorial::Init(void)
 {
 	CSound *pSound = CManager::GetSound();
 
-	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);									// 背景
+	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);													// 背景
 	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE,CScene::OBJ_NONE);	// 地面
-	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);							// プレイヤー
+	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);											// プレイヤー
 
 	for (int nCnt = 0; nCnt < OPERA_MAX; nCnt++)
 	{// 操作説明画像
-		D3DXVECTOR3 pos = OPE_POS;												   // 位置の更新
+		D3DXVECTOR3 pos = D3DXVECTOR3((100.0f + (150.0f*nCnt)), 100.0f, 0.0f);						// 位置の更新
 		m_pOperation[nCnt] = CMesh::Create(OPE_VERTICAL, OPE_SIDE, pos, OPE_SIZE,CScene::OBJ_NONE); // ポリゴンの生成
-		m_bButton[nCnt] = false;												   // ウェーブの有無
+		m_bButton[nCnt] = false;																	// ウェーブの有無
 	}
 
 	// 画像の貼り付け
@@ -99,6 +99,7 @@ HRESULT CTutorial::Init(void)
 	m_pOperation[KEY_W]->CreateTexture("data/TEXTURE/Move_w.png");
 	m_pOperation[KEY_NUM_6]->CreateTexture("data/TEXTURE/Bullet_6.png");
 
+	// サウンドの開始
 	pSound->PlaySound(CSound::SOUND_LABEL_BGM001);
 	return S_OK;
 }
@@ -108,8 +109,10 @@ HRESULT CTutorial::Init(void)
 //=============================================================================
 void CTutorial::Uninit(void)
 {
+	// サウンドの停止
 	CSound *pSound = CManager::GetSound();
 	pSound->StopSound();
+
 	//オブジェクトの破棄
 	Release();
 }
@@ -119,7 +122,7 @@ void CTutorial::Uninit(void)
 //=============================================================================
 void CTutorial::Update(void)
 {
-	CKey *pKey = CManager::GetKey();
+	CKey *pKey = CManager::GetKey();	   // キー情報
 	CFade::FADE Fade = CFade::GetFade();   // フェード情報
 
 
@@ -138,7 +141,6 @@ void CTutorial::Update(void)
 void CTutorial::Draw(void)
 {
 }
-
 
 //=============================================================================
 // そのキーが初めて押されたらメッシュを揺らすための確認
@@ -166,10 +168,10 @@ void CTutorial::OperatUpdate(void)
 			for (int nVtx = 0; nVtx < m_pOperation[nCnt]->GetVtxNum()/2; nVtx++)
 			{// 波を起こす処理
 				D3DXVECTOR3 pos = ZeroVector3;
-				pos.y = CMove::SinWave(100.0f, 10.0f, 60.0f, m_nCntTimeOP + nVtx);
-				m_pOperation[nCnt]->SetWavePos(nVtx, pos.y);
+				pos.y = Move::SinWave(100.0f, 10.0f, 60.0f, m_nCntTimeOP + nVtx);
+				m_pOperation[nCnt]->SetVtxPosY(nVtx, pos.y);
 				pos.y += 70.0f;
-				m_pOperation[nCnt]->SetWavePos(nVtx + (m_pOperation[nCnt]->GetVtxNum() / 2), pos.y);
+				m_pOperation[nCnt]->SetVtxPosY(nVtx + (m_pOperation[nCnt]->GetVtxNum() / 2), pos.y);
 			}
 		}
 	}

@@ -128,7 +128,7 @@ bool CBullet::CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 			posEnemy = pScene->GetPos();
 			sizeEnemy = pScene->GetSize();
 
-			if (CCollision::CollisionCycle(m_pos, posEnemy, sizeEnemy.x) == true)
+			if (Collision::CollisionCycle(m_pos, posEnemy, sizeEnemy.x) == true)
 			{/* “G‚Ì”ÍˆÍ‚É’e‚ª‘¶Ý‚µ‚½‚ç */
 				pScene->SetBool(true);
 				m_Collision = true;							// “–‚½‚è”»’è‚Í—L

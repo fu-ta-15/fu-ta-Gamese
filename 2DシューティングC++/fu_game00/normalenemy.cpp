@@ -88,15 +88,15 @@ HRESULT CNormalEnemy::Init(void)
 	}
 	if (m_MoveType == MOVE0)
 	{
-		float fAngle = CMove::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
+		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
 		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
 		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
 	}
 	if (m_MoveType == MOVE4)
 	{
-		float fAngle = CMove::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-		m_move.x = CMove::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-		m_move.y = CMove::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
+		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
+		m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
+		m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
 	}
 	return S_OK;
 }
@@ -178,9 +178,9 @@ void CNormalEnemy::UpdateBlack(void)
 	{// ホーミングタイム
 		if ((m_nMoveChangeCnt % Rand(60, 20)) == 0)
 		{// 指定の値で割って余りがゼロの場合
-			float fAngle = CMove::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-			m_move.x = CMove::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-			m_move.y = CMove::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
+			float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
+			m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
+			m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
 			m_MoveType = MOVE1;												// 移動方法
 		}
 	}
@@ -192,7 +192,7 @@ void CNormalEnemy::UpdateBlack(void)
 void CNormalEnemy::BlackMove(void)
 {
 	// プレイヤーとの角度
-	float fPlayerAngle = CMove::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
+	float fPlayerAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
 
 	// ボスの情報
 	CBoss *pBoss = CGame::GetBoss();
@@ -215,8 +215,8 @@ void CNormalEnemy::BlackMove(void)
 		m_fCosWaveCnt += 0.035f;
 		m_fSinWaveCnt += 0.035f;
 
-		m_pos.x = CMove::SinWave(pBoss->GetPos().x, 140.0f, 14.0f, m_fSinWaveCnt);
-		m_pos.y = CMove::CosWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fCosWaveCnt);
+		m_pos.x = Move::SinWave(pBoss->GetPos().x, 140.0f, 14.0f, m_fSinWaveCnt);
+		m_pos.y = Move::CosWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fCosWaveCnt);
 		break;
 
 	case MOVE4:
@@ -237,9 +237,9 @@ void CNormalEnemy::UpdateWhite(void)
 {
 	if ((CGame::GetTime()->GetTime() % 3) == 0)
 	{
-		float fAngle = CMove::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-		m_move.x = CMove::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-		m_move.y = CMove::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
+		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
+		m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
+		m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
 		m_pos += m_move;
 	}
 

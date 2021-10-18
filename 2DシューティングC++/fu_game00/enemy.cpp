@@ -115,12 +115,14 @@ void CEnemy::CollisionEnemy(void)
 			if (this->GetLife() == 0)
 			{// ライフがゼロだったら
 				this->Release();
+				Particle::SetParticle(m_pos, m_size, 30, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 			}
 			break;
 
 		case ENEMY_TYPE1:
 
 			this->Release();
+			Particle::SetParticle(m_pos, m_size, 30, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 
 			break;
 
@@ -148,9 +150,12 @@ bool CEnemy::CollisionPlayer(void)
 	D3DXVECTOR3 pos = CGame::GetPlayer()->GetPos();
 	D3DXVECTOR3 size = CGame::GetPlayer()->GetSize();
 
-	return  CCollision::CollisionCycle(m_pos, pos, size.x);
+	return  Collision::CollisionCycle(m_pos, pos, size.x);
 }
 
+//=============================================================================
+// 地面との当たり判定
+//=============================================================================
 void CEnemy::CollisionField(void)
 {
 	CMesh* pMesh = MESH_GAME;
@@ -165,7 +170,7 @@ void CEnemy::CollisionField(void)
 	{// メッシュポリゴン上辺のみ算出
 		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
 		{// 二つの頂点と点の外積判定
-			if (CCollision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA))
+			if (Collision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA))
 			{// 点が二点より下にいたら
 
 				Release();

@@ -20,9 +20,6 @@
 class CMesh : public CScene
 {
 public:
-	//-------------------------------------------------------------------------
-	// メンバ関数
-	//-------------------------------------------------------------------------
 	CMesh(Priority type);
 	~CMesh();
 
@@ -36,14 +33,9 @@ public:
 
 
 	// セット関数  
-	void SetWavePos(int nID, float pos);
 	void SetVtxPosY(int nID, float posy);
 	void SetVtxPosX(int nID, float posx);
 
-	void SetVtxMoveY(int nID, float move);
-	void SetVtxMoveX(int nID, float move);
-
-	void WavePosY(int nID);
 
 	void SetPos(const D3DXVECTOR3 pos)			{ m_pos = pos; }
 	void SetSize(const D3DXVECTOR3 size)		{ m_size = size; }
@@ -58,7 +50,6 @@ public:
 	D3DXVECTOR3 GetPos()				{ return m_pos; }
 	D3DXVECTOR3 GetMove()				{ return m_move; }
 	D3DXVECTOR3 GetSize()				{ return m_size; }
-	D3DXVECTOR3 GetCenterPos(void);
 	int GetVertical()					{ return m_nVertical; }
 	int GetSide()						{ return m_nSide; }
 	int GetVtxNum()						{ return m_nVtx; }
@@ -89,8 +80,6 @@ private:
 	D3DXCOLOR					m_col;					// 色
 	D3DXMATRIX					m_mtxWorld;				// ワールドマトリックス
 	int							m_nVertical;			// 縦の分割数
-	int							m_nVerticalAll;
-	int							m_nSideAll;
 	int							m_nSide;				// 横の分割数
 	int							m_nVtx;					// 頂点
 	int							m_nIdx;					// インデックス

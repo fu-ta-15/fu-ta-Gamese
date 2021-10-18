@@ -161,12 +161,12 @@ void CGame::Update(void)
 		{
 			m_fWaveHeight = rand() % 300 - 200;
 			m_nWaveCnt += rand() % 15 + 2;
-			pos.y = CMove::CosWave(HEIGHT_HALF, m_fWaveHeight, 320.0f, (m_nWaveCnt * 2) + nVtx);
+			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 320.0f, (m_nWaveCnt * 2) + nVtx);
 		}
 		else
 		{
 			m_fWaveHeight += (20.0f - m_fWaveHeight) * 0.0025f;
-			pos.y = CMove::CosWave(HEIGHT_HALF, m_fWaveHeight, 240.0f, (m_nWaveCnt * 2) + nVtx);
+			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 240.0f, (m_nWaveCnt * 2) + nVtx);
 		}
 
 		m_pLifeMesh->SetVtxPosY(nVtx, pos.y);

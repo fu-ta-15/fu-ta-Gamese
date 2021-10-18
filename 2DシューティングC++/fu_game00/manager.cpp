@@ -81,6 +81,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	}
 	m_pSound = new CSound;
 
+	// サウンドの初期化
 	if (FAILED(m_pSound->Init(hWnd)))
 	{
 		return -1;
@@ -88,7 +89,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 
 	m_pFade = new CFade;
 
-	//フェードクラスのクリエイト
+	//フェードの初期化
 	m_pFade->Init();
 
 	// フェードしてからタイトルへ
@@ -105,26 +106,33 @@ void CManager::Uninit(void)
 	//現在モードの終了
 	UninitMode(m_mode);
 
-	if (m_pFade != NULL)		// フェード
+	// フェードの開放
+	if (m_pFade != NULL)		
 	{// NULLチェック
-		m_pFade->Uninit();		// 終了処理
-		delete m_pFade;			// メモリの破棄
-		m_pFade = NULL;			// メモリのクリア
+		m_pFade->Uninit();		
+		delete m_pFade;			
+		m_pFade = NULL;			
 	}
-	if (m_pRenderer != NULL)	// レンダラー
+
+	// レンダラーの開放
+	if (m_pRenderer != NULL)	
 	{// NULLチェック
-		m_pRenderer->Uninit();	// 終了処理
-		delete m_pRenderer;		// メモリの破棄
-		m_pRenderer = NULL;		// メモリのクリア
+		m_pRenderer->Uninit();	
+		delete m_pRenderer;		
+		m_pRenderer = NULL;		
 	}
-	if (m_pKey != NULL)			// キー入力
+
+	// キーの開放
+	if (m_pKey != NULL)			
 	{// NULLチェック
-		m_pKey->Uninit();		// 終了処理
-		delete m_pKey;			// メモリの破棄
-		m_pKey = NULL;			// メモリのクリア
+		m_pKey->Uninit();		
+		delete m_pKey;			
+		m_pKey = NULL;			
 	}
+
+	// サウンドの開放
 	if (m_pSound != NULL)
-	{
+	{// NULLチェック
 		m_pSound->Uninit();
 		delete m_pSound;
 		m_pSound = NULL;
@@ -139,19 +147,25 @@ void CManager::Uninit(void)
 //=============================================================================
 void CManager::Update(void)
 {
+	// レンダラーの更新
 	if (m_pRenderer != NULL)
-	{
-		m_pRenderer->Update();	// レンダラークラスの更新処理
-	}
-	if (m_pKey != NULL)
-	{
-		m_pKey->Update();		// キーボードクラスの更新処理
-	}
-	if (m_pFade != NULL)
-	{
-		m_pFade->Update();		// フェードクラスの更新処理
+	{// NULLチェック
+		m_pRenderer->Update();	
 	}
 
+	// キーの更新
+	if (m_pKey != NULL)
+	{// NULLチェック
+		m_pKey->Update();		
+	}
+
+	// フェードの更新
+	if (m_pFade != NULL)
+	{// NULLチェック
+		m_pFade->Update();		
+	}
+
+	// ポーズの更新
 	PauseUpdate();
 }
 
@@ -160,9 +174,10 @@ void CManager::Update(void)
 //=============================================================================
 void CManager::Draw(void)
 {
+	// 描画処理
 	if (m_pRenderer != NULL)
-	{
-		m_pRenderer->Draw();	// 描画処理
+	{// NULLチェック
+		m_pRenderer->Draw();
 	}
 }
 
@@ -171,36 +186,41 @@ void CManager::Draw(void)
 //=============================================================================
 void CManager::UninitMode(MODE mode)
 {
-	// モードの終了
+	// 各モードの開放
 	switch (mode)
 	{
-	case MODE_TITLE:// タイトル
+	case MODE_TITLE:
 		if (m_pTitle != NULL)
-		{
-			m_pTitle->Uninit();// 終了処理
+		{// NULLチェック
+			m_pTitle->Uninit();
 			m_pTitle = NULL;
 		}
 		break;
-	case MODE_TUTORIAL:// チュートリアル
+
+	case MODE_TUTORIAL:
 		if (m_pTutorial != NULL)
-		{
-			m_pTutorial->Uninit();// 終了処理
+		{// NULLチェック
+			m_pTutorial->Uninit();
 			m_pTutorial = NULL;
 		}
 		break;
-	case MODE_GAME:// ゲーム
+
+	case MODE_GAME:
 		if (m_pGame != NULL)
-		{
-			m_pGame->Uninit();// 終了処理
+		{// NULLチェック
+			m_pGame->Uninit();
 			m_pGame = NULL;
 		}
 		break;
-	case MODE_RESULT:// リザルト
+
+	case MODE_RESULT:
 		if (m_pResult != NULL)
-		{
-			m_pResult->Uninit();// 終了処理
+		{// NULLチェック
+			m_pResult->Uninit();
 			m_pResult = NULL;
 		}
+		break;
+	default:
 		break;
 	}
 }
@@ -210,32 +230,36 @@ void CManager::UninitMode(MODE mode)
 //=============================================================================
 void CManager::CreateMode(MODE mode)
 {
-	//設定されたモードをクリエイト
+	// 各モードの生成
 	switch (mode)
 	{
-	case MODE_TITLE:	// タイトル
+	case MODE_TITLE:	
 		if (m_pTitle == NULL)
-		{
-			m_pTitle = CTitle::Create();	
+		{// NULLチェック
+			m_pTitle = CTitle::Create();
 		}
 		break;
-	case MODE_TUTORIAL:	// チュートリアル
+
+	case MODE_TUTORIAL:
 		if (m_pTutorial == NULL)
-		{
-			m_pTutorial = CTutorial::Create();	
+		{// NULLチェック
+			m_pTutorial = CTutorial::Create();
 		}
 		break;
-	case MODE_GAME:		// ゲーム
+
+	case MODE_GAME:		
 		if (m_pGame == NULL)
-		{
-			m_pGame = CGame::Create();			
+		{// NULLチェック
+			m_pGame = CGame::Create();
 		}
 		break;
-	case MODE_RESULT:	// リザルト
+
+	case MODE_RESULT:	
 		if (m_pGame == NULL)
-		{
-			m_pResult = CResult::Create();		
+		{// NULLチェック
+			m_pResult = CResult::Create();
 		}
+		break;
 	default:
 		break;
 	}
@@ -285,6 +309,9 @@ CKey* CManager::GetKey(void)
 	return m_pKey;
 }
 
+//=============================================================================
+// ポーズの更新
+//=============================================================================
 void CManager::PauseUpdate(void)
 {
 	CKey *pKey = CManager::GetKey();	   // キー入力情報

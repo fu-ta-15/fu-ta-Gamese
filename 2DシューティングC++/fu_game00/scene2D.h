@@ -52,17 +52,14 @@ private:
 	// ポリゴンに使用するメンバ変数
 	LPDIRECT3DTEXTURE9			m_pTex = NULL;			// テクスチャへのポイント
 	LPDIRECT3DVERTEXBUFFER9		m_pVtxBuff;				// 頂点バッファへのポインタ
-
 	D3DXVECTOR3					m_pos;					// 位置
 	D3DXVECTOR3					m_rot;					// 角度
 	D3DXVECTOR3					m_size;					// サイズ
 	D3DXVECTOR3					m_move;					// 移動量
 	D3DXVECTOR2					m_tex;					// テクスチャ座標
 	D3DXCOLOR					m_col;					// カラー
-
-	PauseType					m_PauseType;
-
-	bool						m_bUse;
+	PauseType					m_PauseType;			// ポーズの種類
+	bool						m_bUse;					// 使用の有無
 	float						m_fAngle;				// 対角線の角度
 	float						m_fAnimeY;				// アニメーション座標Y
 	float						m_fAnimeX;				// アニメーション座標X
