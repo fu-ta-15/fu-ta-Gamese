@@ -63,6 +63,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		CLASS_NAME,
 		NULL
 	};
+
 	RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	HWND hWnd;
 	MSG msg;
@@ -90,10 +91,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hInstance,
 		NULL);
 
-
-
-
-
 	// managerのインスタンスを作成
 	CManager *pManager = NULL;
 	pManager = new CManager;
@@ -101,7 +98,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (pManager != NULL)
 	{
 		// 初期化処理
-		if (FAILED(pManager->Init(hInstance, hWnd, false)))
+		if (FAILED(pManager->Init(hInstance, hWnd, true)))
 		{
 			return -1;
 		}
@@ -138,20 +135,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		else
 		{
-			dwCurrentTime = timeGetTime();	// 現在の時間を取得
+			// 現在の時間を取得
+			dwCurrentTime = timeGetTime();	
+
 			if ((dwCurrentTime - dwFPSLastTime) >= 500)
 			{// 0.5秒ごとに実行
 #ifdef _DEBUG
 				// FPSを算出
 				g_nCountFPS = dwFrameCount * 1000 / (dwCurrentTime - dwFPSLastTime);
 #endif
-				dwFPSLastTime = dwCurrentTime;	// 現在の時間を保存
+				// 現在の時間を保存
+				dwFPSLastTime = dwCurrentTime;	
+
+				// フレームカウントを初期化
 				dwFrameCount = 0;
 			}
 
 			if ((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
-			{// 1/60秒経過
-				dwExecLastTime = dwCurrentTime;	// 現在の時間を保存
+			{
+				// 1/60秒経過したら現在の時間を保存
+				dwExecLastTime = dwCurrentTime;	
 
 				// 更新処理
 				pManager->Update();
@@ -159,18 +162,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				// 描画処理
 				pManager->Draw();
 
+				// フレームのカウントアップ
 				dwFrameCount++;
 			}
 		}
 	}
 
-	// 終了処理
 	if (pManager != NULL)
 	{
+		// マネージャーの開放
 		pManager->Uninit();
 
+		// マネージャーを削除
 		delete pManager;
 
+		// NULLを代入
 		pManager = NULL;
 	}
 
@@ -200,8 +206,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		switch(wParam)
 		{
-		case VK_ESCAPE:				// [ESC]キーが押された
-			DestroyWindow(hWnd);	// ウィンドウを破棄するよう指示する
+		case VK_ESCAPE:			
+			DestroyWindow(hWnd);
 			break;
 		}
 		break;

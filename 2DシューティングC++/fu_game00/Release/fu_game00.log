@@ -1,8 +1,8 @@
 ﻿  scene.cpp
   コード生成しています。
-  0 of 339 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  26 of 339 functions ( 7.7%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    11 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\fu_game00.pdb (Full PDB)
