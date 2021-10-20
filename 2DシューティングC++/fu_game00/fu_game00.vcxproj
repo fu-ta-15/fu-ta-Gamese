@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="bulletmesh.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="Dinput.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -54,6 +55,7 @@
   <ItemGroup>
     <ClInclude Include="boss.h" />
     <ClInclude Include="bullet.h" />
+    <ClInclude Include="bulletmesh.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="Dinput.h" />
     <ClInclude Include="effect.h" />

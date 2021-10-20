@@ -79,7 +79,6 @@ HRESULT CNormalEnemy::Init(void)
 	
 	CScene2D::CreateTexture(ENEMY_TEXTURE0);
 
-
 	if (m_MoveType == MOVE2)
 	{
 		float fAngle = (float)((rand() % 628) - 628) / 100.f;

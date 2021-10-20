@@ -168,7 +168,7 @@ void CTutorial::OperatUpdate(void)
 			for (int nVtx = 0; nVtx < m_pOperation[nCnt]->GetVtxNum()/2; nVtx++)
 			{// ”g‚ð‹N‚±‚·ˆ—
 				D3DXVECTOR3 pos = ZeroVector3;
-				pos.y = Move::SinWave(100.0f, 10.0f, 60.0f, m_nCntTimeOP + nVtx);
+				pos.y = Move::SinWave(100.0f, 10.0f, 60.0f, (float)m_nCntTimeOP + nVtx);
 				m_pOperation[nCnt]->SetVtxPosY(nVtx, pos.y);
 				pos.y += 70.0f;
 				m_pOperation[nCnt]->SetVtxPosY(nVtx + (m_pOperation[nCnt]->GetVtxNum() / 2), pos.y);

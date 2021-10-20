@@ -16,6 +16,7 @@
 #include "game.h"
 #include "tutorial.h"
 #include "move.h"
+#include "bulletmesh.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -212,10 +213,14 @@ void CPlayer::PlayerAction(void)
 	PlayerMove();
 
 	// 弾の発射
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true && m_nBullet > 0)	
+	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true && m_nBullet > 0)
 	{// トリガー・NUM6 が押されたとき
 		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT);	// バレットの生成
 		PlayerBullet();											// プレイヤーの弾消費
+	}
+	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD8) == true)
+	{// トリガー・NUM6 が押されたとき
+		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f,4.0f,0.0f), D3DXVECTOR3(10.0f,0.0f,0.0f));	// バレットの生成
 	}
 }
 

@@ -16,6 +16,7 @@
 #include "enemy.h"
 #include "time.h"
 #include "game.h"
+#include "bulletmesh.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -39,6 +40,7 @@
 #define ADD_MAX_A		(0.7f)											// α値の最大値
 #define CreateEnemy		(CNormalEnemy::Create)							// 敵の生成
 #define CreateEffect	(CEffect::Create)								// エフェクトの生成
+
 
 //-----------------------------------------------------------------------------
 // 静的変数
@@ -317,6 +319,7 @@ void CBoss::SummonsEnemy(void)
 		if ((nFrame % 130) == 0)
 		{
 			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
+
 		}
 		if ((nFrame % 100) == 0)
 		{

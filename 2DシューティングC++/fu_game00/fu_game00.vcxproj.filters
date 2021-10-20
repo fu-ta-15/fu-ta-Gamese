@@ -153,6 +153,9 @@
     <ClCompile Include="gauge.cpp">
       <Filter>game\effect</Filter>
     </ClCompile>
+    <ClCompile Include="bulletmesh.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -249,6 +252,9 @@
       <Filter>main\polygon\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="gauge.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="bulletmesh.h">
       <Filter>game\effect</Filter>
     </ClInclude>
   </ItemGroup>

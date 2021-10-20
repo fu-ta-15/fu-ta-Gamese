@@ -27,6 +27,7 @@ public:
 	HRESULT CreateTexture(const LPCSTR pSrcFile);
 
 	HRESULT Init(void);
+	HRESULT Init(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
@@ -39,7 +40,7 @@ public:
 
 	void SetPos(const D3DXVECTOR3 pos)			{ m_pos = pos; }
 	void SetSize(const D3DXVECTOR3 size)		{ m_size = size; }
-	void SetMove(const D3DXVECTOR3 move)		{ m_move = move; }
+	void SetMove(const D3DXVECTOR3 move);
 	void SetVertical(const int nVertical)		{ m_nVertical = nVertical; }
 	void SetSide(const int nSide)				{ m_nSide = nSide; }
 	void SetCol(const D3DXCOLOR col)			{ m_col = col; }

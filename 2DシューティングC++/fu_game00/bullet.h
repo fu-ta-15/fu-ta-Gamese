@@ -21,15 +21,15 @@
 //-----------------------------------------------------------------------------
 // クラス
 //-----------------------------------------------------------------------------
-class CBullet : public CScene2D		// ポリゴン2Dを継承
+class CBullet : public CScene2D		
 {
 public:
 
-	CBullet();	   // コンストラクタ
-	~CBullet();	   // デストラクタ
+	CBullet();	  
+	~CBullet();	  
 
 	// create関数
-	static CBullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move);	// バレットのインスタンス生成関数
+	static CBullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move);	
 
 	// メンバ関数
 	HRESULT Init(void);		
