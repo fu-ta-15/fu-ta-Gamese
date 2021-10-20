@@ -159,7 +159,7 @@ void CGame::Update(void)
 		D3DXVECTOR3 pos = ZeroVector3;
 		if (m_pBoss->GetState() == CBoss::STATE_NOT_DAMAGE)
 		{
-			m_fWaveHeight = rand() % 300 - 200;
+			m_fWaveHeight = (float)(rand() % 300 - 200);
 			m_nWaveCnt += rand() % 15 + 2;
 			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 320.0f, (m_nWaveCnt * 2) + nVtx);
 		}

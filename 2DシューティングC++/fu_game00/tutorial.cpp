@@ -16,6 +16,7 @@
 #include "player.h"
 #include "mesh.h"
 #include "sound.h"
+#include "boss.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -41,6 +42,7 @@
 CPlayer*	CTutorial::m_pPlayer = NULL;
 CScene2D*	CTutorial::m_pBg = NULL;
 CMesh*		CTutorial::m_pField = NULL;
+CBoss*		CTutorial::m_pBoss = NULL;
 CMesh*		CTutorial::m_pOperation[OPERA_MAX] = {};
 bool		CTutorial::m_OperationStop = false;
 
@@ -83,6 +85,7 @@ HRESULT CTutorial::Init(void)
 	m_pBg = CScene2D::Create(CENTER_POS, BG_SIZE);													// 背景
 	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE,CScene::OBJ_NONE);	// 地面
 	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);											// プレイヤー
+	m_pBoss = CBoss::Create(BOSS_POS, BOSS_SIZE, BOSS_LIFE);
 
 	for (int nCnt = 0; nCnt < OPERA_MAX; nCnt++)
 	{// 操作説明画像
@@ -92,6 +95,7 @@ HRESULT CTutorial::Init(void)
 	}
 
 	// 画像の貼り付け
+	m_pBoss->CreateTexture("data/TEXTURE/Boss_tutorial.png");
 	m_pBg->CreateTexture("data/TEXTURE/BG.png");
 	m_pField->CreateTexture("data/TEXTURE/Field.png");
 	m_pOperation[KEY_A]->CreateTexture("data/TEXTURE/Move_a.png");

@@ -20,6 +20,10 @@
 class CPlayer;
 class CScene2D;
 class CMesh;
+class CEnemy;
+class CBoss;
+
+
 
 //-----------------------------------------------------------------------------
 //ƒNƒ‰ƒX
@@ -62,6 +66,7 @@ private:
 	static CMesh		*m_pField;
 	static CMesh		*m_pOperation[OPERA_MAX];
 	static CScene2D		*m_pOperationPolygon;
+	static CBoss		*m_pBoss;
 
 	static bool			 m_OperationStop;
 	bool				 m_bButton[OPERA_MAX];

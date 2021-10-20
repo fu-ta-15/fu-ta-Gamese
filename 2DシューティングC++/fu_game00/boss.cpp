@@ -125,36 +125,46 @@ void CBoss::Uninit(void)
 //=============================================================================
 void CBoss::Update(void)
 {
-	// 更新
-	CEnemy::Update();
 
-	// 現在の状態
-	switch (m_State)
-	{// 現在の状態
-	case NONE:
+	// メッシュポリゴンの情報取得
+	switch (CManager::GetMode())
+	{
+		// チュートリアル
+	case CManager::MODE_TUTORIAL:
+
+
 		break;
 
-	case DAMAGE:
-		m_bDamage = true;	// ダメージ合図
+		// ゲーム
+	case CManager::MODE_GAME:
+
+		// 更新
+		CEnemy::Update();
+
+		if (m_State == DAMAGE)
+		{
+			// ダメージ合図
+			m_bDamage = true;	
+		}
+		if (m_fLife <= 0)
+		{
+			// ライフがゼロの場合、死亡
+			m_bBoss_Alive = false;	
+			Release();				
+		}
+
+		// ボスの更新
+		UpdateBoss();		// 普通の更新
+		DamageBoss();		// ダメージ状態更新
+		NotDamageBoss();	// ダメージNO！状態更新
+		StateUpdate();		// 状態の公人
+		MoveBoss();			// 移動処理
+		SummonsEnemy();		// 敵召喚処理
 		break;
 
-	case NOT_DAMAGE:
+	default:
 		break;
 	}
-
-	if (m_fLife <= 0)
-	{// ライフがゼロの場合
-		m_bBoss_Alive = false;	// 死亡フラグ
-		Release();				// オブジェクトの削除
-	}
-
-	// ボスの更新
-	UpdateBoss();		// 普通の更新
-	DamageBoss();		// ダメージ状態更新
-	NotDamageBoss();	// ダメージNO！状態更新
-	StateUpdate();		// 状態の公人
-	MoveBoss();			// 移動処理
-	SummonsEnemy();		// 敵召喚処理
 
 	// 位置の更新
 	CScene2D::SetPos(m_pos);

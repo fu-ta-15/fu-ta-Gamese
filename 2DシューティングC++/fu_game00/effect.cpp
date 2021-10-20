@@ -12,6 +12,7 @@
 #include "game.h"
 #include "mesh.h"
 #include "collision.h"
+#include "tutorial.h"
 
 //=============================================================================
 // コンストラクタ
@@ -144,8 +145,23 @@ void CEffect::Draw(void)
 //=============================================================================
 void CEffect::CollisionField(void)
 {
+	// Meshのポインタ
 	CMesh* pMesh = NULL;
-	pMesh = MESH_GAME;
+
+	// メッシュポリゴンの情報取得
+	switch (CManager::GetMode())
+	{
+		// チュートリアル
+	case CManager::MODE_TUTORIAL:
+		pMesh = CTutorial::GetMesh();
+		break;
+		// ゲーム
+	case CManager::MODE_GAME:
+		pMesh = CGame::GetMesh();
+		break;
+	default:
+		break;
+	}
 
 	// 頂点情報の取得
 	VERTEX_2D *pVtx = pMesh->GetVERTEX();

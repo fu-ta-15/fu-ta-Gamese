@@ -17,6 +17,7 @@
 #include "tutorial.h"
 #include "move.h"
 #include "bulletmesh.h"
+#include "particle.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -323,8 +324,13 @@ void CPlayer::FieldControl(void)
 			{
 				m_posOld = Collision::WaveCollision(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);	// 戻す分を算出
 				m_move.y = 0.0f;					// 重力ゼロ
-				m_bJunp = false;					// ジャンプ可能
 				m_pos.y = m_posOld.y - m_size.y;	// 画面内まで移動させる
+				if (m_bJunp == true)
+				{
+					m_bJunp = false;					// ジャンプ可能
+					Particle::SetParticle(D3DXVECTOR3(m_pos.x, m_pos.y - m_size.y, 0.0f), m_size*0.4f, 50, Particle::TYPE_DOWN_FAN,"data/TEXTURE/Fog2001.png");
+				}
+
 			}
 			break;
 		}

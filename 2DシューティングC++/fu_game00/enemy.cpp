@@ -15,6 +15,7 @@
 #include "player.h"
 #include "collision.h"
 #include "mesh.h"
+#include "particle.h"
 
 
 //-----------------------------------------------------------------------------
