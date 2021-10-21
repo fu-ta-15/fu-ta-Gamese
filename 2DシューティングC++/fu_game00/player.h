@@ -70,7 +70,7 @@ private:
 	void PlayerState(void);
 	void DamagePlayer(void);
 	void PlayerLife(void);
-	void PlayerBullet(void);
+	void PlayerBullet(int nBullet);
 
 	int					m_nAnimeCnt;		// アニメーションカウンター
 	int					m_nDamageCnt;		// ダメージカウント

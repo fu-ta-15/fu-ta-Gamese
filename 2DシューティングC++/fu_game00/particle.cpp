@@ -35,12 +35,12 @@ void Particle::SetParticle(const D3DXVECTOR3 & pos, const D3DXVECTOR3 & size, in
 
 			// âEîºï™
 		case Particle::TYPE_RIGHT_FAN:
-			fAngle = (float)(rand() % -314) / 100.f;
+			fAngle = (float)(rand() % 314) / 100.f;
 			break;
 
 			// ç∂îºï™
 		case Particle::TYPE_LEFT_FAN:
-			fAngle = (float)(rand() % 314) / 100.f;
+			fAngle = (float)-(rand() % 314) / 100.f;
 			break;
 
 		case Particle::TYPE_DOWN_FAN:

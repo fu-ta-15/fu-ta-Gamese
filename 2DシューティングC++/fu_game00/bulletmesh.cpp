@@ -13,12 +13,8 @@
 #include "game.h"
 #include "move.h"
 #include "player.h"
-
-#define PLAYER_GET_POS			(CGame::GetPlayer()->GetPos())
-#define ANGLE_POINT_X			(m_pos.x - PLAYER_GET_POS.x)
-#define ANGLE_POINT_Y			(m_pos.y - PLAYER_GET_POS.y)
-#define ANGLE_SIN				(sinf(D3DX_PI + fAngle))
-#define ANGLE_COS				(cosf(D3DX_PI - fAngle))
+#include "collision.h"
+#include "particle.h"
 
 //=============================================================================
 // コンストラクタ
@@ -47,6 +43,7 @@ CBulletMesh * CBulletMesh::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,
 		pMBullet->m_pos = pos;
 		pMBullet->m_size = size;
 		pMBullet->m_move = move;
+		pMBullet->CreateTexture("data/TEXTURE/02.png");
 		pMBullet->Init();
 	}
 
@@ -113,11 +110,12 @@ void CBulletMesh::Update(void)
 		pVtx[nCnt+ this->GetVtxNum() / 2].pos.y = Move::SinWave(pos.y, 20.0f, m_move.x, m_fWaveTime+(nCnt*2));
 	}
 
+	CollisionBullet();
 	if (pVtx[0].pos.x > SCREEN_WIDTH)
 	{
 		Release();
 	}
-
+	
 	CMesh::Update();
 }
 
@@ -132,7 +130,34 @@ void CBulletMesh::Draw(void)
 //=============================================================================
 // 当たり判定
 //=============================================================================
-bool CBulletMesh::CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size)
+bool CBulletMesh::CollisionBullet(void)
 {
-	return false;
+	D3DXVECTOR3 posEnemy;							// 敵の位置
+	D3DXVECTOR3 sizeEnemy;							// 敵のサイズ
+	VERTEX_2D *pVtx = this->GetVERTEX();			// 頂点情報の取得
+	CScene *pScene = CScene::GetScene(OBJ_ENEMY);
+
+	m_Collision = false;	// 当たり判定は無し
+
+	while (pScene != NULL)
+	{
+		CScene *pSceneNext = pScene->GetSceneNext();
+
+		posEnemy = pScene->GetPos();
+		sizeEnemy = pScene->GetSize();
+
+		for (int nCnt = 0; nCnt < this->GetVtxNum(); nCnt++)
+		{
+			if (Collision::CollisionCycle(pVtx[nCnt].pos, posEnemy, sizeEnemy.x) == true)
+			{/* 敵の範囲に弾が存在したら */
+				pScene->SetBool(true);
+				Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
+				m_Collision = true;							// 当たり判定は有
+				break;
+			}
+		}
+		pScene = pSceneNext;
+	}
+
+	return m_Collision;	// 判定結果を返す
 }

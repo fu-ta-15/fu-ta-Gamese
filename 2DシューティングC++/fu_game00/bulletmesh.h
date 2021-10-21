@@ -31,7 +31,7 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	bool CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size);
+	bool CollisionBullet(void);
 
 	// Setä÷êî
 

@@ -145,7 +145,6 @@ HRESULT CMesh::Init(void)
 //=============================================================================
 HRESULT CMesh::Init(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 {
-
 	m_pos = pos;
 	m_size = size;
 	m_nVertical = nVertical;
@@ -250,8 +249,6 @@ void CMesh::Update(void)
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
-	// 色の設定
-	MeshSetCol(m_pVtx);							
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();

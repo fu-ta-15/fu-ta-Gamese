@@ -198,11 +198,11 @@ void CPlayer::PlayerAction(void)
 
 	// 弾の復活
 	if ((m_nBulletTime % 35) == 0)
-	{
+	{// 毎35フレーム
 		for (int nCntWeapon = PLAYER_BULLET_STOCK; nCntWeapon > 0; nCntWeapon--)
 		{
 			if (m_pWeapon[nCntWeapon - 1]->GetUse() != true)
-			{
+			{// バレットのストック回復
 				m_nBullet += 1;
 				m_pWeapon[nCntWeapon - 1]->SetUse(true);
 				break;
@@ -217,11 +217,12 @@ void CPlayer::PlayerAction(void)
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true && m_nBullet > 0)
 	{// トリガー・NUM6 が押されたとき
 		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT);	// バレットの生成
-		PlayerBullet();											// プレイヤーの弾消費
+		PlayerBullet(1);											// プレイヤーの弾消費
 	}
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD8) == true)
+	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD8) == true && m_nBullet > 2)
 	{// トリガー・NUM6 が押されたとき
-		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f,4.0f,0.0f), D3DXVECTOR3(10.0f,0.0f,0.0f));	// バレットの生成
+		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f,10.0f,0.0f), D3DXVECTOR3(10.0f,0.0f,0.0f));	// バレットの生成
+		PlayerBullet(3);											// プレイヤーの弾消費
 	}
 }
 
@@ -434,15 +435,18 @@ void CPlayer::PlayerLife(void)
 //=============================================================================
 // バレットの管理
 //=============================================================================
-void CPlayer::PlayerBullet(void)
+void CPlayer::PlayerBullet(int nBullet)
 {
-	for (int nCntWeapon = 0; nCntWeapon < PLAYER_BULLET_STOCK; nCntWeapon++)
+	for (int nCnt = 0; nCnt < nBullet; nCnt++)
 	{
-		if (m_pWeapon[nCntWeapon]->GetUse() != false)
-		{// 使用した分のポリゴンが残っていたら
-			m_nBullet -= 1;							// ストックの減らす
-			m_pWeapon[nCntWeapon]->SetUse(false);	// そのポリゴンを使用していない状態にする
-			break;
+		for (int nCntWeapon = 0; nCntWeapon < PLAYER_BULLET_STOCK; nCntWeapon++)
+		{
+			if (m_pWeapon[nCntWeapon]->GetUse() != false)
+			{// 使用した分のポリゴンが残っていたら
+				m_nBullet -= 1;							// ストックの減らす
+				m_pWeapon[nCntWeapon]->SetUse(false);	// そのポリゴンを使用していない状態にする
+				break;
+			}
 		}
 	}
 }

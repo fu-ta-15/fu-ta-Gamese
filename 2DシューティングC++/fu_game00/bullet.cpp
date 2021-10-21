@@ -87,9 +87,7 @@ void CBullet::Update(void)
 
 		CScene2D::SetPos(m_pos);		// 位置の更新
 
-		m_Collision = CollisionBullet(m_pos,m_size);	// 当たり判定確認
-
-		if (m_Collision == true)
+		if (CollisionBullet())
 		{// 当たった場合 
 			m_bUse = false;				// 存在を消す
 			CScene2D::Uninit();		// ポリゴンの終了処理
@@ -111,32 +109,58 @@ void CBullet::Draw(void)
 //=============================================================================
 // 当たり判定
 //=============================================================================
-bool CBullet::CollisionBullet(D3DXVECTOR3 pos, D3DXVECTOR3 size)
+bool CBullet::CollisionBullet(void)
 {
 	D3DXVECTOR3 posEnemy;							// 敵の位置
 	D3DXVECTOR3 sizeEnemy;							// 敵のサイズ
+	D3DXVECTOR3 posBoss;							// 敵の位置
+	D3DXVECTOR3 sizeBoss;							// 敵のサイズ
 
 	CScene *pScene = CScene::GetScene(OBJ_ENEMY);
+	CScene *pSceneBoss = CScene::GetScene(OBJ_BOSS);
 
 	m_Collision = false;	// 当たり判定は無し
-
-	for (int nCntEnemy = 0; nCntEnemy < MAX_OBJECT; nCntEnemy++)
+	if (true)
 	{
-		if (pScene != NULL)
-		{
-			CScene *pSceneNext = pScene->GetSceneNext();
-			posEnemy = pScene->GetPos();
-			sizeEnemy = pScene->GetSize();
 
-			if (Collision::CollisionCycle(m_pos, posEnemy, sizeEnemy.x) == true)
-			{/* 敵の範囲に弾が存在したら */
-				pScene->SetBool(true);
-				m_Collision = true;							// 当たり判定は有
-				break;
-			}
-			pScene = pSceneNext;
-		}
 	}
+	while (pScene != NULL) 
+	{
+		CScene *pSceneNext = pScene->GetSceneNext();
+
+		posEnemy = pScene->GetPos();
+
+		sizeEnemy = pScene->GetSize();
+
+		if (Collision::CollisionCycle(m_pos, posEnemy, sizeEnemy.x) == true)
+		{/* 敵の範囲に弾が存在したら */
+			pScene->SetBool(true);
+			m_Collision = true;							// 当たり判定は有
+			break;
+		}
+
+		pScene = pSceneNext;
+
+	}
+
+	while (pSceneBoss != NULL)
+	{
+		CScene *pSceneBNext = pSceneBoss->GetSceneNext();
+
+		posBoss = pSceneBoss->GetPos();
+
+		sizeBoss = pSceneBoss->GetSize();
+
+		if (Collision::CollisionCycle(m_pos, posBoss, sizeBoss.x) == true)
+		{/* 敵の範囲に弾が存在したら */
+			pSceneBoss->SetBool(true);
+			m_Collision = true;							// 当たり判定は有
+			break;
+		}
+
+		pSceneBoss = pSceneBNext;
+	} 
+
 	if (m_pos.x - m_size.x > SCREEN_WIDTH || m_pos.x + m_size.x < 0.0f)
 	{// 画面外処理
 		m_Collision = true;				// 存在を消す

@@ -76,7 +76,7 @@ public:
 	D3DXVECTOR3 GetSize(void)	{ return m_size; }			// 特定のオブジェクトのサイズ取得
 	D3DXCOLOR GetCol(void)		{ return m_col; }			// 色の取得
 	bool GetBool(void)			{ return m_bBool; }			// フラグの取得
-	CScene *GetSceneNext(void)	{ return this->m_pNext; }	// 次のシーンオブジェクトの取得
+	CScene *GetSceneNext(void);								// 次のシーンオブジェクトの取得
 	static CScene *GetScene(Priority type) { 				// シーンオブジェクトの先頭の取得
 		return m_pTop[type]; }
 

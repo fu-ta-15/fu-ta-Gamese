@@ -318,3 +318,17 @@ void CScene::PauseRelease(void)
 		m_pPauseScene = NULL;
 	}
 }
+
+CScene * CScene::GetSceneNext(void)
+{
+	CScene *pSceneNext;
+	if (this->m_pNext != nullptr)
+	{
+		pSceneNext = this->m_pNext;
+	}
+	else
+	{
+		pSceneNext = NULL;
+	}
+	return pSceneNext;
+}
