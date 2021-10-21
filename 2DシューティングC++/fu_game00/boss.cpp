@@ -196,7 +196,7 @@ void CBoss::UpdateBoss(void)
 				if (m_LifeState == LIFE_RATE_0)
 				{
 					m_LifeState = LIFE_RATE_2;	// ÇQäÑå∏è≠
-					m_move.y = 3.0f;
+					m_fMoveTime = 0.0f;
 				}
 				break;
 
@@ -204,6 +204,7 @@ void CBoss::UpdateBoss(void)
 				if (m_LifeState == LIFE_RATE_2)
 				{
 					m_LifeState = LIFE_RATE_5;	// ÇTäÑå∏è≠
+					m_fMoveTime = 0.0f;
 				}
 				break;
 
@@ -211,6 +212,7 @@ void CBoss::UpdateBoss(void)
 				if (m_LifeState == LIFE_RATE_5)
 				{
 					m_LifeState = LIFE_RATE_8;	// ÇWäÑå∏è≠
+					m_fMoveTime = 0.0f;
 				}
 				break;
 
@@ -288,11 +290,13 @@ void CBoss::MoveBoss(void)
 	switch (m_LifeState)
 	{// ëÃóÕÇÃèÛë‘
 	case LIFE_RATE_0:
-		m_pos.y = Move::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
+		m_pos.y = Move::CosWave(HEIGHT_HALF,100.0f, 65.5f, m_fMoveTime);
+		m_OldPos = m_pos;
 		break;
 
 	case LIFE_RATE_2:
-		m_pos = Move::TargetPosMove(CENTER_POS, m_pos, 0.0025f);
+		m_pos.y = Move::CosWave(m_OldPos.y,60.0f, 100.5f, m_fMoveTime);
+		m_pos.x += Move::SinMove(-10.0f, 60.0f, m_fMoveTime);
 		break;
 
 	case LIFE_RATE_5:

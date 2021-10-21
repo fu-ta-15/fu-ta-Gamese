@@ -65,6 +65,16 @@ float Move::CosWave( float CenterPos,  float nHeight,  float nCycle,  float nTim
 	return (CenterPos + cosf((D3DX_PI * 2) / nCycle * (nTime)) * nHeight);
 }
 
+float Move::SinMove(float nHeight, float nCycle, float nTime)
+{
+	return (sinf((D3DX_PI * 2) / nCycle * (nTime)) * nHeight);
+}
+
+float Move::CosMove(float nHeight, float nCycle, float nTime)
+{
+	return (cosf((D3DX_PI * 2) / nCycle * (nTime)) * nHeight);
+}
+
 //=============================================================================
 // Žw’è‚³‚ê‚½Šp“x‚ÉˆÚ“®
 //=============================================================================
