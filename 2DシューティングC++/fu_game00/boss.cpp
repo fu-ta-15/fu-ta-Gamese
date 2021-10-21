@@ -300,22 +300,17 @@ void CBoss::MoveBoss(void)
 		break;
 
 	case LIFE_RATE_5:
-
-		m_pos.y = Move::CosWave(HEIGHT_HALF, 50.0f, 65.5f, m_fMoveTime);
-
+		m_pos = Move::TargetPosMove(D3DXVECTOR3(WIDTH_HALF, HEIGHT_HALF - 100.0f, 0.0f), m_pos, 0.025f);
 		break;
 
 	case LIFE_RATE_8:
-
-		m_move = Move::TargetPosMove(D3DXVECTOR3(WIDTH_HALF + 200.0f, HEIGHT_HALF - 100.0f, 0.0f), m_pos, 0.0025f);
-
+		m_pos = Move::TargetPosMove(D3DXVECTOR3(WIDTH_HALF + 300.0f, HEIGHT_HALF - 50.0f, 0.0f), m_pos, 0.0025f);
 		break;
 
 	default:
 		break;
 	}
 	CScene2D::SetPos(m_pos);
-
 }
 
 //=============================================================================
@@ -332,8 +327,8 @@ void CBoss::SummonsEnemy(void)
 	case LIFE_RATE_0:
 		if ((nFrame % 130) == 0)
 		{
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
-
+			//CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 100);
 		}
 		if ((nFrame % 100) == 0)
 		{

@@ -221,7 +221,7 @@ void CPlayer::PlayerAction(void)
 	}
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD8) == true && m_nBullet > 2)
 	{// トリガー・NUM6 が押されたとき
-		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f,10.0f,0.0f), D3DXVECTOR3(10.0f,0.0f,0.0f));	// バレットの生成
+		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f,15.0f,0.0f), D3DXVECTOR3(10.0f,0.0f,0.0f));	// バレットの生成
 		PlayerBullet(3);											// プレイヤーの弾消費
 	}
 }

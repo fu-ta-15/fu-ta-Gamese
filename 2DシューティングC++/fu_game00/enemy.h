@@ -45,14 +45,14 @@ class CEnemy : public CScene2D
 {
 public:
 	// 敵の種類
-	typedef enum ENEMY
+	enum ENEMYTYPE
 	{
 		ENEMY_BLACK = 0, 
 		ENEMY_WHITE,
 		ENEMY_BOSS,
 		ENEMY_NULL,
 		ENEMY_MAX
-	}ENEMYTYPE;
+	};
 
 	//-----------------------------------------------------------------------------
 	// メンバ関数
@@ -78,10 +78,10 @@ public:
 	void SetSize(D3DXVECTOR3 size)		{ m_size = size; }
 	void SetCol(D3DXCOLOR col)			{ m_col = col; }
 	void SetLife(int nLife)				{ m_nLife = nLife; }
-	void SetType(ENEMY type)			{ m_type = type; }
+	void SetType(ENEMYTYPE type)			{ m_type = type; }
 
 	// Get関数
-	ENEMY GetEnemyType(void)			{ return m_type; }
+	ENEMYTYPE GetEnemyType(void)			{ return m_type; }
 	int GetLife(void)					{ return m_nLife; }
 
 
@@ -94,7 +94,7 @@ protected:
 	D3DXVECTOR3				m_move;							// 移動量
 	D3DXCOLOR				m_col;							// 色
 	int						m_nLife;						// 弾の継続時間
-	ENEMY					m_type;							// 敵のタイプ
+	ENEMYTYPE					m_type;							// 敵のタイプ
 
 private:
 };

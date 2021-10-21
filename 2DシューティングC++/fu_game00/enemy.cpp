@@ -175,7 +175,7 @@ void CEnemy::CollisionField(void)
 			{// “_‚ª“ñ“_‚æ‚è‰º‚É‚¢‚½‚ç
 
 				Release();
-				Particle::SetParticle(m_pos, m_size, 30, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
+				Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 				break;
 			}
 		}

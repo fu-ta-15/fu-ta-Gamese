@@ -245,3 +245,11 @@ void CNormalEnemy::UpdateWhite(void)
 	CScene2D::SetPos(m_pos);	// à⁄ìÆó ÇÃçXêV
 	CScene2D::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 }
+
+void ENEMY::SetEnemy(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, CEnemy::ENEMYTYPE type, CNormalEnemy::EnemyMove movetype, int nNum)
+{
+	for (int nCnt = 0; nCnt < nNum; nCnt++)
+	{
+		CNormalEnemy::Create(pos, size, type, movetype);
+	}
+}

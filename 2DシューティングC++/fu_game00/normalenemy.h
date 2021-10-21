@@ -28,7 +28,7 @@ class CNormalEnemy : public CEnemy
 {
 public:
 
-	typedef enum EnemyMove
+	enum EnemyMove
 	{
 		MOVE_0 = 0,
 		MOVE_1,
@@ -38,7 +38,7 @@ public:
 		MOVE_5,
 		MOVE_6,
 		MOVE_MAX
-	}EnemyMove;
+	};
 
 	//-------------------------------------------------------------------------
 	// ÉÅÉìÉoä÷êî
@@ -67,5 +67,11 @@ private:
 	int m_nMoveChangeCnt = 0;
 	int m_nHomingTime;
 };
+
+
+namespace ENEMY
+{
+	void SetEnemy(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, CEnemy::ENEMYTYPE type, CNormalEnemy::EnemyMove movetype,int nNum);
+}
 
 #endif // !_NORMALENEMY_H_
