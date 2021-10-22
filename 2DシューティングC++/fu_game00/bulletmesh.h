@@ -31,7 +31,9 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	bool CollisionBullet(void);
+	bool CollisionEnemy(void);
+	bool CollisionBoss(void);
+	bool CollisionCore(void);
 
 	// Setä÷êî
 

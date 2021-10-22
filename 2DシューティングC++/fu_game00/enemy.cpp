@@ -115,27 +115,23 @@ void CEnemy::CollisionEnemy(void)
 
 			if (this->GetLife() == 0)
 			{// ライフがゼロだったら
-				this->Release();
+				CScene2D::Uninit();
 				Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 			}
 			break;
 
 		case ENEMY_TYPE1:
 
-			this->Release();
+			CScene2D::Uninit();
 			Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 
 			break;
 
 		case ENEMY_TYPE2:
 
-			if (pBoss->GetState() == BOSS_NONE && pBoss->GetShield() == false)
+			if (pBoss->GetState() == BOSS_NONE)
 			{// 敵が通常の状態だったら
 				pBoss->SetState(BOSS_DAMAGE);
-			}
-			else if (pBoss->GetState() == BOSS_NOT_DAMAGE)
-			{// ダメージを受けている状態
-				pBoss->SetShield(true);
 			}
 			break;
 		}
@@ -174,7 +170,7 @@ void CEnemy::CollisionField(void)
 			if (Collision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA))
 			{// 点が二点より下にいたら
 
-				Release();
+				CScene2D::Uninit();
 				Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 				break;
 			}

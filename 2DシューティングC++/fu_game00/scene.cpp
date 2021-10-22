@@ -105,6 +105,7 @@ void CScene::ReleaseAll(void)
 
 			// シーンの削除
 			pScene->Uninit();
+			pScene = NULL;
 
 			// 次のシーンを取得
 			pScene = pSceneNext;
@@ -117,7 +118,7 @@ void CScene::ReleaseAll(void)
 			// ポインタに先頭の情報を入れる
 			CScene *pScene = m_pTop[nCntType];
 
-			do
+			while (pScene != NULL)
 			{
 				// 次のシーンを保存
 				CScene *pSceneNext = pScene->m_pNext;
@@ -134,7 +135,7 @@ void CScene::ReleaseAll(void)
 				// 次のシーンを取得
 				pScene = pSceneNext;
 
-			} while (pScene != NULL);	// シーンがNULLじゃなければ続ける
+			}	// シーンがNULLじゃなければ続ける
 		}
 	}
 	if (m_pPauseScene != NULL)
@@ -165,7 +166,7 @@ void CScene::UpdateAll(void)
 				// ポインタに先頭の情報を入れる
 				CScene *pScene = m_pTop[nCntType];
 
-				do
+				while (pScene != NULL) 
 				{
 					// 次のシーンを保存
 					CScene *pSceneNext = pScene->m_pNext;
@@ -175,19 +176,38 @@ void CScene::UpdateAll(void)
 						// 更新処理
 						pScene->Update();
 					}
-					else
-					{
-						// 死亡フラグが立っているシーンをリストから削除
-						pScene->DeathRelease();
-
-						// NULLを代入
-						pScene = NULL;
-					}
 					// 次のシーンを取得
 					pScene = pSceneNext;
 
-				} while (pScene != NULL);	// シーンがNULLじゃなければ続ける
+				}	// シーンがNULLじゃなければ続ける
 			}
+		}
+	}
+
+	for (int nCntType = 0; nCntType < OBJ_MAX; nCntType++)
+	{
+		if (m_pTop[nCntType] != NULL)
+		{
+			// ポインタに先頭の情報を入れる
+			CScene *pScene = m_pTop[nCntType];
+
+			while (pScene != NULL)
+			{
+				// 次のシーンを保存
+				CScene *pSceneNext = pScene->m_pNext;
+
+				if (pScene->m_bDeath == true)
+				{
+					// 死亡フラグが立っているシーンをリストから削除
+					pScene->DeathRelease();
+
+					// NULLを代入
+					pScene = NULL;
+				}
+				// 次のシーンを取得
+				pScene = pSceneNext;
+
+			}	// シーンがNULLじゃなければ続ける
 		}
 	}
 
@@ -220,7 +240,7 @@ void CScene::DrawAll(void)
 			// ポインタに先頭の情報を入れる
 			CScene *pScene = m_pTop[nCntType];
 
-			do
+			while (pScene != NULL)
 			{
 				// 次のシーンを保存
 				CScene *pSceneNext = pScene->m_pNext;
@@ -234,7 +254,7 @@ void CScene::DrawAll(void)
 				// 次のシーンを取得
 				pScene = pSceneNext;
 
-			} while (pScene != NULL);	// シーンがNULLじゃなければ続ける
+			}	// シーンがNULLじゃなければ続ける
 		}
 	}
 

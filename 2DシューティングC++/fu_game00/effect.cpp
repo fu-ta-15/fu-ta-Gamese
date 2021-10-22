@@ -17,7 +17,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CEffect::CEffect() : CScene2D(OBJ_EFFECT)
+CEffect::CEffect() : CScene2D(OBJ_EFFECT1)
 {
 	this->m_bUse = true;
 	this->m_col = WhiteColor;
@@ -57,17 +57,14 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVEC
 {
 	CEffect *pEffect = NULL;
 
-	if (pEffect == NULL)
-	{
-		pEffect = new CEffect;
-		pEffect->m_pos = pos;
-		pEffect->m_size = size;
-		pEffect->m_move = move;
-		pEffect->SetTexture(ptex);
-		pEffect->m_bMove = true;
-		pEffect->m_bGravity = false;
-		pEffect->Init();
-	}
+	pEffect = new CEffect;
+	pEffect->m_pos = pos;
+	pEffect->m_size = size;
+	pEffect->m_move = move;
+	pEffect->SetTexture(ptex);
+	pEffect->m_bMove = true;
+	pEffect->m_bGravity = false;
+	pEffect->Init();
 
 	return pEffect;
 }
@@ -108,12 +105,8 @@ void CEffect::Update(void)
 		m_move.x += (0 - m_move.x) * 0.025f;
 		m_move.y += (0 - m_move.y) * 0.025f;
 
-		m_col.a -= 0.035f;
+		m_col.a -= 0.055f;
 
-		if (m_col.a < 0)
-		{
-			Release();
-		}
 		CollisionField();
 	}
 
@@ -121,6 +114,11 @@ void CEffect::Update(void)
 	CScene2D::SetSize(m_size);
 	CScene2D::SetCol(m_col);
 	CScene2D::SetUse(m_bUse);
+
+	if (m_col.a < 0)
+	{
+		CScene2D::Uninit();
+	}
 }
 
 //=============================================================================

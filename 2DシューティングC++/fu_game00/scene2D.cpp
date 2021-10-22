@@ -59,6 +59,20 @@ CScene2D * CScene2D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 	return pScene2D;
 }
 
+CScene2D * CScene2D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, Priority type)
+{
+	CScene2D *pScene2D = NULL;
+
+	if (pScene2D == NULL)
+	{
+		pScene2D = new CScene2D(type);
+		pScene2D->m_bUse = true;
+		pScene2D->Init(pos, size);
+	}
+
+	return pScene2D;
+}
+
 //=============================================================================
 // テクスチャの読み込み
 //=============================================================================
@@ -242,6 +256,11 @@ void CScene2D::Uninit(void)
 	{//頂点バッファの開放
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
+	}
+	if (m_pTex != NULL)
+	{
+		m_pTex->Release();
+		m_pTex = NULL;
 	}
 	Release();
 }

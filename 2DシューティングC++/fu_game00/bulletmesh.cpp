@@ -15,6 +15,9 @@
 #include "player.h"
 #include "collision.h"
 #include "particle.h"
+#include "core.h"
+#include "boss.h"
+#include "tutorial.h"
 
 //=============================================================================
 // コンストラクタ
@@ -106,13 +109,21 @@ void CBulletMesh::Update(void)
 		}
 	}
 
-	CollisionBullet();
+	CollisionEnemy();
+
+	if (CGame::GetBoss()->GetAlive() == true)
+	{
+		if (CollisionCore())
+		{
+			CollisionBoss();
+		}
+	}
+
+	CMesh::Update();
 	if (pVtx[0].pos.x > SCREEN_WIDTH)
 	{
-		Release();
+		CMesh::Uninit();
 	}
-	
-	CMesh::Update();
 }
 
 //=============================================================================
@@ -126,19 +137,14 @@ void CBulletMesh::Draw(void)
 //=============================================================================
 // 当たり判定
 //=============================================================================
-bool CBulletMesh::CollisionBullet(void)
+bool CBulletMesh::CollisionEnemy(void)
 {
 	D3DXVECTOR3 posEnemy;							// 敵の位置
 	D3DXVECTOR3 sizeEnemy;							// 敵のサイズ
 
-	D3DXVECTOR3 posBoss;							// 敵の位置
-	D3DXVECTOR3 sizeBoss;							// 敵のサイズ
-
 	VERTEX_2D *pVtx = this->GetVERTEX();			// 頂点情報の取得
 
 	CScene *pScene = CScene::GetScene(OBJ_ENEMY);
-
-	CScene *pSceneBoss = CScene::GetScene(OBJ_BOSS);
 
 	m_Collision = false;	// 当たり判定は無し
 
@@ -149,18 +155,33 @@ bool CBulletMesh::CollisionBullet(void)
 		posEnemy = pScene->GetPos();
 		sizeEnemy = pScene->GetSize();
 
-		for (int nCnt = 0; nCnt < this->GetVtxNum(); nCnt++)
+		for (int nCnt = 0; nCnt < this->GetVtxNum(); nCnt+=2)
 		{
 			if (Collision::CollisionCycle(pVtx[nCnt].pos, posEnemy, sizeEnemy.x) == true)
 			{/* 敵の範囲に弾が存在したら */
 				pScene->SetBool(true);
-				Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
+				//Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
 				m_Collision = true;							// 当たり判定は有
 				break;
 			}
 		}
 		pScene = pSceneNext;
 	}
+
+	return m_Collision;	// 判定結果を返す
+}
+
+bool CBulletMesh::CollisionBoss(void)
+{
+	D3DXVECTOR3 posBoss;							// 敵の位置
+	D3DXVECTOR3 sizeBoss;							// 敵のサイズ
+
+	VERTEX_2D *pVtx = this->GetVERTEX();			// 頂点情報の取得
+
+
+	CScene *pSceneBoss = CScene::GetScene(OBJ_BOSS);
+
+	m_Collision = false;	// 当たり判定は無し
 
 	while (pSceneBoss != NULL)
 	{
@@ -170,12 +191,12 @@ bool CBulletMesh::CollisionBullet(void)
 
 		sizeBoss = pSceneBoss->GetSize();
 
-		for (int nCnt = 0; nCnt < this->GetVtxNum(); nCnt++)
+		for (int nCnt = 0; nCnt < this->GetVtxNum(); nCnt+=2)
 		{
-			if (Collision::CollisionCycle(pVtx[nCnt].pos, posBoss, sizeBoss.x) == true)
+			if (Collision::CollisionCycle(pVtx[nCnt].pos, posBoss, 7.5f) == true)
 			{/* 敵の範囲に弾が存在したら */
 				pSceneBoss->SetBool(true);
-				Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
+				//Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
 				m_Collision = true;							// 当たり判定は有
 				break;
 			}
@@ -185,4 +206,51 @@ bool CBulletMesh::CollisionBullet(void)
 	}
 
 	return m_Collision;	// 判定結果を返す
+}
+
+bool CBulletMesh::CollisionCore(void)
+{
+	CCore **pCore = NULL;
+	// メッシュポリゴンの情報取得
+	switch (CManager::GetMode())
+	{
+	case CManager::MODE_TUTORIAL:
+		pCore = CTutorial::GetBoss()->GetCore();
+		break;
+
+	case CManager::MODE_GAME:
+		// ボスの情報
+		pCore = CGame::GetBoss()->GetCore();
+		break;
+
+	default:
+		break;
+	}
+
+	VERTEX_2D *pVtx = this->GetVERTEX();			// 頂点情報の取得
+	m_Collision = false;	// 当たり判定は無し
+
+	for (int nCntCore = 0; nCntCore < 3; nCntCore++)
+	{
+		for (int nCnt = 0; nCnt < this->GetVtxNum(); nCnt+=2)
+		{
+			if (Collision::CollisionCycle(pVtx[nCnt].pos, pCore[nCntCore]->GetPos(), pCore[nCntCore]->GetSize().x) == true
+				&& pCore[nCntCore]->GetUse() == true)
+			{
+				pCore[nCntCore]->SetUse(false);
+				//Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
+				m_Collision = true;							// 当たり判定は有
+				break;
+			}
+		}
+	}
+
+	bool bColBoss = false;
+
+	if (pCore[0]->GetUse() == false && pCore[1]->GetUse() == false && pCore[2]->GetUse() == false)
+	{
+		bColBoss = true;
+	}
+
+	return bColBoss;
 }

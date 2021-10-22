@@ -24,6 +24,7 @@ public:
 	~CScene2D();
 
 	static CScene2D *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
+	static CScene2D *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, Priority type);
 	HRESULT CreateTexture(const LPCSTR pSrcFile);
 
 	HRESULT Init(void);

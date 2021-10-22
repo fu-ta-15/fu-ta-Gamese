@@ -55,6 +55,7 @@ public:
 	void Draw(void);
 
 	static CMesh* GetMesh(void) { return m_pField; }
+	static CBoss* GetBoss(void) { return m_pBoss; }
 
 private:
 

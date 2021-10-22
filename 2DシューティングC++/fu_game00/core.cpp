@@ -8,12 +8,18 @@
 // インクルードファイル
 //-----------------------------------------------------------------------------
 #include "core.h"
+#include "move.h"
+#include "game.h"
+#include "boss.h"
+#include "manager.h"
+#include "tutorial.h"
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CCore::CCore(Priority nPriority) : CScene2D(nPriority)
 {
+	m_bUse = true;
 }
 
 //=============================================================================
@@ -26,17 +32,19 @@ CCore::~CCore()
 //=============================================================================
 // コアの生成
 //=============================================================================
-CCore * CCore::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, Priority nPriority)
+CCore * CCore::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,int nTime, Priority nPriority)
 {
 	CCore *pCore = NULL;
 
 	if (pCore == NULL)
 	{
 		pCore = new CCore(nPriority);
-
+		pCore->Init();
+		pCore->CreateTexture("data/TEXTURE/Particle04_bokashi_hard.png");
+		pCore->m_nMoveCnt = nTime;
+		pCore->SetCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 		pCore->SetPos(pos);
 		pCore->SetSize(size);
-		pCore->Init();
 	}
 
 	return pCore;
@@ -48,7 +56,6 @@ CCore * CCore::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, Priority nP
 HRESULT CCore::Init(void)
 {
 	CScene2D::Init();
-
 	return S_OK;
 }
 
@@ -65,8 +72,30 @@ void CCore::Uninit(void)
 //=============================================================================
 void CCore::Update(void)
 {
+	CBoss *pBoss = NULL;
+	// メッシュポリゴンの情報取得
+	switch (CManager::GetMode())
+	{
+	case CManager::MODE_TUTORIAL:
+		pBoss = CTutorial::GetBoss();
+		break;
+
+	case CManager::MODE_GAME:
+		// ボスの情報
+		pBoss = CGame::GetBoss();
+		break;
+
+	default:
+		break;
+	}
+
 	D3DXVECTOR3 pos = this->GetPos();
 	D3DXVECTOR3 size = this->GetSize();
+	
+	m_nMoveCnt++;
+
+	pos.x = Move::SinWave(pBoss->GetPos().x, pBoss->GetSize().x*1.5f, 150.0f, (float)m_nMoveCnt);
+	pos.y = Move::CosWave(pBoss->GetPos().y, pBoss->GetSize().y*1.5f, 150.0f, (float)m_nMoveCnt);
 
 	CScene2D::Update();
 	this->SetPos(pos);
@@ -78,14 +107,9 @@ void CCore::Update(void)
 //=============================================================================
 void CCore::Draw(void)
 {
-
-	CScene2D::Draw();
+	if (m_bUse == true)
+	{
+		CScene2D::Draw();
+	}
 }
 
-//=============================================================================
-// 当たり判定
-//=============================================================================
-bool CCore::CollisionBullet(void)
-{
-	return false;
-}

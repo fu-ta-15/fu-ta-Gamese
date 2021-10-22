@@ -28,13 +28,14 @@ public:
 	{
 		OBJ_NONE = 0,	// シンプルオブジェクト
 		OBJ_NONE2,		// シンプルオブジェクト
+		OBJ_BOSS,		// ボスオブジェクト
 		OBJ_BULLET1,	// バレットオブジェクト
 		OBJ_BULLET2,	// バレットオブジェクト
 		OBJ_PLAYER,		// プレイヤーオブジェクト
-		OBJ_BOSS,		// ボスオブジェクト
+		OBJ_EFFECT2,	// エフェクトオブジェクト
 		OBJ_CORE,		// コアオブジェクト
 		OBJ_ENEMY,		// 敵オブジェクト
-		OBJ_EFFECT,		// エフェクトオブジェクト
+		OBJ_EFFECT1,	// エフェクトオブジェクト
 		OBJ_MAX
 	}ObjectType;	
 	

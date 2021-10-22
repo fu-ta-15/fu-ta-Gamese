@@ -13,6 +13,7 @@
 #include "enemy.h"
 #include "effect.h"
 #include "mesh.h"
+#include "core.h"
 
 
 //-----------------------------------------------------------------------------
@@ -70,12 +71,11 @@ public:
 	void StateUpdate(void);
 
 	void SetState(BOSS_STATE state)		{ m_State = state; }
-	void SetShield(bool bShield)		{ m_bShield = bShield; }
-	void SetShieldAlpha(float fAlpha)	{ m_fA_Shield = fAlpha; }
+
+	CCore **GetCore(void)				{ return &m_pCore[0]; }
 
 	BOSS_STATE GetState(void)			{ return m_State; }
 	LIFE_STATE GetLifeState(void)		{ return m_LifeState; }
-	bool GetShield(void)				{ return m_bShield; }
 	float GetLife(void)					{ return m_fLife; }
 	static void SetAlive(bool bAlive)	{ m_bBoss_Alive = bAlive; }
 	static bool GetAlive(void)			{ return m_bBoss_Alive; }
@@ -84,22 +84,20 @@ private:
 
 
 	CEffect				*m_pDamage;
-	CEffect				*m_pShield;
 	CScene2D			*m_pLife[BOSS_LIFE_STOCK];
+	CScene2D			*m_pShiled;
+	CCore				*m_pCore[3];
 
 	static bool			m_bBoss_Alive;
 
 	BOSS_STATE			m_State;
 	LIFE_STATE			m_LifeState;
 	D3DXCOLOR			m_StateCol;
-	D3DXCOLOR			m_ShieldCol;
 
 	D3DXVECTOR3			m_OldPos;
 	float				m_fLife;
-	bool				m_bShield;
 	bool				m_bDamage;
 	float				m_fA_Damage;
-	float				m_fA_Shield;
 	int					m_nDamageCnt;
 	float				m_fMoveTime;
 };

@@ -21,8 +21,7 @@
 #define ENEMY_TYPE1_MOVE		(D3DXVECTOR3(-2.5f, -5.0f, 0.0f))
 #define TYPE1_COLOR				(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f))
 #define PLAYER_GET_POS			(CGame::GetPlayer()->GetPos())
-#define HOMING_TIME1			(1200)
-#define HOMING_TIME2			(900)
+#define HOMING_TIME1			(200)
 #define HOMING_SPEED			(3.0f)
 #define ANGLE_SIN				(sinf(D3DX_PI + fAngle))
 #define ANGLE_COS				(cosf(D3DX_PI - fAngle))
@@ -81,7 +80,7 @@ HRESULT CNormalEnemy::Init(void)
 
 	if (m_MoveType == MOVE2)
 	{
-		float fAngle = (float)((rand() % 628) - 628) / 100.f;
+		float fAngle = (float)(rand() % 314) / 100.f;
 		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
 		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
 	}
@@ -133,11 +132,11 @@ void CNormalEnemy::Update(void)
 
 	if (m_pos.x - m_size.x > SCREEN_WIDTH || m_pos.x + m_size.x < 0.0f)
 	{// 画面外処理
-		Release();
+		CEnemy::Uninit();
 	}
 	if (m_pos.y - m_size.y > SCREEN_HEIGHT || m_pos.y + m_size.y < 0.0f)
 	{
-		Release();
+		CEnemy::Uninit();
 	}
 }
 
@@ -163,7 +162,7 @@ void CNormalEnemy::UpdateBlack(void)
 		if (m_bHomingTime == false)
 		{// ホーミングタイムではなかったら
 			m_bHomingTime = true;
-			m_nHomingTime = Rand(600, 400);
+			m_nHomingTime = Rand(100, 400);
 		}
 		else
 		{// ホーミングタイムだったら
@@ -234,14 +233,6 @@ void CNormalEnemy::BlackMove(void)
 //=============================================================================
 void CNormalEnemy::UpdateWhite(void)
 {
-	//if ((CGame::GetTime()->GetTime() % 3) == 0)
-	//{
-	//	float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-	//	m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-	//	m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
-	//	m_pos += m_move;
-	//}
-
 	// ボスの情報
 	CBoss *pBoss = CGame::GetBoss();
 

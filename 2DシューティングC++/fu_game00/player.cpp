@@ -44,7 +44,7 @@ CPlayer::CPlayer() : CScene2D(OBJ_PLAYER)
 	this->m_pShield = NULL;					// シールド
 	this->m_nBulletTime = 0;				// 弾の復活時間のカウント
 	this->m_bAlive = true;					// 生存中
-	this->m_bPresse = false;
+	this->m_bFall = false;
 }
 
 //=============================================================================
@@ -319,30 +319,29 @@ void CPlayer::FieldControl(void)
 
 	for (int nCnt = 0; nCnt < pMesh->GetVtxNum() / 2; nCnt++)
 	{// メッシュポリゴン上辺のみ算出
-		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
+		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x && m_bFall == false)
 		{// 二つの頂点と点の外積判定
 			bOutPro = Collision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
 		}
-
 		if (bOutPro)
 		{// 点が二点より下にいたら
-			if (pVtx[nCnt].pos.y > SCREEN_HEIGHT &&  pVtx[nCnt + 1].pos.y > SCREEN_HEIGHT)
+			m_posOld = Collision::WaveCollision(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);	// 戻す分を算出
+			m_move.y = 0.0f;					// 重力ゼロ
+			m_pos.y = m_posOld.y - m_size.y;	// 画面内まで移動させる
+			if (m_bJunp == true)
 			{
-				m_bFall = true;
-			}
-			else
-			{
-				m_posOld = Collision::WaveCollision(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);	// 戻す分を算出
-				m_move.y = 0.0f;					// 重力ゼロ
-				m_pos.y = m_posOld.y - m_size.y;	// 画面内まで移動させる
-				if (m_bJunp == true)
-				{
-					m_bJunp = false;					// ジャンプ可能
-					Particle::SetParticle(D3DXVECTOR3(m_pos.x, m_pos.y - m_size.y, 0.0f), m_size*0.4f, 50, Particle::TYPE_DOWN_FAN,"data/TEXTURE/Fog2001.png");
-				}
-
+				m_bJunp = false;					// ジャンプ可能
+				Particle::SetParticle(D3DXVECTOR3(m_pos.x, m_pos.y - m_size.y, 0.0f), m_size*0.4f, 50, Particle::TYPE_DOWN_FAN, "data/TEXTURE/Fog2001.png");
 			}
 			break;
+		}
+	}
+	if (m_pos.y + m_size.y > pVtx[0].pos.y)
+	{
+		m_bFall = true;
+		if (m_pos.x - m_size.x < WIDTH_HALF + 100)
+		{
+			m_pos.x = WIDTH_HALF + 100 + m_size.x;
 		}
 	}
 }

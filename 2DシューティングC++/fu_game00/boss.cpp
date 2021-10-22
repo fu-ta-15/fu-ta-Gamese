@@ -53,8 +53,6 @@ bool CBoss::m_bBoss_Alive = true;	// 生存しているかどうか
 CBoss::CBoss() : CEnemy(OBJ_BOSS)
 {
 	this->m_pDamage = NULL;				// ダメージエフェクト
-	this->m_pShield = NULL;				// シールドエフェクト
-	this->m_bShield = false;			// シールド出すか出さないか
 	this->m_bDamage = false;			// ダメージ受けているかいないか
 	this->m_State = STATE_NONE;			// 状態
 	this->m_LifeState = LIFE_RATE_0;	// ライフの状態
@@ -109,6 +107,14 @@ HRESULT CBoss::Init(void)
 
 	CEnemy::Init();	// 初期化
 
+	m_pShiled = CScene2D::Create(m_pos, m_size*1.5f, OBJ_EFFECT2);
+
+	m_pCore[0] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 0, OBJ_CORE);
+	m_pCore[1] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 50, OBJ_CORE);
+	m_pCore[2] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 100, OBJ_CORE);
+
+	m_pShiled->CreateTexture("data/TEXTURE/t0003.png");
+
 	return S_OK;
 }
 
@@ -117,6 +123,15 @@ HRESULT CBoss::Init(void)
 //=============================================================================
 void CBoss::Uninit(void)
 {
+	for (int nCnt = 0; nCnt < 3; nCnt++)
+	{
+		m_pCore[nCnt]->Uninit();
+		m_pCore[nCnt] = NULL;
+	}
+
+	m_pShiled->Uninit();
+	m_pShiled = NULL;
+
 	CEnemy::Uninit();	// 終了処理
 }
 
@@ -166,6 +181,7 @@ void CBoss::Update(void)
 		break;
 	}
 
+	m_pShiled->SetPos(m_pos); 
 	// 位置の更新
 	CScene2D::SetPos(m_pos);
 	CScene2D::SetSize(m_size);
@@ -197,6 +213,10 @@ void CBoss::UpdateBoss(void)
 				{
 					m_LifeState = LIFE_RATE_2;	// ２割減少
 					m_fMoveTime = 0.0f;
+					for (int nCnt = 0; nCnt < 3; nCnt++)
+					{
+						m_pCore[nCnt]->SetUse(true);
+					}
 				}
 				break;
 
@@ -205,6 +225,10 @@ void CBoss::UpdateBoss(void)
 				{
 					m_LifeState = LIFE_RATE_5;	// ５割減少
 					m_fMoveTime = 0.0f;
+					for (int nCnt = 0; nCnt < 3; nCnt++)
+					{
+						m_pCore[nCnt]->SetUse(true);
+					}
 				}
 				break;
 
@@ -213,6 +237,10 @@ void CBoss::UpdateBoss(void)
 				{
 					m_LifeState = LIFE_RATE_8;	// ８割減少
 					m_fMoveTime = 0.0f;
+					for (int nCnt = 0; nCnt < 3; nCnt++)
+					{
+						m_pCore[nCnt]->SetUse(true);
+					}
 				}
 				break;
 
@@ -261,21 +289,6 @@ void CBoss::DamageBoss(void)
 //=============================================================================
 void CBoss::NotDamageBoss(void)
 {
-	if (m_bShield == true)
-	{// シールド展開中
-		if (m_pShield == NULL)
-		{// NULLチェック
-			m_pShield = CreateEffect(m_pos, SHILED_SIZE);	// 生成
-			m_pShield->CreateTexture(SHILED_TEXTUER);		// テクスチャ設定
-			m_pShield->SetColor(SHILED_COLOR);				// 色の設定
-			m_ShieldCol = m_pShield->GetColor();			// 色の取得
-			m_fA_Shield = SHILED_ADD_A;						// 透明度加算用
-		}
-		if (m_pShield != NULL)
-		{// NULLじゃなかったら
-			m_pShield->SetPos(m_pos);	// 位置を更新
-		}
-	}
 }
 
 //=============================================================================
@@ -300,7 +313,7 @@ void CBoss::MoveBoss(void)
 		break;
 
 	case LIFE_RATE_5:
-		m_pos = Move::TargetPosMove(D3DXVECTOR3(WIDTH_HALF, HEIGHT_HALF - 100.0f, 0.0f), m_pos, 0.025f);
+		m_pos = Move::TargetPosMove(D3DXVECTOR3(SCREEN_WIDTH - 150.0f , HEIGHT_HALF + 100.0f, 0.0f), m_pos, 0.025f);
 		break;
 
 	case LIFE_RATE_8:
@@ -325,55 +338,58 @@ void CBoss::SummonsEnemy(void)
 	switch (m_LifeState)
 	{// 体力の状態
 	case LIFE_RATE_0:
-		if ((nFrame % 60) == 0)
+		if ((nFrame % 15) == 0)
 		{
-			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE1, MOVE2, 1);
-			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 25);
-			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 25);
-		}
-		if ((nFrame % 100) == 0)
-		{
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE4);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3, 1);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
 		}
 		break;
 
 	case LIFE_RATE_2:
-		if ((nFrame % 120) == 0)
+		if ((nFrame % 60) == 0)
 		{
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
-		}
-		if ((nFrame % 160) == 0)
-		{
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3, 1);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 25);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0, 1);
 		}
 		break;
 
 	case LIFE_RATE_5:
-		if ((nFrame % 156) == 0)
+		if ((nFrame % 20) == 0)
 		{
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0, 1);
 		}
-		if ((nFrame % 150) == 0)
+		if ((nFrame % 10) == 0)
 		{
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE1, MOVE2);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3, 1);
 		}
 		break;
 
 	case LIFE_RATE_8:
-		if ((nFrame % 80) == 0)
+		if ((nFrame % 7) == 0)
 		{
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0);
-			CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0, 1);
 		}
+		if ((nFrame % 5) == 0)
+		{
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3, 1);
+		}
+		if ((nFrame % 30) == 0)
+		{
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
+		}
+		if ((nFrame % 100) == 0)
+		{
+			if (m_pCore[0]->GetUse() == true)
+			{
+				ENEMY::SetEnemy(m_pCore[0]->GetPos(), ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
+			}
+			if (m_pCore[1]->GetUse() == true)
+			{
+				ENEMY::SetEnemy(m_pCore[1]->GetPos(), ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
+			}
+		}
+
 		break;
 
 	default:
@@ -386,23 +402,6 @@ void CBoss::SummonsEnemy(void)
 //=============================================================================
 void CBoss::StateUpdate(void)
 {
-	if (m_pShield != NULL)
-	{// シールド展開中
-		// カラーの更新
-		m_pShield->SetColor(m_ShieldCol);
-		m_ShieldCol.a += m_fA_Shield;
-
-		if (m_ShieldCol.a >= ADD_MAX_A)
-		{// α値が一定を越えたら
-			m_fA_Shield = -DECREASE_A;	// 減算
-		}
-		if (m_ShieldCol.a < 0.0f)
-		{// α値が一定を越えたら
-			m_pShield->Uninit();	// 終了処理
-			m_pShield = NULL;		// NULL代入
-			m_bShield = false;		// FALSE代入
-		}
-	}
 	if (m_pDamage != NULL)
 	{// ダメージ状態
 		// カラーの更新
