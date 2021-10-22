@@ -116,14 +116,14 @@ void CEnemy::CollisionEnemy(void)
 			if (this->GetLife() == 0)
 			{// ƒ‰ƒCƒt‚ªƒ[ƒ‚¾‚Á‚½‚ç
 				this->Release();
-				Particle::SetParticle(m_pos, m_size, 30, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
+				Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 			}
 			break;
 
 		case ENEMY_TYPE1:
 
 			this->Release();
-			Particle::SetParticle(m_pos, m_size, 30, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
+			Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 
 			break;
 

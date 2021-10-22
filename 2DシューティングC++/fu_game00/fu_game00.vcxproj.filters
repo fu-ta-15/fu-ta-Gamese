@@ -156,6 +156,9 @@
     <ClCompile Include="bulletmesh.cpp">
       <Filter>game\effect</Filter>
     </ClCompile>
+    <ClCompile Include="core.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -255,6 +258,9 @@
       <Filter>game\effect</Filter>
     </ClInclude>
     <ClInclude Include="bulletmesh.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
       <Filter>game\effect</Filter>
     </ClInclude>
   </ItemGroup>

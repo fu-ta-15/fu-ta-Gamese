@@ -19,7 +19,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CBulletMesh::CBulletMesh() : CMesh(OBJ_BULLET)
+CBulletMesh::CBulletMesh(Priority nPriority) : CMesh(nPriority)
 {
 }
 
@@ -33,16 +33,17 @@ CBulletMesh::~CBulletMesh()
 //=============================================================================
 // Meshのバレット生成
 //=============================================================================
-CBulletMesh * CBulletMesh::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move)
+CBulletMesh * CBulletMesh::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move ,bool bWave, Priority nPriority)
 {
 	CBulletMesh *pMBullet = NULL;
 
 	if (pMBullet == NULL)
 	{
-		pMBullet = new CBulletMesh;
+		pMBullet = new CBulletMesh(nPriority);
 		pMBullet->m_pos = pos;
 		pMBullet->m_size = size;
 		pMBullet->m_move = move;
+		pMBullet->m_bWave = bWave;
 		pMBullet->CreateTexture("data/TEXTURE/02.png");
 		pMBullet->Init();
 	}
@@ -62,14 +63,6 @@ HRESULT CBulletMesh::Init(void)
 	m_nFrameTime = 0;
 	m_nVtxID = 0;
 	m_fWaveTime++;
-
-	for (int nCnt = 0; nCnt < this->GetVtxNum() / 2; nCnt++)
-	{
-		D3DXVECTOR3 pos = m_pos;
-		pVtx[nCnt].pos.y = Move::SinWave(pos.y, 5.0f, 10.0f, m_fWaveTime + (nCnt * 2));
-		pos.y += m_size.y;
-		pVtx[nCnt + this->GetVtxNum() / 2].pos.y = Move::SinWave(pos.y, 5.0f, 10.0f, m_fWaveTime + (nCnt * 2));
-	}
 	return S_OK;
 }
 
@@ -104,10 +97,13 @@ void CBulletMesh::Update(void)
 	{
 		D3DXVECTOR3 pos = m_pos;
 		pVtx[nCnt].pos.x += m_move.x;
-		pVtx[nCnt].pos.y = Move::SinWave(pos.y, 20.0f, m_move.x, m_fWaveTime+(nCnt*2));
-		pos.y += m_size.y;
 		pVtx[nCnt + this->GetVtxNum() / 2].pos.x += m_move.x;
-		pVtx[nCnt+ this->GetVtxNum() / 2].pos.y = Move::SinWave(pos.y, 20.0f, m_move.x, m_fWaveTime+(nCnt*2));
+		if (m_bWave)
+		{
+			pVtx[nCnt].pos.y = Move::SinWave(pos.y, 40.0f, m_move.x, m_fWaveTime+(nCnt*2));
+			pos.y += m_size.y;
+			pVtx[nCnt+ this->GetVtxNum() / 2].pos.y = Move::SinWave(pos.y, 40.0f, m_move.x, m_fWaveTime+(nCnt*2));
+		}
 	}
 
 	CollisionBullet();
@@ -134,8 +130,15 @@ bool CBulletMesh::CollisionBullet(void)
 {
 	D3DXVECTOR3 posEnemy;							// 敵の位置
 	D3DXVECTOR3 sizeEnemy;							// 敵のサイズ
+
+	D3DXVECTOR3 posBoss;							// 敵の位置
+	D3DXVECTOR3 sizeBoss;							// 敵のサイズ
+
 	VERTEX_2D *pVtx = this->GetVERTEX();			// 頂点情報の取得
+
 	CScene *pScene = CScene::GetScene(OBJ_ENEMY);
+
+	CScene *pSceneBoss = CScene::GetScene(OBJ_BOSS);
 
 	m_Collision = false;	// 当たり判定は無し
 
@@ -151,12 +154,34 @@ bool CBulletMesh::CollisionBullet(void)
 			if (Collision::CollisionCycle(pVtx[nCnt].pos, posEnemy, sizeEnemy.x) == true)
 			{/* 敵の範囲に弾が存在したら */
 				pScene->SetBool(true);
-				Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
+				Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
 				m_Collision = true;							// 当たり判定は有
 				break;
 			}
 		}
 		pScene = pSceneNext;
+	}
+
+	while (pSceneBoss != NULL)
+	{
+		CScene *pSceneBNext = pSceneBoss->GetSceneNext();
+
+		posBoss = pSceneBoss->GetPos();
+
+		sizeBoss = pSceneBoss->GetSize();
+
+		for (int nCnt = 0; nCnt < this->GetVtxNum(); nCnt++)
+		{
+			if (Collision::CollisionCycle(pVtx[nCnt].pos, posBoss, sizeBoss.x) == true)
+			{/* 敵の範囲に弾が存在したら */
+				pSceneBoss->SetBool(true);
+				Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
+				m_Collision = true;							// 当たり判定は有
+				break;
+			}
+		}
+
+		pSceneBoss = pSceneBNext;
 	}
 
 	return m_Collision;	// 判定結果を返す

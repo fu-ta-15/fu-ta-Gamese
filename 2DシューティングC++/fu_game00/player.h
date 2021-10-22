@@ -76,6 +76,7 @@ private:
 	int					m_nDamageCnt;		// ダメージカウント
 	int					m_nBullet;
 	int					m_nBulletTime;		// バレットタイム
+	int					m_nBulletCharge;
 	float				m_fLife;			// ライフ
 
 	bool				m_bUse;				// 生存確認
@@ -84,6 +85,7 @@ private:
 	bool				m_bFall;			// 落下判定
 	bool				m_bDamage;			// ダメージの判定
 	bool				m_bAlive;
+	bool				m_bPresse;
 
 	D3DXVECTOR3			m_pos;				// 位置
 	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置

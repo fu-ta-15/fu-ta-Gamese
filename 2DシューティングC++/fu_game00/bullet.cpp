@@ -13,10 +13,6 @@
 #include "enemy.h"
 
 //-----------------------------------------------------------------------------
-// インクルードファイル
-//-----------------------------------------------------------------------------
-
-//-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
 #define BULLET_TEXTURE		("data/TEXTURE/Spark002.png")
@@ -24,7 +20,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CBullet::CBullet() : CScene2D(OBJ_BULLET)
+CBullet::CBullet(Priority nPriority) : CScene2D(nPriority)
 {
 }
 
@@ -38,10 +34,10 @@ CBullet::~CBullet()
 //=============================================================================
 // バレットの生成
 //=============================================================================
-CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move)
+CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move, Priority nPriority)
 {
 	/* バレットの要素を設定 */
-	CBullet* pBullet = new CBullet;		// インスタンス生成
+	CBullet* pBullet = new CBullet(nPriority);		// インスタンス生成
 
 	pBullet->m_pos = pos;					// 位置を設定
 	pBullet->m_size = size;					// サイズを設定
@@ -120,10 +116,6 @@ bool CBullet::CollisionBullet(void)
 	CScene *pSceneBoss = CScene::GetScene(OBJ_BOSS);
 
 	m_Collision = false;	// 当たり判定は無し
-	if (true)
-	{
-
-	}
 	while (pScene != NULL) 
 	{
 		CScene *pSceneNext = pScene->GetSceneNext();

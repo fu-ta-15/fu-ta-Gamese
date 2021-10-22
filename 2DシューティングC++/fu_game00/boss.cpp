@@ -325,10 +325,11 @@ void CBoss::SummonsEnemy(void)
 	switch (m_LifeState)
 	{// ëÃóÕÇÃèÛë‘
 	case LIFE_RATE_0:
-		if ((nFrame % 130) == 0)
+		if ((nFrame % 60) == 0)
 		{
-			//CreateEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3);
-			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 100);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE1, MOVE2, 1);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 25);
+			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 25);
 		}
 		if ((nFrame % 100) == 0)
 		{

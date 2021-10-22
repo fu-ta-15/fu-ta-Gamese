@@ -39,6 +39,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyPressed);
             this.ResumeLayout(false);
 
         }

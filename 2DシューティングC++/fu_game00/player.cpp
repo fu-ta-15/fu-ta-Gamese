@@ -18,6 +18,7 @@
 #include "move.h"
 #include "bulletmesh.h"
 #include "particle.h"
+#include "time.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -43,6 +44,7 @@ CPlayer::CPlayer() : CScene2D(OBJ_PLAYER)
 	this->m_pShield = NULL;					// シールド
 	this->m_nBulletTime = 0;				// 弾の復活時間のカウント
 	this->m_bAlive = true;					// 生存中
+	this->m_bPresse = false;
 }
 
 //=============================================================================
@@ -79,7 +81,7 @@ HRESULT CPlayer::Init(void)
 	m_tex = D3DXVECTOR2(2, 0);
 	m_number = D3DXVECTOR2(1, 0);
 	m_nAnimeCnt = 1;
-
+	m_nBulletCharge = 0;
 	// プレイヤー表示設定
 	CScene2D::Init(m_pos, m_size);
 	CScene2D::CreateTexture("data/TEXTURE/player0.png");
@@ -214,16 +216,23 @@ void CPlayer::PlayerAction(void)
 	PlayerMove();
 
 	// 弾の発射
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD6) == true && m_nBullet > 0)
-	{// トリガー・NUM6 が押されたとき
-		CBullet::Create(m_pos, BULLET_SIZE, BULLET_MOVE_RIGHT);	// バレットの生成
-		PlayerBullet(1);											// プレイヤーの弾消費
+	if (pKey->GetState(CKey::STATE_PRESSE, DIK_NUMPAD6) == true)
+	{
+		m_nBulletCharge++;
+		if ((m_nBulletCharge % 20) == 0)
+		{
+			CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f, 15.0f, 0.0f), D3DXVECTOR3(10.0f, 0.0f, 0.0f), true, OBJ_BULLET2);	// バレットの生成
+			m_nBulletCharge = 0;																						//PlayerBullet(3);											// プレイヤーの弾消費
+		}
 	}
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_NUMPAD8) == true && m_nBullet > 2)
+	else if (pKey->GetState(CKey::STATE_RELEASE, DIK_NUMPAD6) == true)
 	{// トリガー・NUM6 が押されたとき
-		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f,15.0f,0.0f), D3DXVECTOR3(10.0f,0.0f,0.0f));	// バレットの生成
-		PlayerBullet(3);											// プレイヤーの弾消費
+		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f, 15.0f, 0.0f), D3DXVECTOR3(10.0f, 0.0f, 0.0f), false, OBJ_BULLET1);	// バレットの生成
+		m_nBulletCharge = 0;
+		m_bPresse = false;
+		//PlayerBullet(3);											// プレイヤーの弾消費
 	}
+
 }
 
 //=============================================================================

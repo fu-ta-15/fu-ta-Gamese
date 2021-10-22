@@ -23,6 +23,7 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="bulletmesh.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="core.cpp" />
     <ClCompile Include="Dinput.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="enemy.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="bulletmesh.h" />
     <ClInclude Include="collision.h" />
+    <ClInclude Include="core.h" />
     <ClInclude Include="Dinput.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />

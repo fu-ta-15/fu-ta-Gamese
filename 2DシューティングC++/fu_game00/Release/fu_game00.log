@@ -1,35 +1,15 @@
 ﻿  boss.cpp
-  bullet.cpp
   bulletmesh.cpp
-  collision.cpp
-  effect.cpp
   enemy.cpp
-  fade.cpp
   game.cpp
-  gauge.cpp
-  main.cpp
-  manager.cpp
-  mesh.cpp
-  move.cpp
   normalenemy.cpp
-  particle.cpp
-  pause.cpp
   player.cpp
-  polygon.cpp
-  renderer.cpp
-  result.cpp
-  コンパイル中...
-  scene.cpp
-  scene2D.cpp
-  score.cpp
-score.cpp(87): warning C4101: 'aNumber': ローカル変数は 1 度も使われていません。
-  time.cpp
   title.cpp
   tutorial.cpp
   コード生成しています。
-  30 of 351 functions ( 8.5%) were compiled, the rest were copied from previous compilation.
-    8 functions were new in current compilation
-    17 functions had inline decision re-evaluated but remain unchanged
+  33 of 347 functions ( 9.5%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\fu_game00.pdb (Full PDB)

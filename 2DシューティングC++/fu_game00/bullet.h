@@ -13,23 +13,17 @@
 #include "scene2D.h"
 
 //-----------------------------------------------------------------------------
-// マクロ変数
-//-----------------------------------------------------------------------------
-#define MAX_BULLET		(256)	// バレットの最大数
-
-
-//-----------------------------------------------------------------------------
 // クラス
 //-----------------------------------------------------------------------------
 class CBullet : public CScene2D		
 {
 public:
 
-	CBullet();	  
+	CBullet(Priority nPriority);
 	~CBullet();	  
 
 	// create関数
-	static CBullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move);	
+	static CBullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move, Priority nPriority);
 
 	// メンバ関数
 	HRESULT Init(void);		

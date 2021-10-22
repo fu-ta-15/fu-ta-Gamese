@@ -27,12 +27,14 @@ public:
 	typedef enum Priority	
 	{
 		OBJ_NONE = 0,	// シンプルオブジェクト
-		OBJ_NONE2,	// シンプルオブジェクト
-		OBJ_BULLET,		// バレットオブジェクト
+		OBJ_NONE2,		// シンプルオブジェクト
+		OBJ_BULLET1,	// バレットオブジェクト
+		OBJ_BULLET2,	// バレットオブジェクト
 		OBJ_PLAYER,		// プレイヤーオブジェクト
 		OBJ_BOSS,		// ボスオブジェクト
+		OBJ_CORE,		// コアオブジェクト
 		OBJ_ENEMY,		// 敵オブジェクト
-		OBJ_EFFECT,
+		OBJ_EFFECT,		// エフェクトオブジェクト
 		OBJ_MAX
 	}ObjectType;	
 	

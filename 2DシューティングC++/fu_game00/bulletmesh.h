@@ -20,11 +20,11 @@ class CBulletMesh : public CMesh		// É|ÉäÉSÉì2DÇåpè≥
 {
 public:
 
-	CBulletMesh();	   
+	CBulletMesh(Priority nPriority);
 	~CBulletMesh();	   
 
 	// createä÷êî
-	static CBulletMesh *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move);	
+	static CBulletMesh *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXVECTOR3 move, bool bWave, Priority nPriority);
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -49,5 +49,6 @@ private:
 	bool				m_bUse;			// égópÇµÇƒÇ¢ÇÈÇ©
 	bool				m_Collision;	// ìñÇΩÇËîªíË
 	bool				m_ColiPlayer;
+	bool				m_bWave;
 };
 #endif // !_BULLET_H_

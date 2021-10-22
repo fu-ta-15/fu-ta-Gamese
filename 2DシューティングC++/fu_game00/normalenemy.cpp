@@ -234,13 +234,22 @@ void CNormalEnemy::BlackMove(void)
 //=============================================================================
 void CNormalEnemy::UpdateWhite(void)
 {
-	if ((CGame::GetTime()->GetTime() % 3) == 0)
-	{
-		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-		m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-		m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
-		m_pos += m_move;
-	}
+	//if ((CGame::GetTime()->GetTime() % 3) == 0)
+	//{
+	//	float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
+	//	m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
+	//	m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
+	//	m_pos += m_move;
+	//}
+
+	// ボスの情報
+	CBoss *pBoss = CGame::GetBoss();
+
+	m_fCosWaveCnt += 0.035f;
+	m_fSinWaveCnt += 0.035f;
+
+	m_pos.x = Move::SinWave(pBoss->GetPos().x, 140.0f, 14.0f, m_fSinWaveCnt);
+	m_pos.y = Move::CosWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fCosWaveCnt);
 
 	CScene2D::SetPos(m_pos);	// 移動量の更新
 	CScene2D::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

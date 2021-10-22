@@ -14,9 +14,10 @@ namespace BrockOut
     public partial class Form1 : Form
     {
         
-        Vector ballPos;     // ballの位置
-        Vector ballSpeed;   // ballのスピード
-        int ballRadius;     // ballの半径
+        Vector ballPos;         // ballの位置
+        Vector ballSpeed;       // ballのスピード
+        int ballRadius;         // ballの半径
+        Rectangle paddlePos;    // 
 
         // ballの設定
         public Form1()
@@ -32,10 +33,18 @@ namespace BrockOut
             // 半径
             this.ballRadius = 10;
 
+            this.paddlePos = new Rectangle(100, this.Height - 50, 100, 5);
+
             Timer timer = new Timer();
             timer.Interval = 33;                    // 33秒ごと
             timer.Tick += new EventHandler(Update); // 更新処理の呼び出し
             timer.Start();
+        }
+
+
+        double DotProduct(Vector a, Vector b)
+        {
+            return a.X * b.X + a.Y * b.Y;   // 内積計算
         }
 
         private void Update(object sender,EventArgs e)
@@ -64,7 +73,8 @@ namespace BrockOut
         private void Draw(Object sender, PaintEventArgs e)
         {
             // ballを描画するためのブラシ
-            SolidBrush pinkBrush = new SolidBrush(Color.DimGray);
+            SolidBrush pinkBrush = new SolidBrush(Color.HotPink);
+            SolidBrush grayBrush = new SolidBrush(Color.DimGray);
 
             // ballのサイズ
             float px = (float)this.ballPos.X - ballRadius;
@@ -72,7 +82,19 @@ namespace BrockOut
 
             // 円の描画・左上の座標・幅と高さの計算
             e.Graphics.FillEllipse(pinkBrush, px, py, this.ballRadius * 2, this.ballRadius * 2);
+            e.Graphics.FillRectangle(grayBrush, paddlePos);
+        }
 
+        private void KeyPressed(Object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 'a') // Aキーが押されたとき
+            {
+                this.paddlePos.X -= 20;
+            }
+            else if (e.KeyChar == 's') // Sキーが押されたとき
+            {
+                this.paddlePos.X += 20;
+            }
         }
     }
 }
