@@ -105,14 +105,16 @@ HRESULT CBoss::Init(void)
 		m_pLife[nCntLife]->CreateTexture(LIFE_TEXTURE);	 // テクスチャの設定
 	}
 
-	CEnemy::Init();	// 初期化
+	// 初期化
+	CEnemy::Init();
 
-	m_pShiled = CScene2D::Create(m_pos, m_size*1.5f, OBJ_EFFECT2);
-
+	// コアの生成
 	m_pCore[0] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 0, OBJ_CORE);
 	m_pCore[1] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 50, OBJ_CORE);
 	m_pCore[2] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 100, OBJ_CORE);
 
+	// シールドの生成
+	m_pShiled = CScene2D::Create(m_pos, m_size*1.5f, OBJ_EFFECT2);
 	m_pShiled->CreateTexture("data/TEXTURE/t0003.png");
 
 	return S_OK;
@@ -124,15 +126,19 @@ HRESULT CBoss::Init(void)
 void CBoss::Uninit(void)
 {
 	for (int nCnt = 0; nCnt < 3; nCnt++)
-	{
+	{// コアの開放
 		m_pCore[nCnt]->Uninit();
 		m_pCore[nCnt] = NULL;
 	}
 
-	m_pShiled->Uninit();
-	m_pShiled = NULL;
+	if (m_pShiled != NULL)
+	{// シールドの開放
+		m_pShiled->Uninit();
+		m_pShiled = NULL;
+	}
 
-	CEnemy::Uninit();	// 終了処理
+	// 自身の開放
+	CEnemy::Uninit();	
 }
 
 //=============================================================================
@@ -161,12 +167,6 @@ void CBoss::Update(void)
 			// ダメージ合図
 			m_bDamage = true;	
 		}
-		if (m_fLife <= 0)
-		{
-			// ライフがゼロの場合、死亡
-			m_bBoss_Alive = false;	
-			Release();				
-		}
 
 		// ボスの更新
 		UpdateBoss();		// 普通の更新
@@ -181,10 +181,15 @@ void CBoss::Update(void)
 		break;
 	}
 
-	m_pShiled->SetPos(m_pos); 
-	// 位置の更新
-	CScene2D::SetPos(m_pos);
-	CScene2D::SetSize(m_size);
+	m_pShiled->SetPos(m_pos); 	// 位置の更新
+	CScene2D::SetPos(m_pos);	// 位置の更新
+	CScene2D::SetSize(m_size);	// サイズの更新
+
+	if (m_fLife <= 0)
+	{// ライフがゼロの場合、死亡
+		m_bBoss_Alive = false;
+		CEnemy::Uninit();	// 自身の開放
+	}
 }
 
 //=============================================================================
@@ -250,7 +255,7 @@ void CBoss::UpdateBoss(void)
 
 			if (m_pLife[nCntLife] != NULL)
 			{// NULLチェック
-				m_pLife[nCntLife]->Release();  // ライフのブロック削除
+				m_pLife[nCntLife]->Uninit();  // ライフのブロック削除
 				m_pLife[nCntLife] = NULL;	   // NULL代入
 				break;
 			}
@@ -389,7 +394,6 @@ void CBoss::SummonsEnemy(void)
 				ENEMY::SetEnemy(m_pCore[1]->GetPos(), ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
 			}
 		}
-
 		break;
 
 	default:

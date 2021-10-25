@@ -120,6 +120,7 @@ void CBulletMesh::Update(void)
 	}
 
 	CMesh::Update();
+
 	if (pVtx[0].pos.x > SCREEN_WIDTH)
 	{
 		CMesh::Uninit();
