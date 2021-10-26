@@ -189,8 +189,10 @@ void CRenderer::Draw(void)
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{
 
+		// ƒV[ƒ“‚·‚×‚Ä‚Ì•`‰æ
 		CScene::DrawAll();
 
+		// •`‰æˆ—
 		CManager::GetFade()->Draw();
 
 #ifdef _DEBUG

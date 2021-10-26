@@ -19,8 +19,8 @@
 //=============================================================================
 CEffect::CEffect() : CScene2D(OBJ_EFFECT1)
 {
-	this->m_bUse = true;
-	this->m_col = WhiteColor;
+	this->m_bUse = true;		// 描画する合図
+	this->m_col = WhiteColor;	// 色の初期化
 }
 
 //=============================================================================
@@ -35,16 +35,16 @@ CEffect::~CEffect()
 //=============================================================================
 CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 {
-	CEffect *pEffect = NULL;
+	// クラスのポインタ変数
+	CEffect *pEffect = new CEffect;
 
-	if (pEffect == NULL)
+	// NULLチェック
+	if (pEffect != NULL)
 	{
-		pEffect = new CEffect;
-		pEffect->m_pos = pos;
-		pEffect->m_size = size;
-		pEffect->m_bMove = false;
-		pEffect->m_bGravity = false;
-		pEffect->Init();
+		pEffect->m_pos = pos;		// 位置
+		pEffect->m_size = size;		// サイズ
+		pEffect->m_bMove = false;	// 移動するかしないか
+		pEffect->Init();			// 初期化
 	}
 
 	return pEffect;
@@ -55,16 +55,19 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 //=============================================================================
 CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVECTOR3 move, LPDIRECT3DTEXTURE9 ptex)
 {
-	CEffect *pEffect = NULL;
+	// クラスのポインタ変数
+	CEffect *pEffect = new CEffect;
 
-	pEffect = new CEffect;
-	pEffect->m_pos = pos;
-	pEffect->m_size = size;
-	pEffect->m_move = move;
-	pEffect->SetTexture(ptex);
-	pEffect->m_bMove = true;
-	pEffect->m_bGravity = false;
-	pEffect->Init();
+	// NULLチェック
+	if (pEffect != NULL)
+	{
+		pEffect->m_pos = pos;		// 位置
+		pEffect->m_size = size;		// サイズ
+		pEffect->m_move = move;		// 移動量
+		pEffect->SetTexture(ptex);	// テクスチャ
+		pEffect->m_bMove = true;	// 移動の合図
+		pEffect->Init();			// 初期化
+	}
 
 	return pEffect;
 }
@@ -74,7 +77,10 @@ CEffect * CEffect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, D3DXVEC
 //=============================================================================
 HRESULT CEffect::Init(void)
 {
+	// ポリゴンの初期化処理
 	CScene2D::Init(m_pos, m_size);
+
+	// 位置の設定
 	CScene2D::SetPos(m_pos);
 
 	return S_OK;
@@ -85,6 +91,7 @@ HRESULT CEffect::Init(void)
 //=============================================================================
 void CEffect::Uninit(void)
 {
+	// 終了処理
 	CScene2D::Uninit();
 }
 
@@ -93,31 +100,37 @@ void CEffect::Uninit(void)
 //=============================================================================
 void CEffect::Update(void)
 {
+	// 位置の更新
+	CScene2D::SetPos(m_pos);
+
+	// 色の更新
+	CScene2D::SetCol(m_col);
+
+	// 描画するかの有無の更新
+	CScene2D::SetUse(m_bUse);
+
+	// もし移動するなら
 	if (m_bMove)
 	{
-		if (m_bGravity == true)
-		{
-			m_move.y += 0.45f;
-		}
-
+		// 移動量の加算
 		m_pos += m_move;
 
+		// 移動量の減衰
 		m_move.x += (0 - m_move.x) * 0.025f;
 		m_move.y += (0 - m_move.y) * 0.025f;
 
+		// 透明度の加算
 		m_col.a -= 0.055f;
 
+		// 地面との当たり判定
 		CollisionField();
-	}
 
-	CScene2D::SetPos(m_pos);
-	CScene2D::SetSize(m_size);
-	CScene2D::SetCol(m_col);
-	CScene2D::SetUse(m_bUse);
-
-	if (m_col.a < 0)
-	{
-		CScene2D::Uninit();
+		// 透明度がゼロを超えたら
+		if (m_col.a < 0)
+		{
+			// ポリゴンの開放
+			CScene2D::Uninit();
+		}
 	}
 }
 
@@ -129,13 +142,14 @@ void CEffect::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
+	// 加算合成
 	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
+	// 描画処理
 	CScene2D::Draw();
 
-	D3D_DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			// 合成方法
-	D3D_DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// ソース（描画元）の合成方法の設定
-	D3D_DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
+	// 通常合成に戻す
+	D3D_DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			
 }
 
 //=============================================================================
@@ -153,10 +167,12 @@ void CEffect::CollisionField(void)
 	case CManager::MODE_TUTORIAL:
 		pMesh = CTutorial::GetMesh();
 		break;
+
 		// ゲーム
 	case CManager::MODE_GAME:
 		pMesh = CGame::GetMesh();
 		break;
+
 	default:
 		break;
 	}
@@ -170,20 +186,24 @@ void CEffect::CollisionField(void)
 	// 外積当たり判定
 	bool bOutPro = false;
 
+	// メッシュポリゴン上辺のみ算出
 	for (int nCnt = 0; nCnt < pMesh->GetVtxNum() / 2; nCnt++)
-	{// メッシュポリゴン上辺のみ算出
+	{
+		// 二つの頂点と点の外積判定
 		if (m_pos.x > pVtx[nCnt].pos.x && m_pos.x < pVtx[nCnt + 1].pos.x)
-		{// 二つの頂点と点の外積判定
+		{
+			// 判定結果を代入
 			bOutPro = Collision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA);
 		}
-		if (bOutPro == true)
-		{// 点が二点より下にいたら
 
+		// 点が二点より下にいたら
+		if (bOutPro == true)
+		{
+			// 位置を戻す
 			m_pos.y = pVtx[nCnt].pos.y - m_size.y;
 
 			break;
 		}
 	}
-
 }
 

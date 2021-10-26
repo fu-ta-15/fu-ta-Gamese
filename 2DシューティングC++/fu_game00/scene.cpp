@@ -14,10 +14,10 @@
 //-----------------------------------------------------------------------------
 // 静的メンバ変数
 //-----------------------------------------------------------------------------
-CScene *CScene::m_pPauseScene = NULL;
-CScene *CScene::m_pPauseObj[PAUSE_MAX] = {};
-CScene *CScene::m_pTop[OBJ_MAX] = {};
-CScene *CScene::m_pCur[OBJ_MAX] = {};
+CScene *CScene::m_pPauseScene = NULL;		  // ポーズポインタ
+CScene *CScene::m_pPauseObj[PAUSE_MAX] = {};  // ポーズオブジェクトのポインタ
+CScene *CScene::m_pTop[OBJ_MAX] = {};		  // シーンの先頭
+CScene *CScene::m_pCur[OBJ_MAX] = {};		  // シーンの最後尾
 
 //=============================================================================
 // オブジェクトのコンストラクタ
@@ -30,6 +30,7 @@ CScene::CScene(Priority type)
 	// 死亡フラグ
 	m_bDeath = false;	 
 
+	// 先頭に情報が入っていたら
 	if (m_pTop[m_type] != NULL)
 	{
 		// 先頭がいるので、最後尾から追加する。
@@ -41,7 +42,7 @@ CScene::CScene(Priority type)
 		// 自身の前は今の最後尾である。
 		this->m_pPrev = m_pCur[m_type];	
 	}
-	else
+	else // 先頭に情報が入っていなかったら
 	{
 		// あなたは先頭です。
 		m_pTop[m_type] = this;
@@ -62,6 +63,7 @@ CScene::CScene(Priority type)
 //=============================================================================
 CScene::CScene(PauseType type)
 {
+	// NULLチェック
 	if (m_pPauseObj[type] == NULL)
 	{
 		// ポーズシーンに情報を入れる
@@ -74,6 +76,7 @@ CScene::CScene(PauseType type)
 //=============================================================================
 CScene::CScene(bool bpause)
 {
+	// ポーズされていなかったら・NULLチェック
 	if (bpause == true && m_pPauseScene == NULL)
 	{
 		// ポーズを行う合図
@@ -105,6 +108,8 @@ void CScene::ReleaseAll(void)
 
 			// シーンの削除
 			pScene->Uninit();
+
+			// NULLを代入
 			pScene = NULL;
 
 			// 次のシーンを取得
@@ -123,6 +128,7 @@ void CScene::ReleaseAll(void)
 				// 次のシーンを保存
 				CScene *pSceneNext = pScene->m_pNext;
 
+				// 死亡フラグを持っていたら
 				if (pScene->m_bDeath == true)
 				{
 					// 死亡フラグが立っているのでリストから削除
@@ -134,8 +140,7 @@ void CScene::ReleaseAll(void)
 
 				// 次のシーンを取得
 				pScene = pSceneNext;
-
-			}	// シーンがNULLじゃなければ続ける
+			}
 		}
 	}
 	if (m_pPauseScene != NULL)
@@ -171,15 +176,16 @@ void CScene::UpdateAll(void)
 					// 次のシーンを保存
 					CScene *pSceneNext = pScene->m_pNext;
 
+					// 死亡フラグを持っていなかったら
 					if (pScene->m_bDeath != true)
 					{
 						// 更新処理
 						pScene->Update();
 					}
+
 					// 次のシーンを取得
 					pScene = pSceneNext;
-
-				}	// シーンがNULLじゃなければ続ける
+				}
 			}
 		}
 	}
@@ -204,10 +210,10 @@ void CScene::UpdateAll(void)
 					// NULLを代入
 					pScene = NULL;
 				}
+
 				// 次のシーンを取得
 				pScene = pSceneNext;
-
-			}	// シーンがNULLじゃなければ続ける
+			}
 		}
 	}
 
@@ -245,6 +251,7 @@ void CScene::DrawAll(void)
 				// 次のシーンを保存
 				CScene *pSceneNext = pScene->m_pNext;
 
+				// 死亡フラグを持っていなかったら
 				if (pScene->m_bDeath != true)
 				{
 					// 更新処理
@@ -253,8 +260,7 @@ void CScene::DrawAll(void)
 
 				// 次のシーンを取得
 				pScene = pSceneNext;
-
-			}	// シーンがNULLじゃなければ続ける
+			}
 		}
 	}
 
@@ -330,25 +336,38 @@ void CScene::PauseRelease(void)
 			{
 				// ポーズシーンを削除
 				delete m_pPauseObj[nCntPause];
+
+				// NULLを代入
 				m_pPauseObj[nCntPause] = NULL;
 			}
 		}
 		// ポーズを削除
 		delete m_pPauseScene;
+
+		// NULLを代入
 		m_pPauseScene = NULL;
 	}
 }
 
+//=============================================================================
+// thisのNextシーンの取得
+//=============================================================================
 CScene * CScene::GetSceneNext(void)
 {
+	// シーンのポインタ
 	CScene *pSceneNext;
-	if (this->m_pNext != nullptr)
+
+	// 次に情報があれば
+	if (this->m_pNext != NULL)
 	{
+		// 情報取得
 		pSceneNext = this->m_pNext;
 	}
 	else
 	{
+		// NULLを代入
 		pSceneNext = NULL;
 	}
+
 	return pSceneNext;
 }

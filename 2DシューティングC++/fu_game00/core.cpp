@@ -37,12 +37,10 @@ CCore * CCore::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,int nTime, P
 	CCore *pCore = NULL;
 
 	if (pCore == NULL)
-	{
+	{// NULLチェック
 		pCore = new CCore(nPriority);
-		pCore->Init();
-		pCore->CreateTexture("data/TEXTURE/Particle04_bokashi_hard.png");
 		pCore->m_nMoveCnt = nTime;
-		pCore->SetCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		pCore->Init();
 		pCore->SetPos(pos);
 		pCore->SetSize(size);
 	}
@@ -56,6 +54,8 @@ CCore * CCore::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,int nTime, P
 HRESULT CCore::Init(void)
 {
 	CScene2D::Init();
+	CScene2D::SetCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	CScene2D::CreateTexture("data/TEXTURE/Particle04_bokashi_hard.png");
 	return S_OK;
 }
 
@@ -98,8 +98,8 @@ void CCore::Update(void)
 	pos.y = Move::CosWave(pBoss->GetPos().y, pBoss->GetSize().y*1.5f, 150.0f, (float)m_nMoveCnt);
 
 	CScene2D::Update();
-	this->SetPos(pos);
-	this->SetSize(size);
+	CScene2D::SetPos(pos);
+	CScene2D::SetSize(size);
 }
 
 //=============================================================================

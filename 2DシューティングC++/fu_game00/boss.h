@@ -62,13 +62,6 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	void UpdateBoss(void);
-	void DamageBoss(void);
-	void NotDamageBoss(void);
-	void MoveBoss(void);
-	void SummonsEnemy(void);
-
-	void StateUpdate(void);
 
 	void SetState(BOSS_STATE state)		{ m_State = state; }
 
@@ -77,11 +70,16 @@ public:
 	BOSS_STATE GetState(void)			{ return m_State; }
 	LIFE_STATE GetLifeState(void)		{ return m_LifeState; }
 	float GetLife(void)					{ return m_fLife; }
-	static void SetAlive(bool bAlive)	{ m_bBoss_Alive = bAlive; }
-	static bool GetAlive(void)			{ return m_bBoss_Alive; }
+	void SetAlive(bool bAlive)			{ m_bBoss_Alive = bAlive; }
+	bool GetAlive(void)					{ return m_bBoss_Alive; }
 
 private:
 
+	void UpdateBoss(void);
+	void DamageBoss(void);
+	void MoveBoss(void);
+	void SummonsEnemy(void);
+	void StateUpdate(void);
 
 	CEffect				*m_pDamage;
 	CScene2D			*m_pLife[BOSS_LIFE_STOCK];

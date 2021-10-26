@@ -84,7 +84,6 @@ void CScore::Draw()
 //=============================================================================
 void CScore::SetScore(int nScore)
 {
-	int aNumber[MAX_SCORE];
 	int nMath = 1000;	//スコア計算
 
 }

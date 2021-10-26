@@ -170,7 +170,7 @@ void CEnemy::CollisionField(void)
 			if (Collision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA))
 			{// “_‚ª“ñ“_‚æ‚è‰º‚É‚¢‚½‚ç
 
-				CScene2D::Uninit();
+				Uninit();
 				Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 				break;
 			}

@@ -22,26 +22,17 @@
 //-----------------------------------------------------------------------------
 //静的メンバ変数宣言
 //-----------------------------------------------------------------------------
-CRenderer *CManager::m_pRenderer = NULL;
-
-CKey *CManager::m_pKey = NULL;
-
-CManager::MODE CManager::m_mode = CManager::MODE_TITLE;
-
-CFade *CManager::m_pFade = NULL;
-
-CTitle *CManager::m_pTitle = NULL;
-
-CTutorial *CManager::m_pTutorial = NULL;
-
-CGame *CManager::m_pGame = NULL;
-
-CResult *CManager::m_pResult = NULL;
-
-CSound *CManager::m_pSound = NULL;
-
-CPause *CManager::m_pPause = NULL;
-bool CManager::m_bPause = false;
+CRenderer *CManager::m_pRenderer = NULL;				  // レンダラーポインタ
+CKey *CManager::m_pKey = NULL;							  // キーボード入力ポインタ
+CFade *CManager::m_pFade = NULL;						  // フェードポインタ
+CTitle *CManager::m_pTitle = NULL;						  // タイトルポインタ
+CTutorial *CManager::m_pTutorial = NULL;				  // チュートリアルポインタ
+CGame *CManager::m_pGame = NULL;						  // ゲームポインタ
+CResult *CManager::m_pResult = NULL;					  // リザルトポインタ
+CSound *CManager::m_pSound = NULL;						  // サウンドポインタ
+CPause *CManager::m_pPause = NULL;						  // ポーズポインタ
+bool CManager::m_bPause = false;						  // ポーズの切り替え変数
+CManager::MODE CManager::m_mode = CManager::MODE_TITLE;	  // 現在のモードの変数
 
 //=============================================================================
 // コンストラクタ
@@ -62,8 +53,10 @@ CManager::~CManager()
 //=============================================================================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
-	srand((unsigned)time(NULL));	// 現在時刻の情報で初期化
+	// 現在時刻の情報で初期化
+	srand((unsigned)time(NULL));	
 
+	// レンダラー生成
 	m_pRenderer = new CRenderer;
 
 	// レンダラ初期化
@@ -72,6 +65,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		return -1;
 	}
 
+	// キーボード生成
 	m_pKey = new CKey;
 
 	// キーボード初期化
@@ -79,6 +73,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	{
 		return -1;
 	}
+
+	// サウンドの生成
 	m_pSound = new CSound;
 
 	// サウンドの初期化
@@ -87,6 +83,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		return -1;
 	}
 
+	// フェードの生成
 	m_pFade = new CFade;
 
 	//フェードの初期化
@@ -189,6 +186,7 @@ void CManager::UninitMode(MODE mode)
 	// 各モードの開放
 	switch (mode)
 	{
+		// タイトルモード
 	case MODE_TITLE:
 		if (m_pTitle != NULL)
 		{// NULLチェック
@@ -197,6 +195,7 @@ void CManager::UninitMode(MODE mode)
 		}
 		break;
 
+		// チュートリアルモード
 	case MODE_TUTORIAL:
 		if (m_pTutorial != NULL)
 		{// NULLチェック
@@ -205,6 +204,7 @@ void CManager::UninitMode(MODE mode)
 		}
 		break;
 
+		// ゲームモード
 	case MODE_GAME:
 		if (m_pGame != NULL)
 		{// NULLチェック
@@ -213,6 +213,7 @@ void CManager::UninitMode(MODE mode)
 		}
 		break;
 
+		// リザルトモード
 	case MODE_RESULT:
 		if (m_pResult != NULL)
 		{// NULLチェック
@@ -220,6 +221,7 @@ void CManager::UninitMode(MODE mode)
 			m_pResult = NULL;
 		}
 		break;
+
 	default:
 		break;
 	}
@@ -233,6 +235,7 @@ void CManager::CreateMode(MODE mode)
 	// 各モードの生成
 	switch (mode)
 	{
+		// タイトルモード
 	case MODE_TITLE:	
 		if (m_pTitle == NULL)
 		{// NULLチェック
@@ -240,6 +243,7 @@ void CManager::CreateMode(MODE mode)
 		}
 		break;
 
+		// チュートリアルモード
 	case MODE_TUTORIAL:
 		if (m_pTutorial == NULL)
 		{// NULLチェック
@@ -247,6 +251,7 @@ void CManager::CreateMode(MODE mode)
 		}
 		break;
 
+		// ゲームモード
 	case MODE_GAME:		
 		if (m_pGame == NULL)
 		{// NULLチェック
@@ -254,12 +259,14 @@ void CManager::CreateMode(MODE mode)
 		}
 		break;
 
+		// リザルトモード
 	case MODE_RESULT:	
-		if (m_pGame == NULL)
+		if (m_pResult == NULL)
 		{// NULLチェック
 			m_pResult = CResult::Create();
 		}
 		break;
+
 	default:
 		break;
 	}
@@ -278,6 +285,8 @@ void CManager::SetMode(MODE mode)
 
 	//モードを設定
 	m_mode = mode;
+
+	// ポーズの状態を初期化
 	m_bPause = false;
 	m_pPause = NULL;
 
@@ -314,22 +323,34 @@ CKey* CManager::GetKey(void)
 //=============================================================================
 void CManager::PauseUpdate(void)
 {
-	CKey *pKey = CManager::GetKey();	   // キー入力情報
-	CFade::FADE Fade = CFade::GetFade();   // フェード情報
+	// キー入力情報
+	CKey *pKey = CManager::GetKey();	   
 
+	// フェード情報
+	CFade::FADE Fade = CFade::GetFade();  
+
+	// フェードが何もしていない時
 	if (Fade == CFade::FADE_NONE && m_mode == MODE_GAME)
-	{// フェードが何もしていない時
+	{
+		// Pが押されたとき
 		if (pKey->GetState(CKey::STATE_TRIGGER, DIK_P) == true)
-		{// Pが押されたとき
-			m_bPause = m_bPause ? false : true;	// falseかtrueに切り替える
+		{
+			// falseかtrueに切り替える
+			m_bPause = m_bPause ? false : true;	
 		}
+
+		// ポーズが開始されたとき
 		if (m_bPause == true && m_pPause == NULL)
-		{// ポーズが開始されたとき
-			m_pPause = CPause::Create();	// ポーズを生成
+		{
+			// ポーズを生成
+			m_pPause = CPause::Create();	
 		}
 		else if (m_bPause == false && m_pPause != NULL)
 		{
+			// ポーズの開放
 			m_pPause->Uninit();
+
+			// NULLを代入
 			m_pPause = NULL;
 		}
 	}

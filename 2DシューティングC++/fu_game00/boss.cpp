@@ -38,14 +38,12 @@
 #define ADD_MOVE_TIME	(0.54f)											// 移動のカウントの加算値
 #define DECREASE_A		(0.008f)										// α値の減少値
 #define ADD_MAX_A		(0.7f)											// α値の最大値
-#define CreateEnemy		(CNormalEnemy::Create)							// 敵の生成
-#define CreateEffect	(CEffect::Create)								// エフェクトの生成
 
 
 //-----------------------------------------------------------------------------
-// 静的変数
+// 静的メンバ変数
 //-----------------------------------------------------------------------------
-bool CBoss::m_bBoss_Alive = true;	// 生存しているかどうか
+bool CBoss::m_bBoss_Alive = true;
 
 //=============================================================================
 // コンストラクタ
@@ -57,7 +55,7 @@ CBoss::CBoss() : CEnemy(OBJ_BOSS)
 	this->m_State = STATE_NONE;			// 状態
 	this->m_LifeState = LIFE_RATE_0;	// ライフの状態
 	this->m_move = ZeroVector3;			// 移動量初期化
-	m_bBoss_Alive = true;				// 生存する
+	this->m_bBoss_Alive = true;			// 生存する
 }
 
 //=============================================================================
@@ -93,8 +91,17 @@ CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int n
 //=============================================================================
 HRESULT CBoss::Init(void)
 {	
-	m_nDamageCnt = 0;	 // ダメージカウント
-	m_fMoveTime = 0.0f;	 // 移動用カウント
+	// 初期化
+	CEnemy::Init();
+
+	// ダメージカウント
+	m_nDamageCnt = 0;	 
+
+	// 移動用カウント
+	m_fMoveTime = 0.0f;	 
+
+	// 透明度加算用
+	m_fA_Damage = DAMAGE_ADD_A;		
 
 	// ライフ設定
 	for (int nCntLife = 0; nCntLife < BOSS_LIFE_STOCK; nCntLife++)
@@ -105,8 +112,11 @@ HRESULT CBoss::Init(void)
 		m_pLife[nCntLife]->CreateTexture(LIFE_TEXTURE);	 // テクスチャの設定
 	}
 
-	// 初期化
-	CEnemy::Init();
+	m_pDamage = CEffect::Create(m_pos, m_size);	   // 生成
+	m_pDamage->CreateTexture(DAMAGE_TEXTUER);	   // テクスチャの設定
+	m_pDamage->SetColor(DAMAGE_COLOR);			   // 色の設定
+	m_StateCol = m_pDamage->GetColor();			   // 色の取得
+
 
 	// コアの生成
 	m_pCore[0] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 0, OBJ_CORE);
@@ -114,7 +124,7 @@ HRESULT CBoss::Init(void)
 	m_pCore[2] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 100, OBJ_CORE);
 
 	// シールドの生成
-	m_pShiled = CScene2D::Create(m_pos, m_size*1.5f, OBJ_EFFECT2);
+	m_pShiled = CScene2D::Create(m_pos, m_size * 1.5f, OBJ_EFFECT2);
 	m_pShiled->CreateTexture("data/TEXTURE/t0003.png");
 
 	return S_OK;
@@ -125,15 +135,26 @@ HRESULT CBoss::Init(void)
 //=============================================================================
 void CBoss::Uninit(void)
 {
+	// コアの開放
 	for (int nCnt = 0; nCnt < 3; nCnt++)
-	{// コアの開放
-		m_pCore[nCnt]->Uninit();
-		m_pCore[nCnt] = NULL;
+	{
+		if (m_pCore[nCnt] != NULL)
+		{
+			// 終了処理
+			m_pCore[nCnt]->Uninit();
+
+			// NULLを代入
+			m_pCore[nCnt] = NULL;
+		}
 	}
 
+	// シールドの開放
 	if (m_pShiled != NULL)
-	{// シールドの開放
+	{
+		// 終了処理
 		m_pShiled->Uninit();
+
+		// NULLを代入
 		m_pShiled = NULL;
 	}
 
@@ -146,17 +167,10 @@ void CBoss::Uninit(void)
 //=============================================================================
 void CBoss::Update(void)
 {
-
 	// メッシュポリゴンの情報取得
 	switch (CManager::GetMode())
 	{
-		// チュートリアル
-	case CManager::MODE_TUTORIAL:
-
-
-		break;
-
-		// ゲーム
+		// ゲームモード
 	case CManager::MODE_GAME:
 
 		// 更新
@@ -165,14 +179,17 @@ void CBoss::Update(void)
 		if (m_State == DAMAGE)
 		{
 			// ダメージ合図
-			m_bDamage = true;	
+			m_bDamage = true;
+			m_fLife -= LIFE_DOWN;			// 体力の減少
+											// 透明度加算用
+			m_fA_Damage = DAMAGE_ADD_A;
+
 		}
 
 		// ボスの更新
 		UpdateBoss();		// 普通の更新
 		DamageBoss();		// ダメージ状態更新
-		NotDamageBoss();	// ダメージNO！状態更新
-		StateUpdate();		// 状態の公人
+		StateUpdate();		// 状態の更新
 		MoveBoss();			// 移動処理
 		SummonsEnemy();		// 敵召喚処理
 		break;
@@ -268,32 +285,12 @@ void CBoss::UpdateBoss(void)
 //=============================================================================
 void CBoss::DamageBoss(void)
 {
+	// ダメージを受けたら
 	if (m_bDamage == true)
-	{// ダメージ状態
-		if (m_pDamage == NULL)
-		{// NULLチェック
-			m_State = STATE_NOT_DAMAGE;		// ダメージ受け付けない状態
-			m_fA_Damage = DAMAGE_ADD_A;		// 透明度加算用
-			m_fLife -= LIFE_DOWN;			// 体力の減少
-
-			m_pDamage = CreateEffect(m_pos, m_size);	   // 生成
-			m_pDamage->CreateTexture(DAMAGE_TEXTUER);	   // テクスチャの設定
-			m_pDamage->SetColor(DAMAGE_COLOR);			   // 色の設定
-			m_StateCol = m_pDamage->GetColor();			   // 色の取得
-
-		}
-		if (m_pDamage != NULL)
-		{// NULLじゃなかったら
-			m_pDamage->SetPos(m_pos);	// 位置を更新
-		}
+	{
+		// しばらくダメージを受けない状態
+		m_State = STATE_NOT_DAMAGE;		
 	}
-}
-
-//=============================================================================
-// ダメージ受け付けない状態
-//=============================================================================
-void CBoss::NotDamageBoss(void)
-{
 }
 
 //=============================================================================
@@ -406,22 +403,31 @@ void CBoss::SummonsEnemy(void)
 //=============================================================================
 void CBoss::StateUpdate(void)
 {
-	if (m_pDamage != NULL)
-	{// ダメージ状態
+	// ダメージを受けていたら
+	if (m_bDamage != false)
+	{
 		// カラーの更新
 		m_pDamage->SetColor(m_StateCol);
+
+		// 位置を更新
+		m_pDamage->SetPos(m_pos);		
+
+		// α値の加算
 		m_StateCol.a += m_fA_Damage;
 
-		if (m_StateCol.a >= ADD_MAX_A)
-		{// α値が一定を越えたら
-			m_fA_Damage = -DECREASE_A;	// 減算
+		// α値が一定を越えたら
+		if (m_StateCol.a >= 1.0f)
+		{
+			// 加算の数値をマイナスに
+			m_fA_Damage = -DECREASE_A;	
 		}
-		if (m_StateCol.a <= 0.0f)
-		{// α値が一定を越えたら
-			m_pDamage->Uninit();	// 終了処理
-			m_pDamage = NULL;		// NULL代入
-			m_bDamage = false;		// FALSE代入
-			m_State = STATE_NONE;	// 状態を戻す
+		else if (m_StateCol.a <= 0.0f)
+		{
+			// FALSE代入
+			m_bDamage = false;		
+
+			// 状態を戻す
+			m_State = STATE_NONE;		
 		}
 	}
 }
