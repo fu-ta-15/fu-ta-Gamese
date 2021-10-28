@@ -13,7 +13,6 @@
 #include "scene2D.h"
 #include "manager.h"
 #include "fade.h"
-#include "score.h"
 #include "sound.h"
 
 //-----------------------------------------------------------------------------

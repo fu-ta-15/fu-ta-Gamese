@@ -104,7 +104,7 @@ void CEnemy::CollisionEnemy(void)
 	if (this->GetBool() == true)
 	{// 当たり判定がTRUEだったら
 		
-		CBoss *pBoss = BOSS;	// ゲームシーンから取得
+		CBoss *pBoss = CGame::GetBoss();	// ゲームシーンから取得
 
 		// 敵の種類
 		switch (this->m_type)
@@ -155,7 +155,7 @@ bool CEnemy::CollisionPlayer(void)
 //=============================================================================
 void CEnemy::CollisionField(void)
 {
-	CMesh* pMesh = MESH_GAME;
+	CMesh* pMesh = CGame::GetMesh();
 
 	// 頂点情報の取得
 	VERTEX_2D *pVtx = pMesh->GetVERTEX();

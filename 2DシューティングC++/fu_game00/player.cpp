@@ -230,7 +230,6 @@ void CPlayer::PlayerAction(void)
 		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f, 15.0f, 0.0f), D3DXVECTOR3(10.0f, 0.0f, 0.0f), false, OBJ_BULLET1);	// バレットの生成
 		m_nBulletCharge = 0;
 		m_bPresse = false;
-		//PlayerBullet(3);											// プレイヤーの弾消費
 	}
 
 }

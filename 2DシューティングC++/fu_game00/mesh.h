@@ -20,27 +20,26 @@
 class CMesh : public CScene
 {
 public:
-	CMesh(Priority type);
-	~CMesh();
+	CMesh(Priority type);	  // コンストラクタ
+	~CMesh();				  // デストラクタ
 
+	// ポリゴンメッシュのクリエイト
 	static CMesh *Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, CScene::ObjectType type);
-	HRESULT CreateTexture(const LPCSTR pSrcFile);
-
-	HRESULT Init(void);
-	HRESULT Init(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	
+	HRESULT CreateTexture(const LPCSTR pSrcFile);														// テクスチャの生成
+	HRESULT Init(void) { return S_OK; }																	// 初期化(純粋仮想関数)
+	HRESULT Init(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size);	// 引数付き初期化
+	void Uninit(void);																					// 終了
+	void Update(void);																					// 更新
+	void Draw(void);																					// 描画
 
 
 	// セット関数  
 	void SetVtxPosY(int nID, float posy);
 	void SetVtxPosX(int nID, float posx);
-
-
+	void SetMove(const D3DXVECTOR3 move);
 	void SetPos(const D3DXVECTOR3 pos)			{ m_pos = pos; }
 	void SetSize(const D3DXVECTOR3 size)		{ m_size = size; }
-	void SetMove(const D3DXVECTOR3 move);
 	void SetVertical(const int nVertical)		{ m_nVertical = nVertical; }
 	void SetSide(const int nSide)				{ m_nSide = nSide; }
 	void SetCol(const D3DXCOLOR col)			{ m_col = col; }
@@ -65,11 +64,6 @@ private:
 	int VertexCreate(int nVertical, int nSide);
 	int IndexCreate(int nVertical, int nSide);
 
-	float m_nWaveCnt = 0;
-	int nID = 0;
-
-	D3DXVECTOR3 m_PolygonLength;
-
 	LPDIRECT3DVERTEXBUFFER9		m_pVtxBuff;				// 頂点バッファの情報
 	LPDIRECT3DTEXTURE9			m_pTexture;				// テクスチャの情報
 	LPDIRECT3DINDEXBUFFER9		m_pIdxBuff;				// インデックスバッファの情報
@@ -86,7 +80,7 @@ private:
 	int							m_nIdx;					// インデックス
 	bool						m_bWave;				// 波の表現するかしないか
 	VERTEX_2D *					m_pVtx;					// 頂点情報の保管用
-	VERTEX_2D *					m_pVtxsub;					// 頂点情報の保管用
+	VERTEX_2D *					m_pVtxsub;				// 頂点情報の保管用
 };
 
 #endif

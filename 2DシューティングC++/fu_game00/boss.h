@@ -15,14 +15,10 @@
 #include "mesh.h"
 #include "core.h"
 
-
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
 #define BOSS_LIFE_STOCK		(BOSS_LIFE / 10)				// ライフのストック
-#define DAMAGE				(CBoss::STATE_DAMAGE)			// ダメージ状態
-#define NOT_DAMAGE			(CBoss::STATE_NOT_DAMAGE)		// ダメージNO!
-#define NONE				(CBoss::STATE_NONE)				// 何もない状態	
 
 
 //-----------------------------------------------------------------------------
@@ -40,6 +36,7 @@ public:
 		STATE_MAX
 	}BOSS_STATE;
 
+	// ボスのライフの状態
 	typedef enum LIFE_STATE
 	{
 		LIFE_RATE_0 = 0,
@@ -49,55 +46,48 @@ public:
 		LIFE_RATE_MAX
 	}LIFE_STATE;
 
-	//-----------------------------------------------------------------------------
-	// メンバ関数
-	//-----------------------------------------------------------------------------
-	CBoss();
-	~CBoss();
+	CBoss();	  // コンストラクタ
+	~CBoss();	  // デストラクタ
 
-	static CBoss *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,const int nLife);
+	static CBoss *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,const int nLife);  // クリエイト
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	HRESULT Init(void);	   // 初期化
+	void Uninit(void);	   // 終了
+	void Update(void);	   // 更新
+	void Draw(void);	   // 描画
 
-
+	// Set関数
 	void SetState(BOSS_STATE state)		{ m_State = state; }
+	void SetAlive(bool bAlive)			{ m_bBoss_Alive = bAlive; }
 
+	// Get関数
 	CCore **GetCore(void)				{ return &m_pCore[0]; }
-
 	BOSS_STATE GetState(void)			{ return m_State; }
 	LIFE_STATE GetLifeState(void)		{ return m_LifeState; }
 	float GetLife(void)					{ return m_fLife; }
-	void SetAlive(bool bAlive)			{ m_bBoss_Alive = bAlive; }
 	bool GetAlive(void)					{ return m_bBoss_Alive; }
 
 private:
-
-	void UpdateBoss(void);
 	void DamageBoss(void);
+	LIFE_STATE LifeState(int nLife);
 	void MoveBoss(void);
 	void SummonsEnemy(void);
 	void StateUpdate(void);
 
-	CEffect				*m_pDamage;
-	CScene2D			*m_pLife[BOSS_LIFE_STOCK];
-	CScene2D			*m_pShiled;
-	CCore				*m_pCore[3];
-
-	static bool			m_bBoss_Alive;
-
-	BOSS_STATE			m_State;
-	LIFE_STATE			m_LifeState;
-	D3DXCOLOR			m_StateCol;
-
-	D3DXVECTOR3			m_OldPos;
-	float				m_fLife;
-	bool				m_bDamage;
-	float				m_fA_Damage;
-	int					m_nDamageCnt;
-	float				m_fMoveTime;
+	CEffect				*m_pDamage;					 // ダメージ時のエフェクト
+	CScene2D			*m_pLife[BOSS_LIFE_STOCK];	 // ライフのストック
+	CScene2D			*m_pShiled;					 // シールド
+	CCore				*m_pCore[3];				 // コア
+	BOSS_STATE			m_State;					 // ボスの状態
+	LIFE_STATE			m_LifeState;				 // HPの状態
+	D3DXVECTOR3			m_OldPos;					 // 過去の位置
+	D3DXCOLOR			m_StateCol;					 // 状態の色
+	static bool			m_bBoss_Alive;				 // ボスの生存確認
+	bool				m_bDamage;					 // ダメージフラグ
+	int					m_nDamageCnt;				 // ダメージカウント
+	float				m_fLife;					 // ライフ
+	float				m_fA_Damage;				 // 透明度の加算用
+	float				m_fMoveTime;				 // 移動用のカウント
 };
 
 #endif // !_BOSS_H_

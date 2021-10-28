@@ -135,9 +135,6 @@
     <ClCompile Include="particle.cpp">
       <Filter>game\effect</Filter>
     </ClCompile>
-    <ClCompile Include="score.cpp">
-      <Filter>game\Number</Filter>
-    </ClCompile>
     <ClCompile Include="time.cpp">
       <Filter>game\Number</Filter>
     </ClCompile>
@@ -238,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="particle.h">
       <Filter>game\effect</Filter>
-    </ClInclude>
-    <ClInclude Include="score.h">
-      <Filter>game\Number</Filter>
     </ClInclude>
     <ClInclude Include="time.h">
       <Filter>game\Number</Filter>

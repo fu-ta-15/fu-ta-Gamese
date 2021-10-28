@@ -4,25 +4,26 @@
 // Author : SUZUKI FUUTA
 //
 //*****************************************************************************
-
 //-----------------------------------------------------------------------------
 // インクルードファイル
 //-----------------------------------------------------------------------------
 #include "game.h"
-#include "scene2D.h"
-#include "keyinput.h"
-#include "manager.h"
-#include "fade.h"
-#include "player.h"
-#include "bullet.h"
-#include "enemy.h"
-#include "score.h"
-#include "time.h"
-#include "boss.h"
-#include "mesh.h"
-#include "move.h"
-#include "sound.h"
 #include "result.h"
+
+#include "manager.h"
+#include "sound.h"
+#include "fade.h"
+#include "keyinput.h"
+
+#include "enemy.h"
+#include "boss.h"
+#include "player.h"
+
+#include "scene2D.h"
+#include "mesh.h"
+
+#include "time.h"
+#include "move.h"
 
 //-----------------------------------------------------------------------------
 // マクロ変数
@@ -36,21 +37,9 @@
 #define FIELD_POS		(D3DXVECTOR3(0.0f, 668.0f, 0.0f))
 #define FIELD_SIZE		(D3DXVECTOR3(WIDTH_HALF+100.0f, 100.0f, 0.0f))
 #define FIELD_VERTICAL	(100)
-#define FIELD_SIDE		(0)
-
-#define TIME_POS		(D3DXVECTOR3(SCREEN_WIDTH / 3, 50.0f, 0.0f))
-#define TIME_SIZE		(D3DXVECTOR3(20.0f, 30.0f, 0.0f))
-#define TIME_SET		(0)
 
 #define BG_POS			(CENTER_POS)
 #define BG_SIZE			(D3DXVECTOR3(WIDTH_HALF,HEIGHT_HALF,0.0f))
-
-#define ADD_WAVETIME	(0.02f)
-
-#define WAVE_POS		(m_WaveInfo.fCenterpos)
-#define WAVE_CYCLE		(m_WaveInfo.fCycle)
-#define WAVE_HEIGHT		(m_WaveInfo.fHeight)
-#define WAVE_TIME		((m_fWaveTime + nVtx))
 
 #define BG_TEXTURE		("data/TEXTURE/BG.png")
 #define BOSS_TEXTURE	("data/TEXTURE/Boss.png")
@@ -87,9 +76,13 @@ CGame * CGame::Create(void)
 {
 	// メモリ確保
 	CGame* pGame = new CGame;
-
-	// 初期化処理
-	pGame->Init();
+	
+	// NULLチェック
+	if (pGame != NULL)
+	{
+		// 初期化処理
+		pGame->Init();
+	}
 
 	return pGame;
 }
@@ -99,23 +92,43 @@ CGame * CGame::Create(void)
 //=============================================================================
 HRESULT CGame::Init(void)
 {
+	// サウンドクラスのポインタ
 	CSound *pSound = CManager::GetSound();
+
+	// 波を起こすためのカウント
 	m_nWaveCnt = 0.0f;
+
+	// 波の高さ
 	m_fWaveHeight = 20.0f;
 
+	// 背景の生成
 	m_pBg = CScene2D::Create(BG_POS, BG_SIZE);
-	m_pLifeMesh = CMesh::Create(100, 0, D3DXVECTOR3(0.0f,HEIGHT_HALF,0.0f), D3DXVECTOR3(SCREEN_WIDTH, 5.0f, 0.0f), CScene::OBJ_NONE2);
-	m_pField = CMesh::Create(FIELD_VERTICAL, FIELD_SIDE, FIELD_POS, FIELD_SIZE,CScene::OBJ_NONE2);
-	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);
 
-	m_pScore = CScore::Create(SCORE_POS, SCORE_SIZE);
-	m_pTime = CTime::Create(TIME_POS, TIME_SIZE, TIME_SET);
+	// ダメージ表現用のメッシュポリゴン生成
+	m_pLifeMesh = CMesh::Create(100, 0, D3DXVECTOR3(0.0f,HEIGHT_HALF,0.0f), D3DXVECTOR3(SCREEN_WIDTH, 5.0f, 0.0f), CScene::OBJ_NONE2);
+	
+	// 地面の生成
+	m_pField = CMesh::Create(FIELD_VERTICAL, 0, FIELD_POS, FIELD_SIZE,CScene::OBJ_NONE2);
+	
+	// プレイヤーの生成
+	m_pPlayer = CPlayer::Create(PLAYER_POS, PLAYER_SIZE);
+	
+	// タイムの生成 *裏で回しているためポリゴンとしては表示しない
+	m_pTime = CTime::Create(ZeroVector3, ZeroVector3, 0);
+	
+	// ボスの生成
 	m_pBoss = CBoss::Create(BOSS_POS, BOSS_SIZE, BOSS_LIFE);
 
+	// ボスのテクスチャ
 	m_pBoss->CreateTexture(BOSS_TEXTURE);
+
+	// 背景のテクスチャ
 	m_pBg->CreateTexture(BG_TEXTURE);
+
+	// 地面のテクスチャ
 	m_pField->CreateTexture(FIELD_TEXTURE);
 
+	// サウンドの開始
 	pSound->PlaySound(CSound::SOUND_LABEL_BGM002);
 
 	return S_OK;
@@ -126,7 +139,10 @@ HRESULT CGame::Init(void)
 //=============================================================================
 void CGame::Uninit(void)
 {
+	// サウンドクラスのポインタ
 	CSound *pSound = CManager::GetSound();
+
+	// サウンドの停止
 	pSound->StopSound();
 
 	// オブジェクトの破棄
@@ -138,35 +154,48 @@ void CGame::Uninit(void)
 //=============================================================================
 void CGame::Update(void)
 {
+	// キー入力クラスのポインタ
 	CKey *pKey = CManager::GetKey();
 
-	/* フェード処理 */
-	if (m_pPlayer->GetAlive() == false || pKey->GetState(CKey::STATE_RELEASE, DIK_1))
+	// プレイヤーが死亡したら
+	if (m_pPlayer->GetAlive() == false)
 	{
+		// リザルトに結果を報告
 		CResult::GameEndResult(false);
-		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
-	}
-	if (m_pBoss->GetAlive() == false || pKey->GetState(CKey::STATE_RELEASE, DIK_2))
-	{
-		CResult::GameEndResult(true);
+
+		// リザルトシーンに移動
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
 
+	// ボスが死亡したら
+	if (m_pBoss->GetAlive() == false)
+	{
+		// リザルトに結果を報告
+		CResult::GameEndResult(true);
+
+		// リザルトシーンに移動
+		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+	}
+
+	// ウェーブのカウント
 	m_nWaveCnt += 0.52f;
 
 	for (int nVtx = 0; nVtx < m_pLifeMesh->GetVtxNum() / 2; nVtx++)
-	{// 波を起こす処理
+	{
+		// 座標保管用
 		D3DXVECTOR3 pos = ZeroVector3;
+
+		// ボスがダメージを受けたら
 		if (m_pBoss->GetState() == CBoss::STATE_NOT_DAMAGE)
 		{
 			m_fWaveHeight = (float)(rand() % 300 - 200);
 			m_nWaveCnt += rand() % 15 + 2;
-			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 320.0f, (m_nWaveCnt * 2) + nVtx);
+			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 320.0f, (m_nWaveCnt) + nVtx);
 		}
 		else
 		{
 			m_fWaveHeight += (20.0f - m_fWaveHeight) * 0.0025f;
-			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 240.0f, (m_nWaveCnt * 2) + nVtx);
+			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 240.0f, (m_nWaveCnt) + nVtx);
 		}
 
 		m_pLifeMesh->SetVtxPosY(nVtx, pos.y);
@@ -175,10 +204,8 @@ void CGame::Update(void)
 	}
 
 	/* タイマー処理 */
-	int nCntTime = m_pTime->AddCnt(1);
-
-	if ((nCntTime % 60) == 0)
-	{// タイマーの減算
+	if ((m_pTime->AddCnt(1) % 60) == 0)
+	{
 		m_pTime->AddTime(1);
 	}
 }

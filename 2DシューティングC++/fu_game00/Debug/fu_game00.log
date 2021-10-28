@@ -1,6 +1,3 @@
-﻿  tutorial.cpp
-  effect.cpp
-  コードを生成中...
-cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
+﻿  main.cpp
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.exe
   fu_game00.vcxproj -> C:\Users\student\Desktop\fu-ta-Gamese\2DシューティングC++\fu_game00\Debug\fu_game00.pdb (Full PDB)

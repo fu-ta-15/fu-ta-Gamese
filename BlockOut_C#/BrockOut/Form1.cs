@@ -14,10 +14,11 @@ namespace BrockOut
     public partial class Form1 : Form
     {
         
-        Vector ballPos;         // ballの位置
-        Vector ballSpeed;       // ballのスピード
-        int ballRadius;         // ballの半径
-        Rectangle paddlePos;    // 
+        Vector ballPos;                 // ballの位置
+        Vector ballSpeed;               // ballのスピード
+        int ballRadius;                 // ballの半径
+        Rectangle paddlePos;            // パドルの位置
+        List<Rectangle> blockPos;       // ブロックの位置
 
         // ballの設定
         public Form1()
@@ -33,7 +34,14 @@ namespace BrockOut
             // 半径
             this.ballRadius = 10;
 
+            // パドルの位置設定
             this.paddlePos = new Rectangle(100, this.Height - 50, 100, 5);
+
+            this.blockPos = new List<Rectangle>();
+
+
+            // ブロックの位置
+            this.blockPos = new Rectangle(100, 50, 80, 25);
 
             Timer timer = new Timer();
             timer.Interval = 33;                    // 33秒ごと
@@ -47,6 +55,44 @@ namespace BrockOut
             return a.X * b.X + a.Y * b.Y;   // 内積計算
         }
 
+
+        bool LineVsCircle(Vector p1, Vector p2, Vector center, float radius)
+        {
+            Vector lineDir = (p2 - p1);                     // パドルの方向ベクトル
+            Vector n = new Vector(lineDir.Y, -lineDir.X);   // パドルの法線
+            n.Normalize();
+
+            Vector dir1 = center - p1;
+            Vector dir2 = center - p2;
+
+            double dist = Math.Abs(DotProduct(dir1, n));
+            double a1 = DotProduct(dir1, lineDir);
+            double a2 = DotProduct(dir2, lineDir);
+
+            return (a1 * a2 < 0 && dist < radius) ? true : false;
+        }
+
+        int BlockVsCrircle(Rectangle block,Vector ball)
+        {
+            if (LineVsCircle(new Vector(block.Left, block.Top),
+                new Vector(block.Right, block.Top), ball, ballRadius)) 
+                return 1;
+
+            if (LineVsCircle(new Vector(block.Left, block.Bottom),
+                new Vector(block.Right, block.Bottom), ball, ballRadius))
+                return 2;
+
+            if (LineVsCircle(new Vector(block.Right, block.Top),
+                new Vector(block.Right, block.Bottom), ball, ballRadius))
+                return 3;
+
+            if (LineVsCircle(new Vector(block.Left, block.Top),
+                new Vector(block.Left, block.Bottom), ball, ballRadius))
+                return 4;
+
+            return -1;
+        }
+
         private void Update(object sender,EventArgs e)
         {
             // ballの移動
@@ -54,7 +100,7 @@ namespace BrockOut
 
             // 左右の壁でのBound
             if(ballPos.X + ballRadius > this.Bounds.Width 
-                || ballPos.X -  ballRadius < 0)
+                || ballPos.X -  ballRadius*2 < 0)
             {
                 ballSpeed.X *= -1;
             }
@@ -63,6 +109,25 @@ namespace BrockOut
             if(ballPos.Y - ballRadius < 0)
             {
                 ballSpeed.Y *= -1;
+            }
+
+            // パドルの当たり判定
+            if(LineVsCircle(new Vector(this.paddlePos.Left,this.paddlePos.Top),
+                new Vector(this.paddlePos.Right,this.paddlePos.Top),
+                ballPos,ballRadius))
+            {
+                ballSpeed.Y *= -1;
+            }
+
+            // ブロックとの当たり判定
+            int collision = BlockVsCrircle(blockPos, ballPos);
+            if(collision == 1 || collision == 2)
+            {
+                ballSpeed.Y *= -1;
+            }
+            else if(collision == 3 || collision == 4)
+            {
+                ballSpeed.X *= -1;
             }
 
             // 再描画
@@ -75,6 +140,7 @@ namespace BrockOut
             // ballを描画するためのブラシ
             SolidBrush pinkBrush = new SolidBrush(Color.HotPink);
             SolidBrush grayBrush = new SolidBrush(Color.DimGray);
+            SolidBrush blueBrush = new SolidBrush(Color.LightBlue);
 
             // ballのサイズ
             float px = (float)this.ballPos.X - ballRadius;
@@ -83,6 +149,7 @@ namespace BrockOut
             // 円の描画・左上の座標・幅と高さの計算
             e.Graphics.FillEllipse(pinkBrush, px, py, this.ballRadius * 2, this.ballRadius * 2);
             e.Graphics.FillRectangle(grayBrush, paddlePos);
+            e.Graphics.FillRectangle(blueBrush, blockPos);
         }
 
         private void KeyPressed(Object sender, KeyPressEventArgs e)
