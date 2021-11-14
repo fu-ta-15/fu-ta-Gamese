@@ -84,7 +84,7 @@ D3DXVECTOR3 Collision::CrossProduct(const D3DXVECTOR3 & v1, const D3DXVECTOR3 & 
 	float VecWX;		// 反射ベクトル X
 	float VecWY;		// 反射ベクトル Z
 
-						// 進行ベクトルの代入
+	// 進行ベクトルの代入
 	VecF = v1;
 
 	// 垂直ベクトル

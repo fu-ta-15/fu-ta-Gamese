@@ -33,9 +33,13 @@
 //=============================================================================
 CNormalEnemy::CNormalEnemy() : CEnemy(OBJ_ENEMY)
 {
-	this->m_nMoveChangeCnt = 0;
-	this->m_bHomingTime = false;
-	this->m_nHomingTime = HOMING_TIME1;
+	this->m_nMoveChangeCnt = 0;			// カウント
+	this->m_bHomingTime = false;		// ホーミングしているか
+	this->m_nHomingTime = HOMING_TIME1;	// ホーミングタイム
+	this->m_move = ENEMY_TYPE1_MOVE;  	// 初期の移動量
+	this->m_bCollision = false;			// 当たり判定
+	this->SetLife(ENEMY_LIFE);			// 体力
+	this->SetCol(TYPE1_COLOR);			// 色
 }
 
 //=============================================================================
@@ -50,20 +54,18 @@ CNormalEnemy::~CNormalEnemy()
 //=============================================================================
 CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, ENEMYTYPE type, EnemyMove movetype)
 {
+	// クラスのポインタ
 	CNormalEnemy *pNormalEnemy = NULL;
 
+	// NULLチェック
 	if (pNormalEnemy == NULL)
-	{// NULLチェック
+	{
 		pNormalEnemy = new CNormalEnemy;
-		pNormalEnemy->m_bCollision = false;		 // 当たり判定
-		pNormalEnemy->m_move = ENEMY_TYPE1_MOVE;  // 移動量
-		pNormalEnemy->SetPos(pos);				 // 位置
-		pNormalEnemy->SetSize(size);			 // サイズ
-		pNormalEnemy->SetMoveType(movetype);	 // 移動のタイプ
-		pNormalEnemy->SetLife(ENEMY_LIFE);		 // 体力
-		pNormalEnemy->SetType(type);		 // 種類
-		pNormalEnemy->SetCol(TYPE1_COLOR);		 // 色
-		pNormalEnemy->Init();					 // 初期化
+		pNormalEnemy->SetPos(pos);				// 位置
+		pNormalEnemy->SetSize(size);			// サイズ
+		pNormalEnemy->SetMoveType(movetype);	// 移動のタイプ
+		pNormalEnemy->SetType(type);			// 種類
+		pNormalEnemy->Init();					// 初期化
 	}
 
 	return pNormalEnemy;
@@ -74,28 +76,39 @@ CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 siz
 //=============================================================================
 HRESULT CNormalEnemy::Init(void)
 {
-	CEnemy::Init();	// 初期化
+	// 初期化
+	CEnemy::Init();	
 	
+	// テクスチャの設定
 	CScene2D::CreateTexture(ENEMY_TEXTURE0);
 
-	if (m_MoveType == MOVE2)
+	// 移動量の種類
+	switch (m_MoveType)
 	{
-		float fAngle = (float)(rand() % 314) / 100.f;
-		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
-		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
-	}
-	if (m_MoveType == MOVE0)
-	{
+	case CNormalEnemy::MOVE_0:
+
+		// プレイヤーの角度算出
 		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
+
+		// プレイヤーの角度の方向に向かって移動量設定
 		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
 		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
+		break;
+
+	case CNormalEnemy::MOVE_2:
+
+		// ランダムな角度生成
+		float fAngle = (float)(rand() % 314) / 100.f;
+
+		// 設定された角度の方向に移動する設定
+		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
+		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
+		break;
+
+	default:
+		break;
 	}
-	if (m_MoveType == MOVE4)
-	{
-		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-		m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-		m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
-	}
+
 	return S_OK;
 }
 
@@ -104,7 +117,8 @@ HRESULT CNormalEnemy::Init(void)
 //=============================================================================
 void CNormalEnemy::Uninit(void)
 {
-	CEnemy::Uninit();	// 終了処理
+	// 終了処理
+	CEnemy::Uninit();	
 }
 
 //=============================================================================
@@ -115,27 +129,33 @@ void CNormalEnemy::Update(void)
 	// 敵の種類別の更新
 	switch (CEnemy::GetEnemyType())
 	{
-		// 黒い敵
 	case ENEMY_BLACK:
-		UpdateBlack();	// 更新
-		BlackMove();	// 移動処理
+
+		// 更新
+		UpdateBlack();	
+
+		// 移動処理
+		BlackMove();	
 		break;
-		// 白い敵
+
 	case ENEMY_WHITE:
-		UpdateWhite();	// 更新
+
+		// 更新
+		UpdateWhite();	
 		break;
+
 	default:
 		break;
 	}
 
+	// 更新処理
 	CEnemy::Update();
 
-	if (m_pos.x - m_size.x > SCREEN_WIDTH || m_pos.x + m_size.x < 0.0f)
-	{// 画面外処理
-		CEnemy::Uninit();
-	}
-	if (m_pos.y - m_size.y > SCREEN_HEIGHT || m_pos.y + m_size.y < 0.0f)
+	// 画面外処理
+	if (m_pos.x - m_size.x > SCREEN_WIDTH || m_pos.x + m_size.x < 0.0f &&
+		m_pos.y - m_size.y > SCREEN_HEIGHT || m_pos.y + m_size.y < 0.0f)
 	{
+		// 終了処理
 		CEnemy::Uninit();
 	}
 }
@@ -145,7 +165,8 @@ void CNormalEnemy::Update(void)
 //=============================================================================
 void CNormalEnemy::Draw(void)
 {
-	CEnemy::Draw();	// 描画
+	// 描画
+	CEnemy::Draw();	
 }
 
 //=============================================================================
@@ -159,6 +180,7 @@ void CNormalEnemy::UpdateBlack(void)
 	// ホーミングの開始と終了
 	if ((m_nMoveChangeCnt % m_nHomingTime) == 0)
 	{// 指定の値で割って余りが０の場合
+
 		if (m_bHomingTime == false)
 		{// ホーミングタイムではなかったら
 			m_bHomingTime = true;
@@ -169,17 +191,25 @@ void CNormalEnemy::UpdateBlack(void)
 			m_bHomingTime = false;
 			m_nHomingTime = HOMING_TIME1;
 		}
-		m_nMoveChangeCnt = 0;	// カウント初期化
+
+		// カウント初期化
+		m_nMoveChangeCnt = 0;	
 	}
 
 	if (m_bHomingTime == true)
 	{// ホーミングタイム
 		if ((m_nMoveChangeCnt % Rand(60, 20)) == 0)
 		{// 指定の値で割って余りがゼロの場合
-			float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-			m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-			m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
-			m_MoveType = MOVE1;												// 移動方法
+
+			// プレイヤーとの角度
+			float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	
+
+			// 追従
+			m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			
+			m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			
+
+			// 移動方法
+			m_MoveType = MOVE1;												
 		}
 	}
 }
@@ -195,37 +225,40 @@ void CNormalEnemy::BlackMove(void)
 	// ボスの情報
 	CBoss *pBoss = CGame::GetBoss();
 
+	// 移動の種類
 	switch (m_MoveType)
 	{
 	case MOVE0:
-		m_pos += m_move;	// 位置に移動量を加算
+		// 位置に移動量を加算
+		m_pos += m_move;	
 		break;
 
 	case MOVE1:
-		m_pos += m_move;	// 位置に移動量を加算
+		// 位置に移動量を加算
+		m_pos += m_move;	
 		break;
 
 	case MOVE2:
-		m_pos += m_move;	// 位置に移動量を加算
+		// 位置に移動量を加算
+		m_pos += m_move;	
 		break;
 
 	case MOVE3:
+		// カウントアップ
 		m_fCosWaveCnt += 0.035f;
 		m_fSinWaveCnt += 0.035f;
 
+		// 位置に移動の値代入
 		m_pos.x = Move::SinWave(pBoss->GetPos().x, 140.0f, 14.0f, m_fSinWaveCnt);
 		m_pos.y = Move::CosWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fCosWaveCnt);
-		break;
-
-	case MOVE4:
-		m_pos += m_move;	// 位置に移動量を加算
 		break;
 
 	default:
 		break;
 	}
 
-	CScene2D::SetPos(m_pos);	// 移動量の更新
+	// 位置の更新
+	CScene2D::SetPos(m_pos);	
 }
 
 //=============================================================================
@@ -236,20 +269,29 @@ void CNormalEnemy::UpdateWhite(void)
 	// ボスの情報
 	CBoss *pBoss = CGame::GetBoss();
 
+	// カウントアップ
 	m_fCosWaveCnt += 0.035f;
 	m_fSinWaveCnt += 0.035f;
 
+	// 位置の変更
 	m_pos.x = Move::SinWave(pBoss->GetPos().x, 140.0f, 14.0f, m_fSinWaveCnt);
 	m_pos.y = Move::CosWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fCosWaveCnt);
 
-	CScene2D::SetPos(m_pos);	// 移動量の更新
+	// 位置の更新
+	CScene2D::SetPos(m_pos);	
+
+	// 色の更新
 	CScene2D::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
+//=============================================================================
+// 敵の配置
+//=============================================================================
 void ENEMY::SetEnemy(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, CEnemy::ENEMYTYPE type, CNormalEnemy::EnemyMove movetype, int nNum)
 {
 	for (int nCnt = 0; nCnt < nNum; nCnt++)
 	{
+		// 敵の生成
 		CNormalEnemy::Create(pos, size, type, movetype);
 	}
 }

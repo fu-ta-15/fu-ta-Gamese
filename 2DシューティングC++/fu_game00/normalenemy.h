@@ -19,7 +19,6 @@
 #define MOVE1		(CNormalEnemy::MOVE_1)
 #define MOVE2		(CNormalEnemy::MOVE_2)
 #define MOVE3		(CNormalEnemy::MOVE_3)
-#define MOVE4		(CNormalEnemy::MOVE_4)
 
 //-----------------------------------------------------------------------------
 // ƒNƒ‰ƒX
@@ -28,15 +27,13 @@ class CNormalEnemy : public CEnemy
 {
 public:
 
+	// ˆÚ“®‚ÌŽí—Þ
 	enum EnemyMove
 	{
 		MOVE_0 = 0,
 		MOVE_1,
 		MOVE_2,
 		MOVE_3,
-		MOVE_4,
-		MOVE_5,
-		MOVE_6,
 		MOVE_MAX
 	};
 
@@ -58,6 +55,7 @@ public:
 	void UpdateBlack(void);
 	void BlackMove(void);
 	void UpdateWhite(void);
+
 private:
 	EnemyMove m_MoveType;
 	bool m_bCollision;
@@ -71,7 +69,11 @@ private:
 
 namespace ENEMY
 {
-	void SetEnemy(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, CEnemy::ENEMYTYPE type, CNormalEnemy::EnemyMove movetype,int nNum);
+	void SetEnemy(const D3DXVECTOR3 pos, 
+				  const D3DXVECTOR3 size, 
+				  CEnemy::ENEMYTYPE type,
+				  CNormalEnemy::EnemyMove movetype,
+				  int nNum);
 }
 
 #endif // !_NORMALENEMY_H_
