@@ -14,6 +14,7 @@
 //=============================================================================
 bool Collision::CollisionSquare(D3DXVECTOR3 Mypos, D3DXVECTOR3 Mysize, D3DXVECTOR3 Tagepos, D3DXVECTOR3 Tagesize)
 {
+	// 矩形の中に存在しているのか結果を返す
 	return ((Mypos.y + Mysize.y > Tagepos.y - Tagesize.y)
 		&& (Mypos.y - Mysize.y < Tagepos.y + Tagesize.y)
 		&& (Mypos.x + Mysize.x > Tagepos.x - Tagesize.x)
@@ -25,10 +26,14 @@ bool Collision::CollisionSquare(D3DXVECTOR3 Mypos, D3DXVECTOR3 Mysize, D3DXVECTO
 //=============================================================================
 bool Collision::CollisionCycle(D3DXVECTOR3 pointpos, D3DXVECTOR3 Cyclepos, float radius)
 {
+	//　X・Yそれぞれの距離を算出
 	float a = pointpos.x - Cyclepos.x;
 	float b = pointpos.y - Cyclepos.y;
+
+	// 総合の距離を算出
 	float c = sqrt(a * a + b * b);
 
+	// 結果をもとに true ・ false を返す
 	return (c <= radius);
 }
 
@@ -37,18 +42,24 @@ bool Collision::CollisionCycle(D3DXVECTOR3 pointpos, D3DXVECTOR3 Cyclepos, float
 //=============================================================================
 bool Collision::OutProduct(const D3DXVECTOR3 & lineStart1, const D3DXVECTOR3 & lineEnd1, const D3DXVECTOR3 & point)
 {
-	bool Collision = false;
+	bool Collision = false;	// 当たり判定結果
 
+	// ベクトル１を算出
 	float V1_X = (lineEnd1.x - lineStart1.x);
 	float V1_Y = (lineEnd1.y - lineStart1.y);
 
+	// ベクトル２を算出
 	float V2_X = (point.x - lineStart1.x);
 	float V2_Y = (point.y - lineStart1.y);
 
+	// ベクトルの掛け合わせ
 	float L1 = V1_Y * V2_X;
 	float L2 = V2_Y * V1_X;
+
+	// ベクトルの差を算出
 	float L3 = L1 - L2;
 
+	// 結果をもとに true or false を返す
 	return (L3 < 0);
 }
 
@@ -57,13 +68,16 @@ bool Collision::OutProduct(const D3DXVECTOR3 & lineStart1, const D3DXVECTOR3 & l
 //=============================================================================
 D3DXVECTOR3 Collision::MeshCollision(const D3DXVECTOR3 & lineStart1, const D3DXVECTOR3 & lineEnd1, const D3DXVECTOR3 & point)
 {
-	D3DXVECTOR3 pos = ZeroVector3;
+	D3DXVECTOR3 pos = ZeroVector3;	// 算出した位置情報保存
 
+	// 外積を利用して結果を取得
 	if (OutProduct(lineStart1, lineEnd1, point))
 	{
+		// めり込んだ分を求める
 		pos = WaveCollision(lineStart1, lineEnd1, point);
 	}
 
+	// めり込んだ分を返す
 	return pos;
 }
 
@@ -110,47 +124,47 @@ D3DXVECTOR3 Collision::CrossProduct(const D3DXVECTOR3 & v1, const D3DXVECTOR3 & 
 //=============================================================================
 D3DXVECTOR3 Collision::WaveCollision(const D3DXVECTOR3 & start, const D3DXVECTOR3 & end, const D3DXVECTOR3 & nowpos)
 {
-	D3DXVECTOR3 tagPos = ZeroVector3;		
-	D3DXVECTOR3 LengthPos = ZeroVector3;	
-	D3DXVECTOR3 startPos = start;
-	D3DXVECTOR3 endPos = end;
+	D3DXVECTOR3 tagPos = ZeroVector3;		// 目標の位置
+	D3DXVECTOR3 LengthPos = ZeroVector3;	// 長さ（距離）
+	D3DXVECTOR3 startPos = start;			// 始点ベクトル
+	D3DXVECTOR3 endPos = end;				// 終点ベクトル
+	float pos_x;							// Xの計算保存
+	float pos_y;							// Yの計算保存
 
-	float pos_x;
-	float pos_y;
-
+	// X・Yそれぞれの長さ算出
 	LengthPos.x = endPos.x - startPos.x;
 	LengthPos.y = endPos.y - startPos.y;
 
+	// 現在の位置は全体の長さの何割か求める
 	pos_x = nowpos.x / LengthPos.x;
 	pos_y = nowpos.y / LengthPos.y;
 
-	float Xpercent = 100 - pos_x;
-	float Ypercent = 100 - pos_y;
-
+	// 求めた割合を長さに乗算
 	tagPos.x = LengthPos.x * (pos_y / 100);
 	tagPos.y = LengthPos.y * (pos_x / 100);
 
+	// 始点と終点どっちが高い位置にあるか
 	if (start.y < end.y)
-	{
+	{// 終点の場合
 		tagPos.y = end.y + tagPos.y;
 	}
 	else if (start.y > end.y)
-	{
+	{// 始点の場合
 		tagPos.y = start.y + tagPos.y;
 	}
 
+	// 求めた値が０の場合
 	if (tagPos.y == 0.0f)
 	{
 		tagPos.y = start.y;
 	}
-	else if (tagPos.y < 0)
+
+	// 求めた値がマイナスの場合
+	if (tagPos.y < 0)
 	{
 		tagPos.y *= -1;
 	}
-	else if (tagPos.x < 0)
-	{
-		tagPos.x *= -1;
-	}
 
+	// 求めた値を返す
 	return tagPos;
 }

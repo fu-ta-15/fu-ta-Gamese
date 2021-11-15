@@ -20,24 +20,21 @@
 #define PLAYER_LIFE_STOCK			(10)
 #define PLAYER_BULLET_STOCK			(10)
 
-
 //-----------------------------------------------------------------------------
 // クラス
 //-----------------------------------------------------------------------------
 class CPlayer : public CScene2D
 {
 public:
-	typedef enum StateType
+	// 状態の種類
+	enum StateType
 	{
 		STATE_NONE = 0,
 		STATE_DAMAGE,
 		STATE_KNOCKUP,
 		STATE_MAX
-	}StateType;
+	};
 
-	//-------------------------------------------------------------------------
-	// メンバ関数
-	//-------------------------------------------------------------------------
 	CPlayer();
 	~CPlayer();
 
@@ -72,35 +69,30 @@ private:
 	void PlayerLife(void);
 	void PlayerBullet(int nBullet);
 
+	StateType			m_state;			// 状態
 	int					m_nAnimeCnt;		// アニメーションカウンター
 	int					m_nDamageCnt;		// ダメージカウント
-	int					m_nBullet;
+	int					m_nBullet;			// バレットのストック
 	int					m_nBulletTime;		// バレットタイム
-	int					m_nBulletCharge;
+	int					m_nBulletCharge;	// バレットの回復カウント
 	float				m_fLife;			// ライフ
-
 	bool				m_bUse;				// 生存確認
 	bool				m_bJunp;			// ジャンプ
 	bool				m_bCollEnemy;		// 敵との当たり判定
 	bool				m_bFall;			// 落下判定
 	bool				m_bDamage;			// ダメージの判定
-	bool				m_bAlive;
-	bool				m_bPresse;
-
+	bool				m_bAlive;			// 生きているか
 	D3DXVECTOR3			m_pos;				// 位置
 	D3DXVECTOR3			m_KnockUpPos;		// ノックアップの位置
-	D3DXVECTOR3			m_posOld;
+	D3DXVECTOR3			m_posOld;			// 過去の位置
 	D3DXVECTOR3			m_move;				// 移動量
 	D3DXVECTOR3			m_size;				// サイズ
 	D3DXVECTOR2			m_tex;				// テクスチャの分割数
 	D3DXVECTOR2			m_number;			// テクスチャ何番目か
 	D3DXCOLOR			m_col;				// 色
-
-	StateType			m_state;
-
-	CEffect				*m_pShield;
-	CScene2D			*m_pLife[PLAYER_LIFE_STOCK];
-	CScene2D			*m_pWeapon[PLAYER_BULLET_STOCK];
+	CEffect				*m_pShield;			// シールド
+	CScene2D			*m_pLife[PLAYER_LIFE_STOCK];	 // ライフのストックポリゴン
+	CScene2D			*m_pWeapon[PLAYER_BULLET_STOCK]; // バレットのストックポリゴン
 };
 
 

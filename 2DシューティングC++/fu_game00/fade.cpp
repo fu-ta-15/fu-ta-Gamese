@@ -28,7 +28,6 @@ CFade::CFade()
 {
 	m_FadeMode = FADE_OUT;
 	m_modeNext = CManager::MODE_TITLE;
-
 	m_pVtxBuff = NULL;
 	m_pVtx = NULL;
 	m_pos = FADE_POS;
@@ -48,12 +47,13 @@ CFade::~CFade()
 //=============================================================================
 CFade * CFade::Create(void)
 {
-	CFade* pFade = NULL;
+	// フェードのポインタ
+	CFade* pFade = new CFade;
 
-	pFade = new CFade;
-
+	// NULLチェック
 	if (pFade != NULL)
 	{
+		// 初期化処理
 		pFade->Init();
 	}
 

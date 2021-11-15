@@ -49,7 +49,6 @@
 // 静的メンバ変数
 //-----------------------------------------------------------------------------
 CPlayer*	CGame::m_pPlayer	= NULL;
-CScore*		CGame::m_pScore		= NULL;
 CTime*		CGame::m_pTime		= NULL;
 CBoss*		CGame::m_pBoss		= NULL;
 CScene2D*	CGame::m_pBg		= NULL;
@@ -180,6 +179,7 @@ void CGame::Update(void)
 	// ウェーブのカウント
 	m_nWaveCnt += 0.52f;
 
+	// メッシュポリゴンの上底と下底の頂点の変化
 	for (int nVtx = 0; nVtx < m_pLifeMesh->GetVtxNum() / 2; nVtx++)
 	{
 		// 座標保管用
@@ -188,18 +188,31 @@ void CGame::Update(void)
 		// ボスがダメージを受けたら
 		if (m_pBoss->GetState() == CBoss::STATE_NOT_DAMAGE)
 		{
+			// 高さ指定
 			m_fWaveHeight = (float)(rand() % 300 - 200);
+
+			// 乱数生成
 			m_nWaveCnt += rand() % 15 + 2;
+
+			// 上下の波の動き
 			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 320.0f, (m_nWaveCnt) + nVtx);
 		}
 		else
 		{
+			// 高さを滑らかに戻す
 			m_fWaveHeight += (20.0f - m_fWaveHeight) * 0.0025f;
+
+			// 上下の波の動き
 			pos.y = Move::CosWave(HEIGHT_HALF, m_fWaveHeight, 240.0f, (m_nWaveCnt) + nVtx);
 		}
 
+		// 上底Y座標の更新
 		m_pLifeMesh->SetVtxPosY(nVtx, pos.y);
+
+		// サイズ分ずらす
 		pos.y += 5;
+
+		// 下底Y座標の更新
 		m_pLifeMesh->SetVtxPosY(nVtx + (m_pLifeMesh->GetVtxNum() / 2), pos.y);
 	}
 

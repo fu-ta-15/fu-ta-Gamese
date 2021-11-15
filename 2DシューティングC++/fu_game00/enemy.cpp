@@ -4,7 +4,6 @@
 // Author : SUZUKI FUUTA
 //
 //*****************************************************************************
-
 //-----------------------------------------------------------------------------
 // インクルードファイル
 //-----------------------------------------------------------------------------
@@ -47,9 +46,15 @@ CEnemy::~CEnemy()
 //=============================================================================
 HRESULT CEnemy::Init(void)
 {
-	CScene2D::Init(m_pos, m_size);	// ポリゴンの生成
-	CScene2D::SetSize(m_size);		// サイズの設定
-	CScene2D::SetCol(m_col);		// 色の設定
+	// ポリゴンの生成
+	CScene2D::Init(m_pos, m_size);	
+
+	// サイズの設定
+	CScene2D::SetSize(m_size);		
+
+	// 色の設定
+	CScene2D::SetCol(m_col);		
+
 	return S_OK;
 }
 
@@ -58,7 +63,8 @@ HRESULT CEnemy::Init(void)
 //=============================================================================
 void CEnemy::Uninit(void)
 {
-	CScene2D::Uninit();	// 終了処理
+	// 終了処理
+	CScene2D::Uninit();	
 }
 
 //=============================================================================
@@ -66,25 +72,38 @@ void CEnemy::Uninit(void)
 //=============================================================================
 void CEnemy::Update(void)
 {
+	// プレイヤーが通常の状態であれば
 	if (this->CollisionPlayer() == true && CGame::GetPlayer()->GetState() != CPlayer::STATE_KNOCKUP)
-	{// プレイヤーとの当たり判定
+	{
+		// 種類別
 		switch (this->m_type)
 		{
 		case ENEMY_BLACK:
+
+			// 当たった合図を送る
 			CGame::GetPlayer()->SetCollEnemy(true);
+
+			// 死亡フラグを立てる
 			this->Release();
+
 			break;
 
 		case ENEMY_WHITE:
+
+			// 死亡フラグを立てる
 			this->Release();
+
 			break;
 
 		default:
 			break;
 		}
 	}
+
 	// 弾との当たり判定
 	CollisionEnemy();
+
+	// 地面との当たり判定
 	CollisionField();
 }
 
@@ -93,7 +112,8 @@ void CEnemy::Update(void)
 //=============================================================================
 void CEnemy::Draw(void)
 {
-	CScene2D::Draw();	// 描画処理
+	// 描画処理
+	CScene2D::Draw();	
 }
 
 //=============================================================================
@@ -101,41 +121,54 @@ void CEnemy::Draw(void)
 //=============================================================================
 void CEnemy::CollisionEnemy(void)
 {
+	// 当たり判定がTRUEだったら
 	if (this->GetBool() == true)
-	{// 当たり判定がTRUEだったら
-		
-		CBoss *pBoss = CGame::GetBoss();	// ゲームシーンから取得
+	{
+		// ゲームシーンから取得
+		CBoss *pBoss = CGame::GetBoss();	
 
 		// 敵の種類
 		switch (this->m_type)
 		{
 		case ENEMY_TYPE0:
 
-			this->DamegeLife(1);	// ライフ減少
+			// ライフ減少
+			this->DamegeLife(1);	
 
+			// ライフがゼロだったら
 			if (this->GetLife() == 0)
-			{// ライフがゼロだったら
+			{
+				// 終了処理
 				CScene2D::Uninit();
+
+				// パーティクルの発生
 				Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 			}
 			break;
 
 		case ENEMY_TYPE1:
 
+			// 終了処理
 			CScene2D::Uninit();
+
+			// パーティクルの発生
 			Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 
 			break;
 
 		case ENEMY_TYPE2:
 
+			// 敵が通常の状態だったら
 			if (pBoss->GetState() == BOSS_NONE)
-			{// 敵が通常の状態だったら
+			{
+				// ダメージを食らっている状態にする
 				pBoss->SetState(BOSS_DAMAGE);
 			}
 			break;
 		}
-		this->SetBool(false);	// フラグを下す
+
+		// フラグを戻す
+		this->SetBool(false);	
 	}
 }
 
@@ -144,9 +177,13 @@ void CEnemy::CollisionEnemy(void)
 //=============================================================================
 bool CEnemy::CollisionPlayer(void)
 {
+	// プレイヤーの位置取得
 	D3DXVECTOR3 pos = CGame::GetPlayer()->GetPos();
+
+	// プレイヤーのサイズ取得
 	D3DXVECTOR3 size = CGame::GetPlayer()->GetSize();
 
+	// 当たり判定の結果を返す
 	return  Collision::CollisionCycle(m_pos, pos, size.x);
 }
 
@@ -155,6 +192,7 @@ bool CEnemy::CollisionPlayer(void)
 //=============================================================================
 void CEnemy::CollisionField(void)
 {
+	// メッシュの情報取得（ゲームモードの）
 	CMesh* pMesh = CGame::GetMesh();
 
 	// 頂点情報の取得
@@ -170,7 +208,10 @@ void CEnemy::CollisionField(void)
 			if (Collision::OutProduct(pVtx[nCnt].pos, pVtx[nCnt + 1].pos, posA))
 			{// 点が二点より下にいたら
 
+				// 終了処理
 				Uninit();
+
+				// パーティクルの発生
 				Particle::SetParticle(m_pos, m_size, 10, Particle::TYPE_EXPLOSION, "data/TEXTURE/Crystal001.png");
 				break;
 			}

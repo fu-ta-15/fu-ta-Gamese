@@ -78,36 +78,60 @@ CPlayer * CPlayer::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 //=============================================================================
 HRESULT CPlayer::Init(void)
 {
-	m_tex = D3DXVECTOR2(2, 0);
-	m_number = D3DXVECTOR2(1, 0);
-	m_nAnimeCnt = 1;
-	m_nBulletCharge = 0;
+	m_tex = D3DXVECTOR2(2, 0);		// テクスチャ座標
+	m_number = D3DXVECTOR2(1, 0);	// 分割したテクスチャの何番目か
+	m_nAnimeCnt = 1;				// アニメーションカウント
+	m_nBulletCharge = 0;			// バレット回復用カウント
+
 	// プレイヤー表示設定
+	// ポリゴンの初期化
 	CScene2D::Init(m_pos, m_size);
+
+	// テクスチャの設定
 	CScene2D::CreateTexture("data/TEXTURE/player0.png");
+
+	// テクスチャ座標の設定
 	CScene2D::SetTex(m_tex, m_number);
 
 	// ライフの設定
 	for (int nCntLife = 0; nCntLife < PLAYER_LIFE_STOCK; nCntLife++)
 	{
+		// 位置の設定
 		D3DXVECTOR3 pos = D3DXVECTOR3(50.0f, 190.0f - (10 * nCntLife), 0.0f);
+
+		// サイズの設定
 		D3DXVECTOR3 size = D3DXVECTOR3(10.0f,5.0f, 0.0f);
+
+		// ポリゴン生成
 		m_pLife[nCntLife] = CScene2D::Create(pos, size);
+
+		// テクスチャの設定
 		m_pLife[nCntLife]->CreateTexture("data/TEXTURE/lifeBlock.png");
 	}
 
 	// ウェポンの設定
 	for (int nCntWeapon = 0; nCntWeapon < PLAYER_BULLET_STOCK; nCntWeapon++)
 	{
+		// 位置の設定
 		D3DXVECTOR3 pos = D3DXVECTOR3(80.0f, 100.0f + (10 * nCntWeapon), 0.0f);
+
+		// サイズの設定
 		D3DXVECTOR3 size = D3DXVECTOR3(10.0f, 5.0f, 0.0f);
+
+		// ポリゴン生成
 		m_pWeapon[nCntWeapon] = CScene2D::Create(pos, size);
+
+		// テクスチャの設定
 		m_pWeapon[nCntWeapon]->CreateTexture("data/TEXTURE/BulletBlock.png");
 	}
 
 	// シールドの設定
+	// シールド用のポリゴン生成
 	m_pShield = CEffect::Create(m_pos, m_size * 2);
+
+	// テクスチャの設定
 	m_pShield->CreateTexture("data/TEXTURE/Shockwave.png");
+
 	return S_OK;
 }
 
@@ -200,12 +224,16 @@ void CPlayer::PlayerAction(void)
 
 	// 弾の復活
 	if ((m_nBulletTime % 35) == 0)
-	{// 毎35フレーム
+	{// フレーム３５
 		for (int nCntWeapon = PLAYER_BULLET_STOCK; nCntWeapon > 0; nCntWeapon--)
 		{
 			if (m_pWeapon[nCntWeapon - 1]->GetUse() != true)
 			{// バレットのストック回復
+
+				// カウントアップ
 				m_nBullet += 1;
+
+				// 弾のストックポリゴンの表示
 				m_pWeapon[nCntWeapon - 1]->SetUse(true);
 				break;
 			}
@@ -217,21 +245,30 @@ void CPlayer::PlayerAction(void)
 
 	// 弾の発射
 	if (pKey->GetState(CKey::STATE_PRESSE, DIK_NUMPAD6) == true)
-	{
+	{// プレス・NUM6が押されたとき
+
+		// カウントアップ
 		m_nBulletCharge++;
+
+		// カウント２０
 		if ((m_nBulletCharge % 20) == 0)
 		{
+			// 波の弾
 			CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f, 15.0f, 0.0f), D3DXVECTOR3(10.0f, 0.0f, 0.0f), true, OBJ_BULLET2);	// バレットの生成
+			
+			// カウント初期化
 			m_nBulletCharge = 0;																						//PlayerBullet(3);											// プレイヤーの弾消費
 		}
 	}
 	else if (pKey->GetState(CKey::STATE_RELEASE, DIK_NUMPAD6) == true)
-	{// トリガー・NUM6 が押されたとき
-		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f, 15.0f, 0.0f), D3DXVECTOR3(10.0f, 0.0f, 0.0f), false, OBJ_BULLET1);	// バレットの生成
-		m_nBulletCharge = 0;
-		m_bPresse = false;
-	}
+	{// リリース・NUM6 が押されたとき
 
+		// 直線の弾
+		CBulletMesh::Create(m_pos, D3DXVECTOR3(0.0f, 15.0f, 0.0f), D3DXVECTOR3(10.0f, 0.0f, 0.0f), false, OBJ_BULLET1);	// バレットの生成
+		
+		// カウント初期化
+		m_nBulletCharge = 0;
+	}
 }
 
 //=============================================================================
@@ -432,7 +469,7 @@ void CPlayer::PlayerLife(void)
 			}
 		}
 	}
-	if (m_fLife < 0)
+	if (m_fLife < 0  || m_bFall == true)
 	{// ライフがゼロになったら
 		m_bAlive = false;
 		m_bUse = false;

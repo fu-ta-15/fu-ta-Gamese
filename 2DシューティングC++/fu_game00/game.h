@@ -17,7 +17,6 @@
 //-----------------------------------------------------------------------------
 class CPlayer;
 class CEnemy;
-class CScore;
 class CTime;
 class CBoss;
 class CScene2D;
@@ -29,9 +28,6 @@ class CMesh;
 class CGame : public CScene
 {
 public:
-	//-------------------------------------------------------------------------
-	// メンバ関数
-	//-------------------------------------------------------------------------
 	CGame();
 	~CGame();
 
@@ -42,24 +38,21 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	// Get関数
 	static CBoss* GetBoss(void)		{ return m_pBoss; }
 	static CMesh* GetMesh(void)		{ return m_pField; }
 	static CPlayer* GetPlayer(void)	{ return m_pPlayer; }
 	static CTime* GetTime(void)		{ return m_pTime; }
 
 private:
-
-	int					m_RandomHeight;
-	float				m_fWaveHeight;
-	float				m_nWaveCnt;
-	CMesh				*m_pLifeMesh;
-
-	static CPlayer		*m_pPlayer;
-	static CScore		*m_pScore;
-	static CTime		*m_pTime;
-	static CBoss		*m_pBoss;
-	static CScene2D		*m_pBg;
-	static CMesh		*m_pField;
+	float				m_fWaveHeight;		// 波の高さ
+	float				m_nWaveCnt;			// 波を起こすためのカウント
+	CMesh				*m_pLifeMesh;		// ボスのダメージ表現のメッシュポリゴン
+	static CPlayer		*m_pPlayer;			// プレイヤーのポインタ
+	static CTime		*m_pTime;			// タイムのポインタ
+	static CBoss		*m_pBoss;			// ボスのポインタ
+	static CScene2D		*m_pBg;				// 背景のポインタ
+	static CMesh		*m_pField;			// メッシュのポインタ（地面）
 };
 
 #endif // !1

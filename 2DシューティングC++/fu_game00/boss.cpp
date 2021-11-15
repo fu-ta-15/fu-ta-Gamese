@@ -393,7 +393,7 @@ void CBoss::SummonsEnemy(void)
 	// ˆÊ’u‚ÌŽæ“¾
 	m_pos = CScene2D::GetPos();		
 
-	// ŽžŠÔ‚ÌŽæ“¾
+	// ƒtƒŒ[ƒ€ƒJƒEƒ“ƒg‚ÌŽæ“¾
 	int nFrame = CGame::GetTime()->GetFrame();	
 
 	// ‘Ì—Í‚Ìó‘Ô‚Å“G‚Ì¢Š«•û–@•ÏX
@@ -401,8 +401,11 @@ void CBoss::SummonsEnemy(void)
 	{
 		// ‚OŠ„Œ¸­
 	case LIFE_RATE_0:
+
+		// ƒtƒŒ[ƒ€‚P‚T
 		if ((nFrame % 15) == 0)
 		{
+			// “G‚Ì”z’u
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3, 1);
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
 		}
@@ -410,8 +413,11 @@ void CBoss::SummonsEnemy(void)
 
 		// ‚QŠ„Œ¸­
 	case LIFE_RATE_2:
+
+		// ƒtƒŒ[ƒ€‚U‚O
 		if ((nFrame % 60) == 0)
 		{
+			// “G‚Ì”z’u
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3, 1);
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 25);
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0, 1);
@@ -420,40 +426,42 @@ void CBoss::SummonsEnemy(void)
 
 		// ‚TŠ„Œ¸­
 	case LIFE_RATE_5:
+
+		// ƒtƒŒ[ƒ€‚Q‚O
 		if ((nFrame % 20) == 0)
 		{
+			// “G‚Ì”z’u
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0, 1);
 		}
 		if ((nFrame % 10) == 0)
 		{
+			// “G‚Ì”z’u
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3, 1);
 		}
 		break;
 
 		// ‚WŠ„Œ¸­
 	case LIFE_RATE_8:
+
+		// ƒtƒŒ[ƒ€‚V
 		if ((nFrame % 7) == 0)
 		{
+			// “G‚Ì”z’u
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE0, 1);
 		}
+
+		// ƒtƒŒ[ƒ€‚T
 		if ((nFrame % 5) == 0)
 		{
+			// “G‚Ì”z’u
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE3, 1);
 		}
+
+		// ƒtƒŒ[ƒ€‚R‚O
 		if ((nFrame % 30) == 0)
 		{
+			// “G‚Ì”z’u
 			ENEMY::SetEnemy(m_pos, ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
-		}
-		if ((nFrame % 100) == 0)
-		{
-			if (m_pCore[0]->GetUse() == true)
-			{
-				ENEMY::SetEnemy(m_pCore[0]->GetPos(), ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
-			}
-			if (m_pCore[1]->GetUse() == true)
-			{
-				ENEMY::SetEnemy(m_pCore[1]->GetPos(), ENEMY_SIZE, ENEMY_TYPE0, MOVE2, 10);
-			}
 		}
 		break;
 
