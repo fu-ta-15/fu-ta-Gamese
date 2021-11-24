@@ -76,6 +76,9 @@ CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 siz
 //=============================================================================
 HRESULT CNormalEnemy::Init(void)
 {
+	// 角度変数
+	float fAngle0, fAngle2;
+
 	// 初期化
 	CEnemy::Init();	
 	
@@ -88,21 +91,21 @@ HRESULT CNormalEnemy::Init(void)
 	case CNormalEnemy::MOVE_0:
 
 		// プレイヤーの角度算出
-		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
+		fAngle0 = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
 
 		// プレイヤーの角度の方向に向かって移動量設定
-		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
-		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
+		m_move.x = sinf(fAngle0 - D3DX_PI) * 2.5f;
+		m_move.y = cosf(fAngle0 + D3DX_PI) * 2.5f;
 		break;
 
 	case CNormalEnemy::MOVE_2:
 
 		// ランダムな角度生成
-		float fAngle = (float)(rand() % 314) / 100.f;
+		fAngle2 = (float)(rand() % 314) / 100.f;
 
 		// 設定された角度の方向に移動する設定
-		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
-		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
+		m_move.x = sinf(fAngle2 - D3DX_PI) * 2.5f;
+		m_move.y = cosf(fAngle2 + D3DX_PI) * 2.5f;
 		break;
 
 	default:
