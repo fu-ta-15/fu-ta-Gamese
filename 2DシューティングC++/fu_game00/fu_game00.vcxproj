@@ -24,7 +24,6 @@
     <ClCompile Include="bulletmesh.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="core.cpp" />
-    <ClCompile Include="Dinput.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
@@ -48,7 +47,6 @@
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
-    <ClCompile Include="Xinput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boss.h" />
@@ -56,7 +54,6 @@
     <ClInclude Include="bulletmesh.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="core.h" />
-    <ClInclude Include="Dinput.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />
@@ -81,7 +78,6 @@
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
-    <ClInclude Include="Xinput.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FBCCEA83-74BF-4482-99CB-0DC0B03A3B73}</ProjectGuid>

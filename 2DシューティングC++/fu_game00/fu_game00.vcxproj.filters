@@ -78,12 +78,6 @@
     <ClCompile Include="keyinput.cpp">
       <Filter>main\Input\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Xinput.cpp">
-      <Filter>main\Input\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Dinput.cpp">
-      <Filter>main\Input\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>main\mode\ソースフ ァイル</Filter>
     </ClCompile>
@@ -168,12 +162,6 @@
       <Filter>main\mode\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="keyinput.h">
-      <Filter>main\Input\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Xinput.h">
-      <Filter>main\Input\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Dinput.h">
       <Filter>main\Input\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
