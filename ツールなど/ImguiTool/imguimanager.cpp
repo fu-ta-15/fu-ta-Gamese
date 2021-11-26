@@ -51,9 +51,6 @@ void ImGuiMana::Uninit(void)
 //=============================================================================
 void ImGuiMana::Update(void)
 {
-	// 現在のモードの取得
-	CManager::MODE mode = CManager::GetMode();
-
 	// DX9のフレーム生成
 	ImGui_ImplDX9_NewFrame();
 
@@ -63,46 +60,8 @@ void ImGuiMana::Update(void)
 	// フレームの生成
 	ImGui::NewFrame();
 
-	// モード取得
-	if (mode == CManager::MODE_GAME)
-	{
-		// Imguiウィンドウ生成
-		ImGui::Begin(u8"メッシュポリゴン");
-
-		// メッシュ処理
-		MeshList::MeshInfo();
-
-		// Imguiウィンドウ生成完了
-		ImGui::End();
-
-		// メッシュポリゴンが生成されていたら
-		if (MeshList::m_pMesh != NULL)
-		{
-			// Imguiウィンドウ生成
-			ImGui::Begin(u8"表現リスト");
-
-			// 波の表現
-			MeshList::MeshWave();
-
-			// 空白の行を生成
-			ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
-
-			// 回転表現
-			MeshList::MeshCycle();
-
-			// Imguiウィンドウ生成終了
-			ImGui::End();
-		}
-	}
-
-	// Imguiウィンドウ生成
-	ImGui::Begin(u8"カメラやライトetc");
-
-	// 設定
-	Option::OperationExplanation();
-
-	// Imguiウィンドウ生成完了
-	ImGui::End();
+	// メッシュ情報の更新処理
+	MeshList::Update();
 
 	// フレーム生成終了
 	ImGui::EndFrame();
@@ -155,6 +114,28 @@ void ImGuiMana::DrawEnd(HRESULT result, LPDIRECT3DDEVICE9 pD3DDevice, D3DPRESENT
 }
 
 //=============================================================================
+// メッシュで使用する更新処理
+//=============================================================================
+void MeshList::Update(void)
+{
+	// 現在のモードの取得
+	CManager::MODE mode = CManager::GetMode();
+
+	// モード取得
+	if (mode == CManager::MODE_GAME)
+	{
+		// Imguiウィンドウ生成
+		ImGui::Begin(u8"ツールウィンドウ");
+
+		// メッシュ処理
+		MeshList::MeshInfo();
+
+		// Imguiウィンドウ生成完了
+		ImGui::End();
+	}
+}
+
+//=============================================================================
 // ImGuiのメッシュポリゴンの情報
 //
 // ・生成設定/波の表現の設定/その他設定…
@@ -164,8 +145,27 @@ void MeshList::MeshInfo(void)
 	// デモウィンドウの表示切替Button
 	if (ImGui::Button(u8"[デモウィンドウの生成]"))
 	{
-		// デモウィンドウの表示切り替え
+		// デモウィンドウの表示切替
 		m_bDemo = m_bDemo ? false : true;
+	}
+
+	// 説明書の表示切替Button
+	if (ImGui::Button(u8"説明書"))
+	{
+		// 説明書の表示切替
+		m_bExplanation = m_bExplanation ? false : true;
+	}
+
+	if (m_bExplanation)
+	{
+		// Imguiウィンドウ生成
+		ImGui::Begin(u8"カメラやライトetc");
+
+		// 設定
+		Option::OperationExplanation();
+
+		// Imguiウィンドウ生成完了
+		ImGui::End();
 	}
 
 	// trueの場合のみデモウィンドウ表示
@@ -178,18 +178,32 @@ void MeshList::MeshInfo(void)
 	// 空白の行を生成
 	ImGui::Spacing();
 
-		// 生成する際の情報
-		if (ImGui::CollapsingHeader(u8"メッシュの生成"))
+		// メニュー欄の生成
+		if (ImGui::CollapsingHeader(u8"メッシュポリゴンリスト"))
 		{
 			// メッシュの生成
 			CreateMeshMenu();
+		}
 
+		// メニュー欄の生成
+		if (ImGui::CollapsingHeader(u8"表現方法"))
+		{
+			// 波の表現
+			MeshList::MeshWave();
+
+			// 空白の行を生成
+			ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
+
+			// 回転表現
+			MeshList::MeshCycle();
+		}
+
+		// メニュー欄の生成
+		if (ImGui::CollapsingHeader(u8"その他詳細"))
+		{
 			// メッシュの説明文
 			MeshOptionMenu::MeshOption();
 		}
-
-		// 空白の行を生成
-		ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
 
 }
 
@@ -298,7 +312,7 @@ void MeshList::MeshCycle(void)
 void MeshList::CreateMeshMenu(void)
 {
 	// 横に並べるための空白の準備
-	float SpacingButton = ImGui::GetStyle().ItemInnerSpacing.x;
+	float SpacingButton = ImGui::GetStyle().ItemInnerSpacing.x + 10.0f;
 
 	// Buttonを改行せず生成
 	ImGui::PushButtonRepeat(true);
@@ -352,19 +366,25 @@ void MeshList::CreateMeshMenu(void)
 	// 繰り返し表示の終了
 	ImGui::PopButtonRepeat();
 
-	// 現在の数値表示・数値入力可能・ボタンで１±可能
-	ImGui::InputInt(u8"縦線", &m_nVertical, 1);
+	if (ImGui::TreeNode(u8"線の追加"))
+	{
+		// 現在の数値表示・数値入力可能・ボタンで１±可能
+		ImGui::InputInt(u8"縦線", &m_nVertical, 1);
 
-	// 限界値を越えていたら戻す処理
-	if (m_nVertical < 0) { m_nVertical = 0; }
-	else if (m_nVertical > 150) { m_nVertical = 150; }
+		// 限界値を越えていたら戻す処理
+		if (m_nVertical < 0) { m_nVertical = 0; }
+		else if (m_nVertical > 150) { m_nVertical = 150; }
 
-	// 現在の数値表示・数値入力可能・ボタンで１±可能
-	ImGui::InputInt(u8"横線", &m_nSide, 1);
+		// 現在の数値表示・数値入力可能・ボタンで１±可能
+		ImGui::InputInt(u8"横線", &m_nSide, 1);
 
-	// 限界値を越えていたら戻す処理
-	if (m_nSide < 0) { m_nSide = 0; }
-	else if (m_nSide > 150) { m_nSide = 150; }
+		// 限界値を越えていたら戻す処理
+		if (m_nSide < 0) { m_nSide = 0; }
+		else if (m_nSide > 150) { m_nSide = 150; }
+
+		// ノードの生成終了
+		ImGui::TreePop();
+	}
 
 	// メッシュの位置設定ノード
 	if (ImGui::TreeNode(u8"---位置---"))

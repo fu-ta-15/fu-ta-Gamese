@@ -40,6 +40,7 @@ namespace ImGuiMana
 //-----------------------------------------------------------------------------
 namespace MeshList
 {
+	void Update(void);
 	void MeshInfo(void);
 	void MeshWave(void);
 	void MeshCycle(void);
@@ -49,14 +50,15 @@ namespace MeshList
 	static bool m_bCreate = false;					// 生成
 	static int m_nVertical = 0;						// 縦線の数
 	static int m_nSide = 0;							// 横線の数
-	static D3DXVECTOR3 m_pos;						// 位置
-	static D3DXVECTOR3 m_size;						// 大きさ
+	static D3DXVECTOR3 m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);						// 位置
+	static D3DXVECTOR3 m_size = D3DXVECTOR3(100.0f, 0.0f, 100.0f);						// 大きさ
 	static bool m_bTimeStart = false;				// カウント開始と停止
 	static int m_nTime = 0;							// 時間（フレームカウント)
 	static float m_fHeight = 0.0f;					// 波の高さ
 	static D3DXVECTOR3 m_WaveCenter = {};			// 震源
 	static int m_nCycle = 100;						// 周期
 	static bool m_bDemo = false;					// デモウィンドウ
+	static bool m_bExplanation = false;				// 説明書
 	static D3DFILLMODE m_fillmode = D3DFILL_SOLID;	// ワイヤーフレーム
 	static DWORD m_d3dcullmode = D3DCULL_CCW;		// カリングモード
 	static bool m_bNorSeting = false;
