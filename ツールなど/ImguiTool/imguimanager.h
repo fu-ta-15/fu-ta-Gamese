@@ -16,7 +16,6 @@
 #include "imgui/imgui_impl_win32.h"
 #include "mesh3D.h"
 
-
 //-----------------------------------------------------------------------------
 // 名前空間・ImGuiマネージャ
 //-----------------------------------------------------------------------------
@@ -27,6 +26,8 @@ namespace ImGuiMana
 	void Uninit(void);
 
 	void Update(void);
+
+	void DeviState(void);
 
 	void Draw(void);
 
@@ -41,21 +42,33 @@ namespace MeshList
 {
 	void MeshInfo(void);
 	void MeshWave(void);
+	void MeshCycle(void);
 	void CreateMeshMenu(void);
 
-	static CMesh3D *m_pMesh = NULL;
-	static bool m_bCreate = false;
-	static int m_nVertical = 0;
-	static int m_nSide = 0;
-	static D3DXVECTOR3 m_pos;
-	static D3DXVECTOR3 m_size;
+	static CMesh3D *m_pMesh = NULL;					// メッシュの情報を受け取るポインタ
+	static bool m_bCreate = false;					// 生成
+	static int m_nVertical = 0;						// 縦線の数
+	static int m_nSide = 0;							// 横線の数
+	static D3DXVECTOR3 m_pos;						// 位置
+	static D3DXVECTOR3 m_size;						// 大きさ
+	static bool m_bTimeStart = false;				// カウント開始と停止
+	static int m_nTime = 0;							// 時間（フレームカウント)
+	static float m_fHeight = 0.0f;					// 波の高さ
+	static D3DXVECTOR3 m_WaveCenter = {};			// 震源
+	static int m_nCycle = 100;						// 周期
+	static bool m_bDemo = false;					// デモウィンドウ
+	static D3DFILLMODE m_fillmode = D3DFILL_SOLID;	// ワイヤーフレーム
+	static DWORD m_d3dcullmode = D3DCULL_CCW;		// カリングモード
+	static bool m_bNorSeting = false;
+	static bool m_bCycleStart = false;
+};
 
-	static bool m_bTimeStart = false;
-	static int m_nTime = 0;
-	static float m_fHeight = 0.0f;
-	static D3DXVECTOR3 m_WaveCenter = {};
-	static int m_nCycle = 100;
-	static bool m_bDemo = false;
+//-----------------------------------------------------------------------------
+// 名前空間・メッシュの設定
+//-----------------------------------------------------------------------------
+namespace MeshOptionMenu
+{
+	void MeshOption(void);
 }
 
 //-----------------------------------------------------------------------------
@@ -65,15 +78,19 @@ namespace TextureMake
 {
 	void TextureLoad(void);
 	void TextureBind(void);
-
 }
 
+//-----------------------------------------------------------------------------
+// 名前空間・詳細設定/説明
+//-----------------------------------------------------------------------------
 namespace Option
 {
-
 	void OperationExplanation(void);
 }
 
+//-----------------------------------------------------------------------------
+// 名前空間・ライト設定
+//-----------------------------------------------------------------------------
 namespace LightOption
 {
 	void LightMove(void);

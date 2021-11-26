@@ -11,6 +11,7 @@
 #include "imgui_ja_gryph_ranges.h"
 #include "game.h"
 #include "manager.h"
+#include "renderer.h"
 #include "camera.h"
 #include "light.h"
 
@@ -73,11 +74,31 @@ void ImGuiMana::Update(void)
 
 		// Imguiウィンドウ生成完了
 		ImGui::End();
+
+		// メッシュポリゴンが生成されていたら
+		if (MeshList::m_pMesh != NULL)
+		{
+			// Imguiウィンドウ生成
+			ImGui::Begin(u8"表現リスト");
+
+			// 波の表現
+			MeshList::MeshWave();
+
+			// 空白の行を生成
+			ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
+
+			// 回転表現
+			MeshList::MeshCycle();
+
+			// Imguiウィンドウ生成終了
+			ImGui::End();
+		}
 	}
 
 	// Imguiウィンドウ生成
 	ImGui::Begin(u8"カメラやライトetc");
 
+	// 設定
 	Option::OperationExplanation();
 
 	// Imguiウィンドウ生成完了
@@ -87,12 +108,30 @@ void ImGuiMana::Update(void)
 	ImGui::EndFrame();
 }
 
+//=============================================================================
+// レンダラー状態の管理
+//=============================================================================
+void ImGuiMana::DeviState(void)
+{
+	// デバイスのポインタ取得
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
+
+	// ワイヤーフレームON・OFF
+	pDevice->SetRenderState(D3DRS_FILLMODE, MeshList::m_fillmode);
+	pDevice->SetRenderState(D3DRS_CULLMODE, MeshList::m_d3dcullmode);
+}
 
 //=============================================================================
 // ImGuiの描画処理
 //=============================================================================
 void ImGuiMana::Draw(void)
 {
+	// デバイスのポインタ取得
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
+
+	// ワイヤーフレームの影響受けないためここで設定
+	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
 	// DX9でのレンダラー開始
 	ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
@@ -139,52 +178,19 @@ void MeshList::MeshInfo(void)
 	// 空白の行を生成
 	ImGui::Spacing();
 
-	// メッシュの情報ノード
-	if (ImGui::TreeNode(u8"---情報---"))
-	{
-
 		// 生成する際の情報
-		if (ImGui::TreeNode(u8"---生成---"))
+		if (ImGui::CollapsingHeader(u8"メッシュの生成"))
 		{
 			// メッシュの生成
 			CreateMeshMenu();
 
-			// ノード生成終了
-			ImGui::TreePop();
+			// メッシュの説明文
+			MeshOptionMenu::MeshOption();
 		}
 
 		// 空白の行を生成
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
+		ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
 
-		// 波の表現の情報
-		if (ImGui::TreeNode(u8"---波の表現---"))
-		{
-			// 波の表現
-			MeshWave();
-
-			// ノード生成終了
-			ImGui::TreePop();
-		}
-
-		// 空白の行を生成
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
-
-		// その他の詳細
-		//if (ImGui::TreeNode(u8"---メッシュポリゴン詳細---"))
-		//{
-		//	
-
-		//	// ノード生成終了
-		//	ImGui::TreePop();
-		//}
-
-		// ノード生成終了
-		ImGui::TreePop();
-	}
 }
 
 //=============================================================================
@@ -192,57 +198,96 @@ void MeshList::MeshInfo(void)
 //=============================================================================
 void MeshList::MeshWave(void)
 {
-	// カウント開始・停止の切り替えボタン
-	if (ImGui::Button(u8"[再生]・[停止]"))
+	// 波の表現の情報
+	if (ImGui::TreeNode(u8"---波の表現---"))
 	{
-		// 押されたら再生と停止のどちらかにする
-		m_bTimeStart = m_bTimeStart ? false : true;
-	}
-
-	// フレームカウント開始されていたら
-	if (m_bTimeStart)
-	{
-		// カウントアップ
-		m_nTime++;
-	}
-
-	// 生成されていたら波の表現開始
-	if (m_pMesh != NULL)
-	{
-		m_pMesh->MeshWave(m_WaveCenter, m_nTime, m_fHeight, m_nCycle);
-	}
-
-	// 波の詳細設定ノード
-	if (ImGui::TreeNode(u8"---波の詳細設定---"))
-	{
-		// 波θからの高さ
-		ImGui::InputFloat(u8"高さ", &m_fHeight, 0.5f);
-
-		// 波の周期の長さ
-		ImGui::InputInt(u8"周期", &m_nCycle, 1);
-
-		// 波を起こす原点の設定ノード
-		if (ImGui::TreeNode(u8"震源"))
+		// カウント開始・停止の切り替えボタン
+		if (ImGui::Button(u8"波:[再生]・[停止]"))
 		{
-			// 波を起こす原点の設定
-			ImGui::InputFloat(u8"X座標", &m_WaveCenter.x, 0.5f);
-			ImGui::InputFloat(u8"Z座標", &m_WaveCenter.z, 0.5f);
+			// 押されたら再生と停止のどちらかにする
+			m_bTimeStart = m_bTimeStart ? false : true;
+		}
+
+		// フレームカウント開始されていたら
+		if (m_bTimeStart)
+		{
+			// カウントアップ
+			m_nTime++;
+
+			// 生成されていたら波の表現開始
+			if (m_pMesh != NULL)
+			{
+				// 波の表現の開始
+				m_pMesh->MeshWave(m_WaveCenter, m_nTime, m_fHeight, m_nCycle);
+			}
+		}
+
+		// 波の詳細設定ノード
+		if (ImGui::TreeNode(u8"---波の詳細設定---"))
+		{
+			// 波θからの高さ
+			ImGui::InputFloat(u8"高さ", &m_fHeight, 0.5f);
+
+			// 波の周期の長さ
+			ImGui::InputInt(u8"周期", &m_nCycle, 1);
+
+			// 波を起こす原点の設定ノード
+			if (ImGui::TreeNode(u8"震源"))
+			{
+				// 波を起こす原点の設定
+				ImGui::InputFloat(u8"X座標", &m_WaveCenter.x, 0.5f);
+				ImGui::InputFloat(u8"Z座標", &m_WaveCenter.z, 0.5f);
+
+				// ノードの終了
+				ImGui::TreePop();
+			}
+
+			// フレームカウント表示ノード
+			if (ImGui::TreeNode("FRAME"))
+			{
+				// フレームの表示
+				ImGui::Text(u8" カウント数 : %d", m_nTime);
+
+				// ノードの終了
+				ImGui::TreePop();
+			}
 
 			// ノードの終了
 			ImGui::TreePop();
 		}
 
-		// フレームカウント表示ノード
-		if (ImGui::TreeNode("FRAME"))
-		{
-			// フレームの表示
-			ImGui::Text(u8" カウント数 : %d", m_nTime);
+		// ノード生成終了
+		ImGui::TreePop();
+	}
+}
 
-			// ノードの終了
-			ImGui::TreePop();
+//=============================================================================
+// メッシュポリゴンによる回転処理
+//=============================================================================
+void MeshList::MeshCycle(void)
+{
+	// 回転の表現
+	if (ImGui::TreeNode(u8"---回転の表現---"))
+	{
+		// 回転開始・停止の切り替えボタン
+		if (ImGui::Button(u8"回転:[再生]・[停止]"))
+		{
+			// true false の切り替え
+			m_bCycleStart = m_bCycleStart ? false : true;
 		}
 
-		// ノードの終了
+		// 回転開始の合図が出ていたら
+		if (m_bCycleStart)
+		{
+			// 生成されていたら波の表現開始
+			if (m_pMesh != NULL)
+			{
+				// 回転運動
+				m_pMesh->MeshCycleMove();
+			}
+		}
+
+		// ノードの生成終了
 		ImGui::TreePop();
 	}
 }
@@ -263,8 +308,7 @@ void MeshList::CreateMeshMenu(void)
 	{
 		// NULLであれば生成する
 		if (m_pMesh == NULL)
-		{// NULLチェック
-
+		{
 			// （｛四角の中に入る｝縦の本数・横の本数・位置・サイズ）
 			m_pMesh = CMesh3D::Create(m_nVertical, m_nSide, m_pos, m_size);
 		}
@@ -286,6 +330,11 @@ void MeshList::CreateMeshMenu(void)
 			// NULL代入
 			m_pMesh = NULL;
 		}
+
+		m_nVertical = 0;							// 縦線の本数
+		m_nSide = 0;								// 横線の本数
+		m_pos = ZeroVector3;						// 位置
+		m_size = D3DXVECTOR3(100.0f, 0.0f, 100.0f); // サイズ
 	}
 
 	// 空白の生成
@@ -348,7 +397,6 @@ void MeshList::CreateMeshMenu(void)
 //=============================================================================
 void TextureMake::TextureLoad(void)
 {
-
 	//if (ImGui::TreeNode(u8"テクスチャ生成"))
 	//{
 
@@ -374,7 +422,6 @@ void LightOption::LightMove(void)
 {
 	// ライトの情報取得
 	CLight *pLight = CManager::GetLight();
-
 }
 
 //=============================================================================
@@ -382,14 +429,18 @@ void LightOption::LightMove(void)
 //=============================================================================
 void Option::OperationExplanation(void)
 {
+	// カメラ操作説明用ノード生成
 	if (ImGui::TreeNode(u8"カメラ操作"))
 	{
+		// 操作説明テキストの表示
 		ImGui::Text(u8"移動方法");
 		ImGui::Text(u8"W/前 : S/後 : A/右 : D/左");
 		ImGui::Text(u8"T/注視点の上移動：B/注視点の下移動：Y/視点の上移動：N/視点の下移動");
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
+
+		// 空白の行を生成
+		ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
+
+		// 操作説明テキストの表示
 		ImGui::Text(u8"旋回");
 		ImGui::Text(u8"Q/視点の左旋回 : E/視点の右旋回");
 		ImGui::Text(u8"Z/注視点の左旋回 : C/注視点の右旋回");
@@ -397,4 +448,75 @@ void Option::OperationExplanation(void)
 		// ノードの終了
 		ImGui::TreePop();
 	}
+}
+
+//=============================================================================
+// メッシュポリゴンの詳細設定
+//=============================================================================
+void MeshOptionMenu::MeshOption(void)
+{
+	// フレームモードの変更
+	if (ImGui::Button(u8"フレームモード"))
+	{
+		// フレームの種類
+		switch (MeshList::m_fillmode)
+		{
+		case D3DFILL_SOLID:
+
+			// ワイヤーフレームでの表示
+			MeshList::m_fillmode = D3DFILL_WIREFRAME;
+			break;
+		case D3DFILL_WIREFRAME:
+		
+			// ポリゴンとして描画
+			MeshList::m_fillmode = D3DFILL_SOLID;
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+	// カリングモードの変更
+	if (ImGui::Button(u8"カリングモード"))
+	{
+		// カリング方法の種類
+		switch (MeshList::m_d3dcullmode)
+		{
+		case D3DCULL_CCW:
+
+			// カリングOFF（裏面も描画）
+			MeshList::m_d3dcullmode = D3DCULL_NONE;
+			break;
+
+		case D3DCULL_NONE:
+
+			// カリングON（裏面描画なし)
+			MeshList::m_d3dcullmode = D3DCULL_CCW;
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	// カウント開始・停止の切り替えボタン
+	if (ImGui::Button(u8"法線:[有り]・[無し]"))
+	{
+		// 押されたら再生と停止のどちらかにする
+		MeshList::m_bNorSeting = MeshList::m_bNorSeting ? false : true;
+
+		// 生成されていたら
+		if (MeshList::m_pMesh != NULL)
+		{
+			// 法線の計算をするかしないか設定する
+			MeshList::m_pMesh->SetingbNor(MeshList::m_bNorSeting);
+		}
+	}
+
+	if (true)
+	{
+
+	}
+
 }

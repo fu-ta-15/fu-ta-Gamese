@@ -22,14 +22,6 @@ public:
 	void Update(void);
 	void SetCamera(void);
 
-	void SetPosV(const D3DXVECTOR3& posV);
-	void SetPosR(const D3DXVECTOR3& posR);
-	void SetRot(const D3DXVECTOR3& rot);
-
-	D3DXVECTOR3 GetPosV() { return m_posV; }
-	D3DXVECTOR3 GetPosR() { return m_posR; }
-	D3DXVECTOR3 GetRot() { return m_rot; }
-
 private:
 	D3DXVECTOR3 m_posV;			// éãì_(åªç›)
 	D3DXVECTOR3 m_posR;			// íçéãì_(åªç›)

@@ -59,16 +59,18 @@ void CCamera::Uninit(void)
 //=============================================================================
 void CCamera::Update(void)
 {
-
 	// キー入力クラスのポインタ
 	CKey *pKey = CManager::GetKey();
 
+	// キー入力によるカメラの移動（キー入力の状態・キーの種類）
 	if (pKey->GetState(CKey::STATE_PRESSE, DIK_Z))
 	{
+		// Y軸の角度
 		m_rot.y -= 0.005f;
 
+		// 3.14fより大きくなったとき値を-3.14fにする
 		if (m_rot.y < -D3DX_PI)
-		{// 3.14fより大きくなったとき値を-3.14fにする
+		{
 			m_rot.y += D3DX_PI * 2.0f;
 		}
 
@@ -78,10 +80,12 @@ void CCamera::Update(void)
 	}
 	if (pKey->GetState(CKey::STATE_PRESSE, DIK_C))
 	{
+		// Y軸の角度
 		m_rot.y += 0.005f;
 
+		// 3.14fより大きくなったとき値を-3.14fにする
 		if (m_rot.y > D3DX_PI)
-		{// 3.14fより大きくなったとき値を-3.14fにする
+		{
 			m_rot.y += D3DX_PI * 2.0f;
 		}
 
@@ -91,10 +95,12 @@ void CCamera::Update(void)
 	}
 	if (pKey->GetState(CKey::STATE_PRESSE, DIK_Q))
 	{
-		m_rot.y -= 0.05f;						// 回転量
+		// Y軸の角度
+		m_rot.y -= 0.05f;
 
+		// 3.14fより大きくなったとき値を-3.14fにする
 		if (m_rot.y < -D3DX_PI)
-		{// 3.14fより大きくなったとき値を-3.14fにする
+		{
 			m_rot.y += D3DX_PI * 2.0f;
 		}
 
@@ -104,23 +110,25 @@ void CCamera::Update(void)
 	}
 	if (pKey->GetState(CKey::STATE_PRESSE, DIK_E))
 	{
-		m_rot.y += 0.05f;						// 回転量
+		// Y軸の角度
+		m_rot.y += 0.05f;
 
+		// -3.14fより小さくなったとき値を3.14fにする
 		if (m_rot.y > D3DX_PI)
-		{// -3.14fより小さくなったとき値を3.14fにする
+		{
 			m_rot.y -= D3DX_PI * 2.0f;
 		}
 		// 視点の更新
 		m_posV.x = m_posR.x - sinf(m_rot.y) * 200;
 		m_posV.z = m_posR.z - cosf(m_rot.y) * 200;
 	}
-
-
 	if (pKey->GetState(CKey::STATE_PRESSE, DIK_W))
 	{
 		// 視点の前移動
 		m_posV.x += m_fPosSpeed * sinf(m_rot.y);
 		m_posV.z += m_fPosSpeed * cosf(m_rot.y);
+
+		// 視点の更新
 		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
 		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
 	}
@@ -129,6 +137,8 @@ void CCamera::Update(void)
 		// 視点の後ろ移動
 		m_posV.x -= m_fPosSpeed * sinf(m_rot.y);
 		m_posV.z -= m_fPosSpeed * cosf(m_rot.y);
+
+		// 視点の更新
 		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
 		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
 	}
@@ -137,6 +147,8 @@ void CCamera::Update(void)
 		// 視点の左移動
 		m_posV.x -= m_fPosSpeed * cosf(m_rot.y);
 		m_posV.z += m_fPosSpeed * sinf(m_rot.y);
+
+		// 視点の更新
 		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
 		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
 	}
@@ -145,6 +157,8 @@ void CCamera::Update(void)
 		// 視点の右移動
 		m_posV.x += m_fPosSpeed * cosf(m_rot.y);
 		m_posV.z -= m_fPosSpeed * sinf(m_rot.y);
+
+		// 視点の更新
 		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
 		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
 	}
@@ -203,18 +217,4 @@ void CCamera::SetCamera(void)
 
 	// ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &m_mtxView);
-}
-
-void CCamera::SetPosV(const D3DXVECTOR3 & posV)
-{
-	m_posV = posV;
-
-}
-
-void CCamera::SetPosR(const D3DXVECTOR3 & posR)
-{
-}
-
-void CCamera::SetRot(const D3DXVECTOR3 & rot)
-{
 }

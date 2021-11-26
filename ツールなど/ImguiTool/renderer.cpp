@@ -39,8 +39,7 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	D3DDISPLAYMODE d3ddm;
 
 	// Direct3Dオブジェクトの作成
-	m_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
-	if (m_pD3D == NULL)
+	if ((m_pD3D = Direct3DCreate9(D3D_SDK_VERSION)) == NULL)
 	{
 		return E_FAIL;
 	}
@@ -52,16 +51,16 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	}
 
 	// デバイスのプレゼンテーションパラメータの設定
-	ZeroMemory(&d3dpp, sizeof(d3dpp));								// ワークをゼロクリア
-	d3dpp.BackBufferCount = 1;							// バックバッファの数
-	d3dpp.BackBufferWidth = SCREEN_WIDTH;				// ゲーム画面サイズ(幅)
-	d3dpp.BackBufferHeight = SCREEN_HEIGHT;				// ゲーム画面サイズ(高さ)
-	d3dpp.BackBufferFormat = d3ddm.Format;				// カラーモードの指定
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;		// 映像信号に同期してフリップする
+	ZeroMemory(&d3dpp, sizeof(d3dpp));							// ワークをゼロクリア
+	d3dpp.BackBufferCount = 1;									// バックバッファの数
+	d3dpp.BackBufferWidth = SCREEN_WIDTH;						// ゲーム画面サイズ(幅)
+	d3dpp.BackBufferHeight = SCREEN_HEIGHT;						// ゲーム画面サイズ(高さ)
+	d3dpp.BackBufferFormat = d3ddm.Format;						// カラーモードの指定
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;					// 映像信号に同期してフリップする
 	d3dpp.EnableAutoDepthStencil = TRUE;						// デプスバッファ（Ｚバッファ）とステンシルバッファを作成
 	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;					// デプスバッファとして16bitを使う
-	d3dpp.Windowed = bWindow;						// ウィンドウモード
-	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;		// リフレッシュレート
+	d3dpp.Windowed = bWindow;									// ウィンドウモード
+	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;	// リフレッシュレート
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;	// インターバル
 
 
@@ -94,31 +93,32 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 			}
 		}
 	}
+
+	// 情報を保存(ImGuiで使用)
 	m_d3dpp = d3dpp;
 
+	// ImGuiの初期化
 	ImGuiMana::Init(hWnd, d3dpp, m_pD3DDevice);
 
 	// レンダーステートの設定
-	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);				// カリングの設定（　　　,裏面をカリング）
+	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);				// カリングの設定
 	m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);				// αブレンド（α値の合成）の設定＊重要
 	m_pD3DDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);			// ゼットテスト
 	m_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);					// ゼットバッファ有効
-
 	m_pD3DDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);			// 合成方法
 	m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// ソース（描画元）の合成方法の設定
 	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// デスティネーション（描画先）の合成方法の設定/画像の透明度が反映
 
-																			// サンプラーステートの設定
+	// サンプラーステートの設定
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);	// 縮小時　補間
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);	// 拡大時　補間
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);	// U値　繰り返し
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);	// V値　繰り返し
 
-																			// テクスチャステージステートの設定
+	// テクスチャステージステートの設定
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
-
 
 #ifdef _DEBUG
 	// デバッグ情報表示用フォントの生成
@@ -153,6 +153,7 @@ void CRenderer::Uninit(void)
 		m_pD3D = NULL;
 	}
 
+	// ImGuiの終了処理
 	ImGuiMana::Uninit();
 }
 
@@ -161,28 +162,15 @@ void CRenderer::Uninit(void)
 //=============================================================================
 void CRenderer::Update(void)
 {
-	ImGuiMana::Update();
+	// キー入力情報
+	CKey *pKey = CManager::GetKey();	   
 
-	CKey *pKey = CManager::GetKey();	   // キー入力情報
+	// ImGuiの更新
+	ImGuiMana::Update();
 
 	// シーンの更新
 	CScene::UpdateAll();	
 
-#ifdef _DEBUG
-	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_M) == true)
-	{// ワイヤーフレームの表示
-		switch (m_fillMode)
-		{
-		case D3DFILL_SOLID:
-			m_fillMode = D3DFILL_WIREFRAME;
-			break;
-		case D3DFILL_WIREFRAME:
-			m_fillMode = D3DFILL_SOLID;
-			break;
-		}
-		m_pD3DDevice->SetRenderState(D3DRS_FILLMODE, m_fillMode);
-	}
-#endif
 }
 
 //=============================================================================
@@ -196,6 +184,8 @@ void CRenderer::Draw(void)
 	// Direct3Dによる描画の開始
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{
+		// Imguiによるデバイス状態
+		ImGuiMana::DeviState();
 
 		// シーンすべての描画
 		CScene::DrawAll();
@@ -207,7 +197,7 @@ void CRenderer::Draw(void)
 		// FPS表示
 		DrawFPS();
 #endif
-
+		// ImGuiの描画
 		ImGuiMana::Draw();
 
 		// Direct3Dによる描画の終了
@@ -216,26 +206,30 @@ void CRenderer::Draw(void)
 	// バックバッファとフロントバッファの入れ替え
 	HRESULT result = m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 
+	// Imguiの描画終了
 	ImGuiMana::DrawEnd(result, m_pD3DDevice, m_d3dpp);
-
 }
 
-#ifdef _DEBUG
 //=============================================================================
 // FPS描画処理
 //=============================================================================
 void CRenderer::DrawFPS(void)
 {
+	// 描画位置の指定
 	RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+
+	// 文字列保存
 	char str[256];
+
+	// FPSの取得
 	int nFps = GetFps();
 
+	// FPSの描画
 	wsprintf(str, "FPS:%d\n", nFps);
 
 	// テキスト描画
 	m_pFont->DrawText(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
 }
-#endif
 
 //=============================================================================
 // デバイスのゲット

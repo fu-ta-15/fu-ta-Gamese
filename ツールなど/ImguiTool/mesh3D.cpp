@@ -16,15 +16,7 @@
 //-----------------------------------------------------------------------------
 //　マクロ定義
 //-----------------------------------------------------------------------------
-#define POLYGON_VTX							(2)
-#define ADD_SIDE_INDEX						(6 + (2 * m_nVertical))
-#define ADD_VER_INDEX						(2 * m_nVertical)
-#define DRAW_INDX							((m_nIdx-4))
-
-//-----------------------------------------------------------------------------
-//　静的メンバ変数
-//-----------------------------------------------------------------------------
-
+#define POLYGON_VTX				(2)
 
 //=============================================================================
 // コンストラクタ
@@ -35,7 +27,7 @@ CMesh3D::CMesh3D(Priority type) : CScene(type)
 	m_pTexture = NULL;
 	m_pIdxBuff = NULL;
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_moveRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_moveRot = D3DXVECTOR3(180, 180, 0.0f);
 }
 
 //=============================================================================
@@ -51,14 +43,18 @@ CMesh3D::~CMesh3D()
 //=============================================================================
 CMesh3D * CMesh3D::Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 {
+	// ポインタ変数
 	CMesh3D *pMesh = NULL;
 
-	pMesh = new CMesh3D(OBJ_NONE);
-	pMesh->SetPos(pos);
-	pMesh->SetSize(size);
-	pMesh->SetSide(nSide);
-	pMesh->SetVertical(nVertical);
-	pMesh->Init();
+	if (pMesh == NULL)
+	{// NULLチェック
+		pMesh = new CMesh3D(OBJ_NONE);
+		pMesh->SetPos(pos);
+		pMesh->SetSize(size);
+		pMesh->SetSide(nSide);
+		pMesh->SetVertical(nVertical);
+		pMesh->Init();
+	}
 
 	return pMesh;
 }
@@ -68,14 +64,19 @@ CMesh3D * CMesh3D::Create(const int nVertical, const int nSide, const D3DXVECTOR
 //=============================================================================
 CMesh3D * CMesh3D::Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, Priority nPriority)
 {
+	// ポインタ変数
 	CMesh3D *pMesh = NULL;
 
-	pMesh = new CMesh3D(nPriority);
-	pMesh->SetPos(pos);
-	pMesh->SetSize(size);
-	pMesh->SetSide(nSide);
-	pMesh->SetVertical(nVertical);
-	pMesh->Init();
+	// 情報を代入
+	if (pMesh == NULL)
+	{// NULLチェック
+		pMesh = new CMesh3D(nPriority);
+		pMesh->SetPos(pos);
+		pMesh->SetSize(size);
+		pMesh->SetSide(nSide);
+		pMesh->SetVertical(nVertical);
+		pMesh->Init();
+	}
 
 	return pMesh;
 }
@@ -97,34 +98,33 @@ HRESULT CMesh3D::CreateTexture(const LPCSTR pSrcFile)
 //=============================================================================
 // メッシュポリゴンの初期化処理
 //=============================================================================
-HRESULT CMesh3D::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
-{
-	m_pos = pos;
-
-	return S_OK;
-}
-
-//=============================================================================
-// メッシュポリゴンの初期化処理
-//=============================================================================
 HRESULT CMesh3D::Init(void)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
-	m_nVtx = VertexCreate(m_nVertical, m_nSide);			// 総合頂点数
-	m_nIdx = IndexCreate(m_nVertical, m_nSide);				// 総合インデックス
+	// 総合頂点数
+	m_nVtx = VertexCreate(m_nVertical, m_nSide);			
 
+	// 総合インデックス
+	m_nIdx = IndexCreate(m_nVertical, m_nSide);				
+
+	// 一列の縦線の数
 	int nVertical = (m_nVertical + 2);
+
+	// 一列の横線の数
 	int nSide = (m_nSide + 2);
 
+	// 配列を動的に確保
 	m_Vector = new D3DXVECTOR3*[nVertical];
 
+	// 配列を動的に確保
 	for (int nSize = 0; nSize < nVertical; nSize++)
 	{
 		m_Vector[nSize] = new D3DXVECTOR3[nSide];
 	}
 
+	// 配列を二次元配列に確保
 	m_Nor = new D3DXVECTOR3[(((1 + m_nVertical) * 2) * (1 + m_nSide))];
 
 	// 頂点バッファの生成
@@ -140,13 +140,17 @@ HRESULT CMesh3D::Init(void)
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
-	MeshSetPos(m_nVertical, m_nSide, m_pVtx);		// 位置の設定
+	// 位置の設定
+	MeshSetPos(m_nVertical, m_nSide, m_pVtx);		
 
-	MeshSetRhw(m_pVtx);							// 除算数 1.0fで固定
+	// 除算数 1.0fで固定								
+	MeshSetNor(m_pVtx);							
 
-	MeshSetCol(m_pVtx);							// 色の設定
+	// 色の設定
+	MeshSetCol(m_pVtx);							
 
-	MeshSetTex(m_nVertical, m_nSide, m_pVtx);		// テクスチャの頂点座標の設定
+	// テクスチャの頂点座標の設定
+	MeshSetTex(m_nVertical, m_nSide, m_pVtx);		
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
@@ -159,9 +163,10 @@ HRESULT CMesh3D::Init(void)
 		&m_pIdxBuff,
 		NULL);
 
-	WORD *pIdx;	// インデックス情報へのポインタ
+	// インデックス情報へのポインタ
+	WORD *pIdx;	
 
-				// インデックスバッファをロックし、番号データへのポインタを取得
+	// インデックスバッファをロックし、番号データへのポインタを取得
 	m_pIdxBuff->Lock(0, 0, (void**)&pIdx, 0);
 
 	// メッシュインデックス
@@ -170,7 +175,7 @@ HRESULT CMesh3D::Init(void)
 	// インデックスバッファをアンロック
 	m_pIdxBuff->Unlock();
 
-	return S_OK;	// 初期化完了
+	return S_OK;	
 }
 
 //=============================================================================
@@ -196,6 +201,8 @@ void CMesh3D::Uninit(void)
 		m_pIdxBuff->Release();
 		m_pIdxBuff = NULL;
 	}
+
+	// 削除
 	Release();
 }
 
@@ -207,42 +214,16 @@ void CMesh3D::Update(void)
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
-	MeshNor();
-
-	//D3DXVECTOR3 nor[8];
-	//
-	//nor[0] = PolygonNormal(m_pVtx[3].pos, m_pVtx[0].pos, m_pVtx[4].pos);
-	//nor[1] = PolygonNormal(m_pVtx[1].pos, m_pVtx[4].pos, m_pVtx[0].pos);
-
-	//nor[2] = PolygonNormal(m_pVtx[4].pos, m_pVtx[1].pos, m_pVtx[5].pos);
-	//nor[3] = PolygonNormal(m_pVtx[2].pos, m_pVtx[5].pos, m_pVtx[1].pos);
-
-	//nor[4] = PolygonNormal(m_pVtx[6].pos, m_pVtx[3].pos, m_pVtx[7].pos);
-	//nor[5] = PolygonNormal(m_pVtx[4].pos, m_pVtx[7].pos, m_pVtx[3].pos);
-
-	//nor[6] = PolygonNormal(m_pVtx[7].pos, m_pVtx[4].pos, m_pVtx[8].pos);
-	//nor[7] = PolygonNormal(m_pVtx[5].pos, m_pVtx[8].pos, m_pVtx[4].pos);
-
-
-
-	//m_pVtx[0].nor = (nor[0] + nor[1]) / 2;
-
-	//m_pVtx[1].nor = (nor[1] + nor[3] + nor[2]) / 3;
-
-	//m_pVtx[2].nor = (nor[3]);
-
-	//m_pVtx[3].nor = (nor[0] + nor[5] + nor[4]) / 3;
-
-	//m_pVtx[4].nor = (nor[0] + nor[1] + nor[2] + nor[7] + nor[6] + nor[5]) / 6;
-
-	//m_pVtx[5].nor = (nor[2] + nor[3] + nor[7]) / 3;
-
-	//m_pVtx[6].nor = (nor[4]);
-
-	//m_pVtx[7].nor = (nor[4] + nor[5] + nor[6]) / 3;
-
-	//m_pVtx[8].nor = (nor[6] + nor[7]) / 2;
-
+	if (m_bNor)
+	{
+		// 法線ベクトルの計算と反映
+		MeshNor();
+	}
+	else
+	{
+		// 法線の初期化1.0固定
+		MeshSetNor(m_pVtx);
+	}
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
@@ -254,9 +235,10 @@ void CMesh3D::Update(void)
 void CMesh3D::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
 
-	D3DXMATRIX mtxRot, mtxTrans;	// 計算用マトリックス
+	// 計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans;	
 
 	// ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
@@ -287,11 +269,13 @@ void CMesh3D::Draw(void)
 	// ポリゴンの描画
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP,
 		0, 0,
-		m_nVtx, 0, DRAW_INDX);
+		m_nVtx, 0, (m_nIdx - 4));
 
 }
 
-
+//=============================================================================
+// メッシュを揺らす処理
+//=============================================================================
 void CMesh3D::MeshWave(const D3DXVECTOR3& center, int ntime, float fHeight, int nCycle)
 {
 	// 頂点バッファをロック
@@ -300,8 +284,10 @@ void CMesh3D::MeshWave(const D3DXVECTOR3& center, int ntime, float fHeight, int 
 	// 各頂点の座標
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
 	{
+		// 二つの点の距離を計算
 		float Dicetan = getDistance(center.x, center.z, m_pVtx[nCnt].pos.x, m_pVtx[nCnt].pos.z);
 
+		// 滑らかになるように高さをそれぞれ更新
 		m_pVtx[nCnt].pos.y = (fHeight) * sinf((2.0f * D3DX_PI) / nCycle * (ntime - Dicetan));
 	}
 
@@ -309,94 +295,61 @@ void CMesh3D::MeshWave(const D3DXVECTOR3& center, int ntime, float fHeight, int 
 	m_pVtxBuff->Unlock();
 }
 
-void CMesh3D::MeshWave(const D3DXVECTOR3 & center, int ntime, int nCycle)
-{
-	// 頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
-
-	// 各頂点の座標
-	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
-	{
-		float Dicetan = getDistance(center.x, center.z, m_pVtx[nCnt].pos.x, m_pVtx[nCnt].pos.z);
-
-		m_pVtx[nCnt].pos.y += sinf((2.0f * D3DX_PI) / nCycle * (ntime - Dicetan));
-	}
-
-	// 頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-}
-
-void CMesh3D::MeshWave(int nID, int ntime, float fHeight)
-{
-	// 頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
-
-	// 各頂点の座標
-	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
-	{
-		float Dicetan = getDistance(m_pVtx[nID].pos.x, m_pVtx[nID].pos.z, m_pVtx[nCnt].pos.x, m_pVtx[nCnt].pos.z);
-
-		m_pVtx[nCnt].pos.y = fHeight * sinf((2.0f * D3DX_PI) / 50 * (ntime - Dicetan));
-	}
-
-	// 頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-}
-
-void CMesh3D::VtxPos(int nID, float fHeight)
-{
-	// 頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
-
-
-	m_pVtx[nID].pos.y = fHeight;
-
-	// 頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-
-}
-
+//=============================================================================
+// メッシュの回転
+//=============================================================================
 void CMesh3D::MeshCycleMove(void)
 {
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
-	float fRadiusX = 0.0f;
-	float fRadiusY = 0.0f;
-	float fAddX = 0.0f;
-	float fAddY = 0.0f;
-	int nCntVertical = 0;
-	int nNumVertical = (1 + m_nVertical);
-	int nNumSide = (1 + m_nSide);
-	int nCntSide = 0;
+	// 半径の保存変数
+	float fRadiusX = 0.0f, fRadiusY = 0.0f;
 
+	// 加算される値を保存する変数
+	float fAddX = 0.0f, fAddY = 0.0f;
+
+	// カウント用変数
+	int nCntVertical = 0, nCntSide = 0;
+
+	// 一列の最後の頂点の番号
+	int nNumVertical = (1 + m_nVertical), nNumSide = (1 + m_nSide);
+		
+	// 各頂点の位置の更新
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
 	{
-		fRadiusX = m_moveRot.x * D3DX_PI / 90;
-		fRadiusY = m_moveRot.y * D3DX_PI / 90;
+		// 半径の計算
+		fRadiusX = m_moveRot.x * D3DX_PI / 360;
+		fRadiusY = m_moveRot.y * D3DX_PI / 360;
 
+		// 回転させるためのSIN・COSの計算
 		fAddX = sinf(fRadiusX) * ((m_size.x / (nNumVertical)) * nCntVertical);
 		fAddY = cosf(fRadiusY) * ((m_size.x / (nNumVertical)) * nCntVertical);
 
+		// 位置の更新
 		m_pVtx[nCnt].pos = D3DXVECTOR3(m_pos.x + fAddX, fAddY, (m_pos.z - ((m_size.z / nNumSide) * nCntSide)));
 
+		// 端っこまで来たら
 		if (nCntVertical == nNumVertical)
 		{
+			// 下に一つ進む
 			nCntSide += 1;
+
+			// ０からのスタート
 			nCntVertical = 0;
 		}
 		else
 		{
+			// 横に進める
 			nCntVertical += 1;
 		}
-
 	}
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 
-	m_moveRot.x++;
-	m_moveRot.y++;
+	// 角度を加算
+	m_moveRot.x--, m_moveRot.y--;
 }
 
 //=============================================================================
@@ -404,44 +357,54 @@ void CMesh3D::MeshCycleMove(void)
 //=============================================================================
 HRESULT CMesh3D::MeshCreate(int nVertical, int nSide, WORD * pIdx)
 {
-	int nT = 0;
-	int nCntSide = 2 + nSide;
-	int nCntVertical = ((2 + nVertical));
+	// カウント用変数
+	int nT = 0, nCnt = 0;
+
+	// 頂点のカウント変数
+	int nCntVertical = (2 + nVertical), nCntSide = (2 + nSide);
+
+	// 折り返しの数値
 	int nWrapBack = 2 + nVertical;
-	int nCnt = 0;
 
 	for (nCnt = 0; nCnt < m_nIdx; nCnt++)
 	{
 		if ((nCnt % 2) == 0)
 		{
 			if (nCntVertical != 0)
-			{
+			{// 四角の上底の番号
 				pIdx[nCnt] = nT + nWrapBack;
 			}
 			else
-			{
+			{// 縮退ポリゴン用の番号
 				pIdx[nCnt] = nT - 1;
 			}
 		}
 		else if ((nCnt % 2) == 1)
 		{
 			if (nCntVertical != 0)
-			{
+			{// 四角の下底の番号
 				pIdx[nCnt] = nT;
+
+				// カウントアップ
 				nT += 1;
+
+				// 横に一つ進む
 				nCntVertical -= 1;
 			}
 			else
-			{
+			{// 縮退ポリゴン用の番号
 				pIdx[nCnt] = nT + nWrapBack;
 
+				// 縦に一つ進む
 				nCntSide -= 1;
+
+				// カウントを初期化
 				nCntVertical = ((2 + nVertical));
 			}
 		}
 	}
 
-	return S_OK;	// 初期化完了
+	return S_OK;	
 }
 
 //=============================================================================
@@ -449,23 +412,30 @@ HRESULT CMesh3D::MeshCreate(int nVertical, int nSide, WORD * pIdx)
 //=============================================================================
 void CMesh3D::MeshSetTex(int nVertical, int nSide, VERTEX_3D * pVtx)
 {
-	float nNumVertical = (1.0f + (float)nVertical);
-	float nNumSide = (1.0f + (float)nSide);
-	float nCntVertical = 0.0f;
-	float nCntSide = 0.0f;
+	// 一列の最後の値のナンバー
+	float nNumVertical = (1.0f + (float)nVertical), nNumSide = (1.0f + (float)nSide);
+
+	// カウント用変数
+	float nCntVertical = 0.0f, nCntSide = 0.0f;
 
 	// テクスチャ座標振り分け
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++, pVtx++)
 	{	// 座標の代入
 		pVtx[0].tex = D3DXVECTOR2((float)(nCntVertical / (nNumVertical)), (float)(nCntSide / nNumSide));
+
+		// 端っこまで来たら
 		if (nCntVertical == nNumVertical)
-		{// Y段目のX段が端に行ったら
-			nCntSide += 1;			// 一段下げる
-			nCntVertical = 0.0f;	// Xを元に戻す
+		{
+			// 下に一つ進む
+			nCntSide += 1;
+
+			// ０からのスタート
+			nCntVertical = 0;
 		}
 		else
-		{// Xがまだ端に振り分けてない時
-			nCntVertical += 1;		// １進める
+		{
+			// 横に進める
+			nCntVertical += 1;
 		}
 	}
 }
@@ -475,23 +445,30 @@ void CMesh3D::MeshSetTex(int nVertical, int nSide, VERTEX_3D * pVtx)
 //=============================================================================
 void CMesh3D::MeshSetPos(int nVertical, int nSide, VERTEX_3D * pVtx)
 {
-	int nNumVertical = (1 + nVertical);
-	int nNumSide = (1 + nSide);
-	int nCntVertical = 0;
-	int nCntSide = 0;
+	// 一列の最後の値のナンバー
+	int nNumVertical = (1 + nVertical), nNumSide = (1 + nSide);
+
+	// カウント用変数
+	int nCntVertical = 0, nCntSide = 0;
 
 	// 各頂点の座標
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
 	{
+		// 各頂点に座標を代入
 		pVtx[nCnt].pos = D3DXVECTOR3((m_pos.x + ((m_size.x / nNumVertical) * nCntVertical)),0.0f, (m_pos.z - ((m_size.z / nNumSide) * nCntSide)));
 
+		// 端っこまで来たら
 		if (nCntVertical == nNumVertical)
 		{
+			// 下に一つ進む
 			nCntSide += 1;
+
+			// ０からのスタート
 			nCntVertical = 0;
 		}
 		else
 		{
+			// 横に進める
 			nCntVertical += 1;
 		}
 	}
@@ -500,10 +477,11 @@ void CMesh3D::MeshSetPos(int nVertical, int nSide, VERTEX_3D * pVtx)
 //=============================================================================
 // メッシュポリゴンの法線の向き
 //=============================================================================
-void CMesh3D::MeshSetRhw(VERTEX_3D * pVtx)
+void CMesh3D::MeshSetNor(VERTEX_3D * pVtx)
 {
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++, pVtx++)
 	{
+		// 各頂点に法線ベクトル代入
 		pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	}
 }
@@ -513,9 +491,9 @@ void CMesh3D::MeshSetRhw(VERTEX_3D * pVtx)
 //=============================================================================
 void CMesh3D::MeshSetCol(VERTEX_3D * pVtx)
 {
-	// 頂点カラー・赤・緑・青・アルファ
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++, pVtx++)
 	{
+		// 各頂点にカラー・赤・緑・青・アルファを反映
 		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 	}
 }
@@ -525,15 +503,8 @@ void CMesh3D::MeshSetCol(VERTEX_3D * pVtx)
 //=============================================================================
 int CMesh3D::VertexCreate(int nVertical, int nSide)
 {
-	int nVtxVertical = POLYGON_VTX;
-	int nVtxSide = POLYGON_VTX;
-	int nVtx = 0;
-
-	nVtx = 
-		(nVertical + nVtxVertical) * (nSide + nVtxSide);
-
-
-	return nVtx;
+	// ポリゴンの総合頂点数
+	return ((nVertical + POLYGON_VTX) * (nSide + POLYGON_VTX));
 }
 
 //=============================================================================
@@ -541,49 +512,52 @@ int CMesh3D::VertexCreate(int nVertical, int nSide)
 //=============================================================================
 int CMesh3D::IndexCreate(int nVertical, int nSide)
 {
-	int nIdx = 0;
-
-	nIdx = (((nVertical + 2) * (nSide + 1)) * 2) + ((nSide + 1) * 2);
-
-	return nIdx;
+	// 描画に必要な総合の数
+	return ((((nVertical + POLYGON_VTX) * (nSide + 1)) * POLYGON_VTX) + ((nSide + 1) * POLYGON_VTX));
 }
 
+//=============================================================================
+// メッシュポリゴンの外積による法線ベクトルの計算と合成
+//=============================================================================
 void CMesh3D::MeshNor(void)
 {
-	int nNumVertical = (1 + m_nVertical);
-	int nNumSide = (1 + m_nSide);
+	// 一列の最大頂点
+	int nNumVertical = (1 + m_nVertical), nNumSide = (1 + m_nSide);
 
-	int nCntVertical = 0;
-	int nCntSide = 0;
+	// カウント用変数
+	int	nCntVertical = 0, nCntSide = 0;
 
-	int nNumNor = ((nNumVertical * 2) * nNumSide);
+	// 法線の情報が必要になる頂点の数
+	int	nNumNor = ((nNumVertical * 2) * nNumSide);
 
-	int nXID1 = 0, nYID1 = 0;
-	int nXID2 = 0, nYID2 = 0;
-	bool bReturn = false;
-
-
+	// 座標の保存
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
 	{
+		// 座標を二次元配列に保存
 		m_Vector[nCntVertical][nCntSide] = m_pVtx[nCnt].pos;
 
+		// 端っこまで来たら
 		if (nCntVertical == nNumVertical)
 		{
+			// 下に一つ進む
 			nCntSide += 1;
+
+			// ０からのスタート
 			nCntVertical = 0;
 		}
 		else
 		{
+			// 横に進める
 			nCntVertical += 1;
 		}
 	}
 
-	nCntSide = 0;
-	nCntVertical = 0;
+	// 数値リセット
+	nCntSide = 0, nCntVertical = 0;
 
+	// 各ポイントの法線を計算
 	for (int nCntNor = 0; nCntNor < nNumNor; nCntNor += 1)
 	{
-
 		if ((nCntNor % 2) == 0)
 		{
 			m_Nor[nCntNor] = PolygonNormal(m_Vector[nCntVertical][nCntSide + 1], m_Vector[nCntVertical][nCntSide], m_Vector[nCntVertical + 1][nCntSide + 1]);
@@ -601,20 +575,17 @@ void CMesh3D::MeshNor(void)
 			{
 				nCntVertical += 1;
 			}
-
 		}
-
-		//printf("\n %d X : %.3f Y : %.3f Z : %.3f\n", nCntNor, m_Nor[nCntNor].x, m_Nor[nCntNor].y, m_Nor[nCntNor].z);
-
 	}
 
-	nCntSide = 0;
-	nCntVertical = 0;
+	// 数値リセット
+	nCntSide = 0, nCntVertical = 0;
 
+	// 法線ベクトルの合成
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
 	{
 		if (nCntSide == 0)
-		{
+		{// 一番上のパターン
 			if (nCntVertical == 0)
 			{
 				m_pVtx[nCnt].nor = m_Nor[0] + m_Nor[1];
@@ -631,7 +602,7 @@ void CMesh3D::MeshNor(void)
 			}
 		}
 		else if (nCntSide != 0 && nCntSide != nNumSide)
-		{
+		{// 真ん中のパターン
 			if (nCntVertical == 0)
 			{
 				m_pVtx[nCnt].nor = m_Nor[(((nNumVertical * 2) * nCntSide) - (nNumVertical * 2))] + m_Nor[((nNumVertical * 2) * nCntSide)] + m_Nor[(((nNumVertical * 2) * nCntSide) + 1)];
@@ -655,7 +626,7 @@ void CMesh3D::MeshNor(void)
 			}
 		}
 		else if (nCntSide == nNumSide)
-		{
+		{// 一番下のパターン
 			if (nCntVertical == 0)
 			{
 				m_pVtx[nCnt].nor = m_Nor[(((nNumVertical * 2) * nCntSide) - (nNumVertical * 2))];
@@ -674,43 +645,50 @@ void CMesh3D::MeshNor(void)
 			}
 		}
 
-		//printf("\n %d X : %.3f Y : %.3f Z : %.3f\n", nCnt,m_pVtx[nCnt].nor.x, m_pVtx[nCnt].nor.y, m_pVtx[nCnt].nor.z);
-
+		// 端っこまで来たら
 		if (nCntVertical == nNumVertical)
 		{
+			// 下に一つ進む
 			nCntSide += 1;
+
+			// ０からのスタート
 			nCntVertical = 0;
 		}
 		else
 		{
+			// 横に進める
 			nCntVertical += 1;
 		}
 	}
 }
 
+//=============================================================================
+// ポリゴンにある△の垂直ベクトルを外積による計算で求める処理
+//=============================================================================
 D3DXVECTOR3 CMesh3D::PolygonNormal(const D3DXVECTOR3 & pos0, const D3DXVECTOR3 & pos1, const D3DXVECTOR3 & pos2)
 {
-	D3DXVECTOR3 Pos01, Pos12;
-	D3DXVECTOR3 Normal;
+	// 計算保管変数
+	D3DXVECTOR3 Pos01, Pos12, Normal;
 
-
+	// ベクトルを計算
 	Pos01 = (pos1 - pos0);
 	Pos12 = (pos2 - pos0);
 
+	// 各座標のベクトルを計算
 	Normal.x = Pos01.y  * Pos12.z - Pos01.z * Pos12.y;
 	Normal.y = Pos01.z  * Pos12.x - Pos01.x * Pos12.z;
 	Normal.z = Pos01.x  * Pos12.y - Pos01.y * Pos12.x;
 
+	// 計算結果を正規化する
 	D3DXVec3Normalize(&Normal, &Normal);
-
-	//printf("\n X : %.3f Y : %.3f Z : %.3f\n", Normal.x, Normal.y, Normal.z);
-
 
 	return Normal;
 }
 
+//=============================================================================
+// ポイント１とポイント２の距離
+//=============================================================================
 float CMesh3D::getDistance(float x, float y, float x2, float y2)
 {
 	return sqrtf((x2 - x) * (x2 - x) + (y2 - y) * (y2 - y));
 }
-

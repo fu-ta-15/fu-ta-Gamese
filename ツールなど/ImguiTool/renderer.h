@@ -12,14 +12,10 @@
 //-----------------------------------------------------------------------------
 #include "main.h"
 
-
-class CPause;
-class CFade;
-
 //-----------------------------------------------------------------------------
 // クラス
 //-----------------------------------------------------------------------------
-class CRenderer		// レンダラークラス
+class CRenderer		
 {
 public:
 	CRenderer();
@@ -40,11 +36,10 @@ private:
 	void DrawFPS(void);
 
 	// メンバ変数
-	D3DPRESENT_PARAMETERS		m_d3dpp;
+	D3DPRESENT_PARAMETERS		m_d3dpp;					// パラメータ保管用
 	LPDIRECT3D9					m_pD3D			= NULL;		// Direct3Dオブジェクト
 	LPDIRECT3DDEVICE9			m_pD3DDevice	= NULL;		// Deviceオブジェクト(描画に必要)
 	LPD3DXFONT					m_pFont			= NULL;		// フォントへのポインタ
-	D3DFILLMODE m_fillMode = D3DFILL_SOLID;				// ワイヤーフレーム	
 };
 
 
