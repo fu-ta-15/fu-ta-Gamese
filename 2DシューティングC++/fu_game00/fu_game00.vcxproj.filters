@@ -132,9 +132,6 @@
     <ClCompile Include="time.cpp">
       <Filter>game\Number</Filter>
     </ClCompile>
-    <ClCompile Include="bullet.cpp">
-      <Filter>game\effect</Filter>
-    </ClCompile>
     <ClCompile Include="collision.cpp">
       <Filter>game\effect</Filter>
     </ClCompile>
@@ -220,9 +217,6 @@
     </ClInclude>
     <ClInclude Include="time.h">
       <Filter>game\Number</Filter>
-    </ClInclude>
-    <ClInclude Include="bullet.h">
-      <Filter>game\effect</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>game\effect</Filter>

@@ -46,7 +46,6 @@ private:
 
 	int					m_nFrameTime;
 	int					m_nVtxID;
-	float				m_AddSize;
 	float				m_fWaveTime;
 	bool				m_bUse;			// Žg—p‚µ‚Ä‚¢‚é‚©
 	bool				m_Collision;	// “–‚½‚è”»’è

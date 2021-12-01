@@ -24,6 +24,9 @@
 //=============================================================================
 CBulletMesh::CBulletMesh(Priority nPriority) : CMesh(nPriority)
 {
+	// メンバ変数の初期化
+	m_nFrameTime = 0;
+	m_nVtxID = 0;
 }
 
 //=============================================================================
@@ -31,6 +34,7 @@ CBulletMesh::CBulletMesh(Priority nPriority) : CMesh(nPriority)
 //=============================================================================
 CBulletMesh::~CBulletMesh()
 {
+
 }
 
 //=============================================================================
@@ -40,14 +44,15 @@ CBulletMesh * CBulletMesh::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,
 {
 	CBulletMesh *pMBullet = NULL;
 
+	// NULLチェック
 	if (pMBullet == NULL)
 	{
-		pMBullet = new CBulletMesh(nPriority);
-		pMBullet->m_pos = pos;
-		pMBullet->m_size = size;
-		pMBullet->m_move = move;
-		pMBullet->m_bWave = bWave;
-		pMBullet->CreateTexture("data/TEXTURE/02.png");
+		pMBullet = new CBulletMesh(nPriority);			// インスタンス生成
+		pMBullet->m_pos = pos;							// 位置
+		pMBullet->m_size = size;						// サイズ
+		pMBullet->m_move = move;						// 移動量
+		pMBullet->m_bWave = bWave;						// 波の表現にするか
+		pMBullet->CreateTexture("data/TEXTURE/02.png");	// テクスチャの設定
 		pMBullet->Init();
 	}
 
@@ -59,13 +64,12 @@ CBulletMesh * CBulletMesh::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size,
 //=============================================================================
 HRESULT CBulletMesh::Init(void)
 {
+	// 初期化
 	CMesh::Init(10, 0, m_pos, m_size);
+
 	// 頂点情報の取得
 	VERTEX_2D *pVtx = this->GetVERTEX();
-	m_AddSize = 50.0f;
-	m_nFrameTime = 0;
-	m_nVtxID = 0;
-	m_fWaveTime++;
+
 	return S_OK;
 }
 
@@ -74,6 +78,7 @@ HRESULT CBulletMesh::Init(void)
 //=============================================================================
 void CBulletMesh::Uninit(void)
 {
+	// 終了処理
 	CMesh::Uninit();
 }
 
@@ -85,44 +90,67 @@ void CBulletMesh::Update(void)
 	// 頂点情報の取得
 	VERTEX_2D *pVtx = this->GetVERTEX();
 
+	// カウントアップ
 	m_fWaveTime += 0.8f;
 	m_nFrameTime++;
 
+	// フレームごとに加算
 	if ((m_nFrameTime % 1) == 0)
 	{
+		// 指定の頂点IDが上底の最大ID以下だったら
 		if (m_nVtxID < this->GetVtxNum() / 2)
 		{
+			// カウントアップ
 			m_nVtxID++;
 		}	
 	}
 
+	// 最大値からの計算
 	for (int nCnt = this->GetVtxNum() / 2 - 1; nCnt > this->GetVtxNum() / 2 - 1 - m_nVtxID; nCnt--)
 	{
+		// 位置の保存
 		D3DXVECTOR3 pos = m_pos;
+
+		// 各頂点に移動量を加算（上底）
 		pVtx[nCnt].pos.x += m_move.x;
+
+		// 各頂点に移動量を加算（下底）
 		pVtx[nCnt + this->GetVtxNum() / 2].pos.x += m_move.x;
+
+		// 波の表現する場合
 		if (m_bWave)
 		{
+			// 上底にサインカーブの計算代入
 			pVtx[nCnt].pos.y = Move::SinWave(pos.y, 40.0f, m_move.x, m_fWaveTime+(nCnt*2));
+
+			// 下底に移動
 			pos.y += m_size.y;
+
+			// 下底にサインカーブの計算代入
 			pVtx[nCnt+ this->GetVtxNum() / 2].pos.y = Move::SinWave(pos.y, 40.0f, m_move.x, m_fWaveTime+(nCnt*2));
 		}
 	}
 
+	// 敵との当たり判定
 	CollisionEnemy();
 
+	// ボスが生きていたら
 	if (CGame::GetBoss()->GetAlive() == true)
 	{
 		if (CollisionCore())
 		{
+			// ボスとの当たり判定
 			CollisionBoss();
 		}
 	}
 
+	// 更新処理
 	CMesh::Update();
 
+	// 画面端まで行ったら
 	if (pVtx[0].pos.x > SCREEN_WIDTH)
 	{
+		// 終了処理
 		CMesh::Uninit();
 	}
 }
@@ -132,6 +160,7 @@ void CBulletMesh::Update(void)
 //=============================================================================
 void CBulletMesh::Draw(void)
 {
+	// 描画処理
 	CMesh::Draw();
 }
 
@@ -140,19 +169,25 @@ void CBulletMesh::Draw(void)
 //=============================================================================
 bool CBulletMesh::CollisionEnemy(void)
 {
-	D3DXVECTOR3 posEnemy;							// 敵の位置
-	D3DXVECTOR3 sizeEnemy;							// 敵のサイズ
+	D3DXVECTOR3 posEnemy;		// 敵の位置
+	D3DXVECTOR3 sizeEnemy;		// 敵のサイズ
 
-	VERTEX_2D *pVtx = this->GetVERTEX();			// 頂点情報の取得
+	// 頂点情報の取得
+	VERTEX_2D *pVtx = this->GetVERTEX();			
 
+	// シーンの取得
 	CScene *pScene = CScene::GetScene(OBJ_ENEMY);
 
-	m_Collision = false;	// 当たり判定は無し
+	// 当たり判定は無し
+	m_Collision = false;	
 
+	// NULLチェック
 	while (pScene != NULL)
 	{
+		// 情報取得
 		CScene *pSceneNext = pScene->GetSceneNext();
 
+		// 位置とサイズの取得
 		posEnemy = pScene->GetPos();
 		sizeEnemy = pScene->GetSize();
 
@@ -160,53 +195,64 @@ bool CBulletMesh::CollisionEnemy(void)
 		{
 			if (Collision::CollisionCycle(pVtx[nCnt].pos, posEnemy, sizeEnemy.x) == true)
 			{/* 敵の範囲に弾が存在したら */
+
+				// 当たり判定は有
 				pScene->SetBool(true);
-				//Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
-				m_Collision = true;							// 当たり判定は有
+				m_Collision = true;							
 				break;
 			}
 		}
+
+		// 次の情報を取得
 		pScene = pSceneNext;
 	}
 
-	return m_Collision;	// 判定結果を返す
+	// 判定結果を返す
+	return m_Collision;	
 }
 
 bool CBulletMesh::CollisionBoss(void)
 {
-	D3DXVECTOR3 posBoss;							// 敵の位置
-	D3DXVECTOR3 sizeBoss;							// 敵のサイズ
+	D3DXVECTOR3 posBoss;	// 敵の位置
+	D3DXVECTOR3 sizeBoss;	// 敵のサイズ
 
-	VERTEX_2D *pVtx = this->GetVERTEX();			// 頂点情報の取得
+	// 頂点情報の取得
+	VERTEX_2D *pVtx = this->GetVERTEX();			
 
-
+	// シーンの情報取得
 	CScene *pSceneBoss = CScene::GetScene(OBJ_BOSS);
 
-	m_Collision = false;	// 当たり判定は無し
+	// 当たり判定は無し
+	m_Collision = false;	
 
+	// NULLチェック
 	while (pSceneBoss != NULL)
 	{
+		// シーンの情報取得
 		CScene *pSceneBNext = pSceneBoss->GetSceneNext();
 
+		// 位置とサイズ取得
 		posBoss = pSceneBoss->GetPos();
-
 		sizeBoss = pSceneBoss->GetSize();
 
 		for (int nCnt = 0; nCnt < this->GetVtxNum(); nCnt+=2)
 		{
 			if (Collision::CollisionCycle(pVtx[nCnt].pos, posBoss, 7.5f) == true)
 			{/* 敵の範囲に弾が存在したら */
+
+				// 当たり判定有にする
 				pSceneBoss->SetBool(true);
-				//Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
-				m_Collision = true;							// 当たり判定は有
+				m_Collision = true;							
 				break;
 			}
 		}
 
+		// 次のシーン取得
 		pSceneBoss = pSceneBNext;
 	}
 
-	return m_Collision;	// 判定結果を返す
+	// 判定結果を返す
+	return m_Collision;	
 }
 
 bool CBulletMesh::CollisionCore(void)
@@ -239,7 +285,6 @@ bool CBulletMesh::CollisionCore(void)
 				&& pCore[nCntCore]->GetUse() == true)
 			{
 				pCore[nCntCore]->SetUse(false);
-				//Particle::SetParticle(pVtx[nCnt].pos, D3DXVECTOR3(15.0f, 15.0f, 0.0f), 5, Particle::TYPE_EXPLOSION, "data/TEXTURE/t0004.png");
 				m_Collision = true;							// 当たり判定は有
 				break;
 			}

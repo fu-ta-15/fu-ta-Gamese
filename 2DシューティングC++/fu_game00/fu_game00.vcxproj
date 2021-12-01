@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="boss.cpp" />
-    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="bulletmesh.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="core.cpp" />
@@ -50,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boss.h" />
-    <ClInclude Include="bullet.h" />
     <ClInclude Include="bulletmesh.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="core.h" />
