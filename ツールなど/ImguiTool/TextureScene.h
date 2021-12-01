@@ -1,6 +1,9 @@
-
+//*****************************************************************************
+//
 // テクスチャシーン
-
+// Author : SUZUKI FUUTA
+//
+//*****************************************************************************
 #include "main.h"
 
 #ifndef _TEXTURESCENE_H_
@@ -14,14 +17,17 @@ public:
 
 	void LoadTexture(void);
 	void UnLoadTexture(void);
+	void CreateTexture(const char *sTexName);
 
-	static LPDIRECT3DTEXTURE9 GetTextureData(int nID) { return; }
+
 
 private:
-	static CTextureScene	*m_Top;
-	static CTextureScene	*m_Cur;
-	CTextureScene			*m_Next;
-	CTextureScene			*m_Prev;
+	CTextureScene			*m_pNext;
+	CTextureScene			*m_pPrev;
+
+	char					m_sLink[256];
+	int						m_nID;
+	LPDIRECT3DTEXTURE9		m_pTexture;
 
 };
 

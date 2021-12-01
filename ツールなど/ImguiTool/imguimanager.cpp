@@ -9,22 +9,36 @@
 //-----------------------------------------------------------------------------
 #include "imguimanager.h"
 #include "imgui_ja_gryph_ranges.h"
-#include "game.h"
 #include "manager.h"
 #include "renderer.h"
+#include "game.h"
 #include "camera.h"
 #include "light.h"
+#include "keyinput.h"
+
+
 
 //=============================================================================
 // ImGuiの初期化処理
 //=============================================================================
 HRESULT ImGuiMana::Init(HWND hWnd, D3DPRESENT_PARAMETERS d3dpp, LPDIRECT3DDEVICE9 pD3DDevice)
 {
+	// Versionチェック
 	IMGUI_CHECKVERSION();
+
+	// テキスト生成とアクセス
 	ImGui::CreateContext();
+
+	// 情報取得
 	ImGuiIO& io = ImGui::GetIO();
-	io.Fonts->AddFontFromFileTTF("imgui/Fonts/Gothic.ttc", 14.0f, nullptr, Japanese::glyphRangesJapanese);
-	ImGui::StyleColorsLight();
+
+	// 言語とフォントの追加
+	io.Fonts->AddFontFromFileTTF("imgui/Fonts/Gothic.ttc", 13.0f, nullptr, Japanese::glyphRangesJapanese);
+
+	// 色のスタイル
+	ImGui::StyleColorsDark();
+
+	// ImGuiの初期化
 	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX9_Init(pD3DDevice);
 
@@ -149,6 +163,16 @@ void MeshList::MeshInfo(void)
 		m_bDemo = m_bDemo ? false : true;
 	}
 
+	// trueの場合のみデモウィンドウ表示
+	if (m_bDemo)
+	{
+		// デモウィンドウの生成
+		ImGui::ShowDemoWindow();
+	}
+
+	// 同じラインに間隔をあける
+	ImGui::SameLine(0.0f, 20.0f);
+
 	// 説明書の表示切替Button
 	if (ImGui::Button(u8"説明書"))
 	{
@@ -156,6 +180,7 @@ void MeshList::MeshInfo(void)
 		m_bExplanation = m_bExplanation ? false : true;
 	}
 
+	// trueの場合のみ説明書表示
 	if (m_bExplanation)
 	{
 		// Imguiウィンドウ生成
@@ -168,43 +193,35 @@ void MeshList::MeshInfo(void)
 		ImGui::End();
 	}
 
-	// trueの場合のみデモウィンドウ表示
-	if (m_bDemo)
-	{
-		// デモウィンドウの生成
-		ImGui::ShowDemoWindow();
-	}
-
 	// 空白の行を生成
 	ImGui::Spacing();
 
-		// メニュー欄の生成
-		if (ImGui::CollapsingHeader(u8"メッシュポリゴンリスト"))
+	// メニュー欄の生成
+	if (ImGui::CollapsingHeader(u8"メッシュポリゴンリスト"))
 		{
 			// メッシュの生成
 			CreateMeshMenu();
+
+			// メニュー欄の生成
+			if (ImGui::CollapsingHeader(u8"表現方法"))
+			{
+				// 波の表現
+				MeshList::MeshWave();
+
+				// 空白の行を生成
+				ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
+
+				// 回転表現
+				MeshList::MeshCycle();
+			}
+
+			// メニュー欄の生成
+			if (ImGui::CollapsingHeader(u8"その他詳細"))
+			{
+				// メッシュの説明文
+				MeshOptionMenu::MeshOption();
+			}
 		}
-
-		// メニュー欄の生成
-		if (ImGui::CollapsingHeader(u8"表現方法"))
-		{
-			// 波の表現
-			MeshList::MeshWave();
-
-			// 空白の行を生成
-			ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
-
-			// 回転表現
-			MeshList::MeshCycle();
-		}
-
-		// メニュー欄の生成
-		if (ImGui::CollapsingHeader(u8"その他詳細"))
-		{
-			// メッシュの説明文
-			MeshOptionMenu::MeshOption();
-		}
-
 }
 
 //=============================================================================
@@ -318,7 +335,7 @@ void MeshList::CreateMeshMenu(void)
 	ImGui::PushButtonRepeat(true);
 
 	// メッシュの生成Button
-	if (ImGui::Button(u8"[生成ボタン]"))
+	if (ImGui::Button(u8"[生成]"))
 	{
 		// NULLであれば生成する
 		if (m_pMesh == NULL)
@@ -332,12 +349,11 @@ void MeshList::CreateMeshMenu(void)
 	ImGui::SameLine(0.0f, SpacingButton);
 
 	// メッシュの削除ボタン
-	if (ImGui::Button(u8"[削除ボタン]"))
+	if (ImGui::Button(u8"[削除]"))
 	{
 		// NULLでなければ削除する
 		if (m_pMesh != NULL)
-		{// NULLチェック
-
+		{
 			// メッシュの開放
 			m_pMesh->Uninit();
 
@@ -349,6 +365,26 @@ void MeshList::CreateMeshMenu(void)
 		m_nSide = 0;								// 横線の本数
 		m_pos = ZeroVector3;						// 位置
 		m_size = D3DXVECTOR3(100.0f, 0.0f, 100.0f); // サイズ
+	}
+
+	// 空白の生成
+	ImGui::SameLine(0.0f, SpacingButton);
+
+	// メッシュの変更ボタン
+	if (ImGui::Button(u8"[変更]"))
+	{
+		// NULLでなければ削除する
+		if (m_pMesh != NULL)
+		{
+			// メッシュの開放
+			m_pMesh->Uninit();
+
+			// NULL代入
+			m_pMesh = NULL;
+
+			// （｛四角の中に入る｝縦の本数・横の本数・位置・サイズ）
+			m_pMesh = CMesh3D::Create(m_nVertical, m_nSide, m_pos, m_size);
+		}
 	}
 
 	// 空白の生成
@@ -366,6 +402,7 @@ void MeshList::CreateMeshMenu(void)
 	// 繰り返し表示の終了
 	ImGui::PopButtonRepeat();
 
+	// 線の追加ノード
 	if (ImGui::TreeNode(u8"線の追加"))
 	{
 		// 現在の数値表示・数値入力可能・ボタンで１±可能
@@ -408,8 +445,6 @@ void MeshList::CreateMeshMenu(void)
 		// ノードの終了
 		ImGui::TreePop();
 	}
-
-	TextureMake::TextureLoad();
 }
 
 //=============================================================================
@@ -417,15 +452,26 @@ void MeshList::CreateMeshMenu(void)
 //=============================================================================
 void TextureMake::TextureLoad(void)
 {
-	//if (ImGui::TreeNode(u8"テクスチャ生成"))
-	//{
+	// キー入力クラスのポインタ
+	CKey *pKey = CManager::GetKey();
 
+	if (ImGui::TreeNode(u8"テクスチャ生成"))
+	{
+		if (ImGui::InputText(u8"テクスチャ名", cName, IM_ARRAYSIZE(cName)))
+		{
 
+		}
+		else if (pKey->GetState(CKey::STATE_TRIGGER,DIK_RETURN))
+		{
+			strcat(cLink, cName);
+			memset(cName, 0, sizeof(cName));
+		}
 
+		ImGui::Text(u8"リンク先：%s", cLink);
 
-	//	// ノードの終了
-	//	ImGui::TreePop();
-	//}
+		// ノードの終了
+		ImGui::TreePop();
+	}
 }
 
 //=============================================================================
@@ -497,6 +543,13 @@ void MeshOptionMenu::MeshOption(void)
 		}
 	}
 	
+	// 同じ列に間隔を空ける
+	ImGui::SameLine(0.0f, 10.0f);
+
+	// テキスト表示
+	if (MeshList::m_fillmode == D3DFILL_WIREFRAME) { ImGui::Text(u8"ワイヤーフレーム"); }
+	else if (MeshList::m_fillmode == D3DFILL_SOLID) { ImGui::Text(u8"デフォルトフレーム"); }
+
 	// カリングモードの変更
 	if (ImGui::Button(u8"カリングモード"))
 	{
@@ -520,6 +573,13 @@ void MeshOptionMenu::MeshOption(void)
 		}
 	}
 
+	// 同じ列に間隔を空ける
+	ImGui::SameLine(0.0f, 10.0f);
+
+	// テキスト表示
+	if (MeshList::m_d3dcullmode == D3DCULL_NONE) { ImGui::Text(u8"カリングOFF"); }
+	else if (MeshList::m_d3dcullmode == D3DCULL_CCW) { ImGui::Text(u8"カリングON"); }
+
 	// カウント開始・停止の切り替えボタン
 	if (ImGui::Button(u8"法線:[有り]・[無し]"))
 	{
@@ -534,9 +594,13 @@ void MeshOptionMenu::MeshOption(void)
 		}
 	}
 
-	if (true)
-	{
+	// 同じ列に間隔を空ける
+	ImGui::SameLine(0.0f, 10.0f);
 
-	}
+	// テキスト表示
+	if (MeshList::m_bNorSeting) { ImGui::Text(u8"法線自由"); }
+	else if (!MeshList::m_bNorSeting) { ImGui::Text(u8"法線固定"); }
 
+	// テクスチャの設定
+	TextureMake::TextureLoad();
 }
