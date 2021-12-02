@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{78b906c0-9b25-49d8-99cf-802f5d96fc30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{b62de430-2f3d-4f36-a8b2-d3241377a135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\Character">
+      <UniqueIdentifier>{457edea2-33a9-4ca1-a0aa-afe3e6da67d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\effect">
+      <UniqueIdentifier>{9351622b-1816-43a1-891e-8c1c3bd2cb10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\Number">
+      <UniqueIdentifier>{d191fc3b-f95b-4bfb-aa16-06ca2c3faf1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\mode">
+      <UniqueIdentifier>{736a70bd-91eb-4f20-9b11-31be9b84e0f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\mode\ヘッダー ファイル">
+      <UniqueIdentifier>{d8f0b224-2538-4974-ac2f-61ebcab5ca79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\mode\ソースフ ァイル">
+      <UniqueIdentifier>{20ebad4d-1af5-4b56-819e-63bd8c074983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\Input">
+      <UniqueIdentifier>{3b45a4a9-daac-4752-a248-e9603a4651d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\Input\ヘッダー ファイル">
+      <UniqueIdentifier>{4c2afc9b-ddeb-49b8-9ebc-5b059df15bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\Input\ソース ファイル">
+      <UniqueIdentifier>{1a245207-ed1a-4b55-8cc8-c05f84798ce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\polygon">
+      <UniqueIdentifier>{b7cd25d9-ef6b-4a34-acb3-db55a8df603b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\polygon\ソースファイル">
+      <UniqueIdentifier>{76073943-a4fd-4478-b38e-a5089a06951d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\polygon\ヘッダーファイル">
+      <UniqueIdentifier>{5efb7ba9-5b10-48a2-862d-2584e698664d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\system">
+      <UniqueIdentifier>{076df8a9-eea5-4693-a331-d4fc8d7bf6b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main\system\ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="main\system\ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>main\system\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>main\system\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>main\system\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>main\system\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>main\mode\ソースフ ァイル</Filter>
+    </ClCompile>
+    <ClCompile Include="keyinput.cpp">
+      <Filter>main\Input\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>main\mode\ソースフ ァイル</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>main\mode\ソースフ ァイル</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>main\mode\ソースフ ァイル</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>main\Input\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>main\system\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>main\system\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>main\polygon\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="number.cpp">
+      <Filter>main\polygon\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>main\polygon\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene2D.cpp">
+      <Filter>main\polygon\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>main\mode\ソースフ ァイル</Filter>
+    </ClCompile>
+    <ClCompile Include="boss.cpp">
+      <Filter>game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="normalenemy.cpp">
+      <Filter>game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="move.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="time.cpp">
+      <Filter>game\Number</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="bulletmesh.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="core.cpp">
+      <Filter>game\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>main\system\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>main\system\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh3D.cpp">
+      <Filter>main\polygon\ソースファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="manager.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>main\mode\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="keyinput.h">
+      <Filter>main\Input\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>main\mode\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>main\mode\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>main\mode\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>main\Input\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>main\polygon\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>main\polygon\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene2D.h">
+      <Filter>main\polygon\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="number.h">
+      <Filter>main\polygon\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>main\mode\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="material.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="boss.h">
+      <Filter>game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="normalenemy.h">
+      <Filter>game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="move.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="time.h">
+      <Filter>game\Number</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="bulletmesh.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
+      <Filter>game\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>main\system\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh3D.h">
+      <Filter>main\polygon\ヘッダーファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
