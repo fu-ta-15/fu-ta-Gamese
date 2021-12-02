@@ -284,7 +284,7 @@ void CMesh3D::MeshWave(const D3DXVECTOR3& center, int ntime, float fHeight, int 
 		float Dicetan = getDistance(center.x, center.z, m_pVtx[nCnt].pos.x, m_pVtx[nCnt].pos.z);
 
 		// 滑らかになるように高さをそれぞれ更新
-		m_pVtx[nCnt].pos.y = (fHeight) * sinf((2.0f * D3DX_PI) / nCycle * (ntime - Dicetan));
+		m_pVtx[nCnt].pos.y += (fHeight) * sinf(((2.0f * D3DX_PI) / nCycle) * (ntime - Dicetan));
 	}
 
 	// 頂点バッファをアンロック

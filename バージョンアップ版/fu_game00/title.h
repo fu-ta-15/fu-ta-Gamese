@@ -45,9 +45,11 @@ private:
 
 	static CScene2D*			m_paTitleUI[UI_MAX];	// タイトルUIポリゴン
 	static CMesh*				m_pTitleLogo;			// メッシュポリゴン
-	static CMesh3D	*m_pNote;
+	static CMesh3D				*m_pBg3D;				// 3Dポリゴンの背景
 	float						AddCol = 0.0f;			// α値
 	int							m_nCntTime = 0;			// カウントタイマー
+	bool						m_bFade;				// フェード開始合図
+	int							m_nNextModeCnt;			// 次のモードに行くための時間
 	D3DXVECTOR2					m_tex;					// テクスチャ座標
 	D3DXVECTOR3					m_pos;					// 位置
 	D3DXVECTOR3					m_rot;					// 角度

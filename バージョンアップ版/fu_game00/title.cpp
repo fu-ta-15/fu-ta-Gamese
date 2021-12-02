@@ -31,7 +31,7 @@
 //-----------------------------------------------------------------------------
 CScene2D *CTitle::m_paTitleUI[UI_MAX] = {};
 CMesh *CTitle::m_pTitleLogo = NULL;
-CMesh3D *CTitle::m_pNote = NULL;
+CMesh3D *CTitle::m_pBg3D = NULL;
 
 //=============================================================================
 // コンストラクタ
@@ -39,6 +39,7 @@ CMesh3D *CTitle::m_pNote = NULL;
 CTitle::CTitle() : CScene(OBJ_NONE)
 {
 	m_ButtonCol = WhiteColor;	// 色の初期化
+	m_bFade = false;
 }
 
 //=============================================================================
@@ -74,8 +75,11 @@ CTitle * CTitle::Create(void)
 HRESULT CTitle::Init(void)
 {
 	// 背景の生成
-	m_paTitleUI[UI_BG] = CScene2D::Create(CENTER_POS, TITLE_BG_SIZE);
-	m_paTitleUI[UI_BG]->CreateTexture("data/TEXTURE/BG.jpg");
+	//m_paTitleUI[UI_BG] = CScene2D::Create(CENTER_POS, TITLE_BG_SIZE);
+	//m_paTitleUI[UI_BG]->CreateTexture("data/TEXTURE/BG.jpg");
+
+	m_pBg3D = CMesh3D::Create(40, 40, D3DXVECTOR3(-40.0f, 0.0f, 0.0f), D3DXVECTOR3(400.0f, 0.0f, 200.0f));
+	m_pBg3D->CreateTexture("data/TEXTURE/BG.jpg");
 
 	// Buttonの生成
 	m_paTitleUI[UI_BUTTON] = CScene2D::Create(TITLE_BUTTON_POS, TITLE_BUTTON_SIZE);
@@ -119,9 +123,29 @@ void CTitle::Update(void)
 	// カウントアップ
 	m_nCntTime++;
 
+	// トリガー・スペースを押したら・フェードの状態が何もない状態だったら
 	if (pKey->GetState(CKey::STATE_TRIGGER, DIK_SPACE) && Fade == CFade::FADE_NONE)
-	{// トリガー・スペースを押したら・フェードの状態が何もない状態だったら
-		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+	{
+		// フェードしている合図
+		m_bFade = true;
+	}
+
+
+	// フェード開始したら
+	if (m_bFade)
+	{
+		// カウントアップ
+		m_nNextModeCnt++;
+
+		// 波の表現
+		m_pBg3D->MeshWave(D3DXVECTOR3(130.0f, 0.0f, -100.0f), m_nCntTime, 10, 20);
+
+		// 一定の時間を越えたら
+		if (m_nNextModeCnt > 50)
+		{
+			// チュートリアルモードへ
+			CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+		}
 	}
 
 	// タイトルのLOGOの処理

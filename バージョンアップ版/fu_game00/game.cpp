@@ -173,7 +173,7 @@ void CGame::Update(void)
 	}
 
 	// 波の表現
-	m_pBg3D->MeshWave(D3DXVECTOR3(180.0f,0.0f,100.0f), (int)m_nWaveCnt, 10, 30);
+	m_pBg3D->MeshWave(D3DXVECTOR3(130.0f,0.0f,-100.0f), (int)m_nWaveCnt, 10, 25);
 
 	// ウェーブのカウント
 	m_nWaveCnt++;

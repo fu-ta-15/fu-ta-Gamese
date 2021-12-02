@@ -26,10 +26,10 @@
 #define LIFE_POS_Y		(200.0f - (10 * nCntLife))						// ライフのY座標
 #define LIFE_POS		(D3DXVECTOR3(LIFE_POS_X, LIFE_POS_Y, 0.0f))		// ライフの位置
 #define LIFE_SIZE		(D3DXVECTOR3(10.0f, 5.0f, 0.0f))				// ライフのサイズ
-#define LIFE_DOWN		((m_fLife * 0.17f + 1.5f))						// ライフの減少計算
+#define LIFE_DOWN		((m_fLife * 0.57f + 1.5f))						// ライフの減少計算
 #define LIFE_CNT		(nCntLife * 10)									// ライフカウント
 #define DAMAGE_TEXTUER	("data/TEXTURE/stateBoss.png")					// ダメージ状態テクスチャリンク
-#define SHILED_TEXTUER	("data/TEXTURE/AuroraRing.png")					// バリアテクスチャリンク
+#define SHILED_TEXTUER	("data/TEXTURE/t0003.png")						// バリアテクスチャリンク
 #define LIFE_TEXTURE	("data/TEXTURE/BossLife.png")					// ライフテクスチャリンク
 
 //-----------------------------------------------------------------------------
@@ -55,6 +55,7 @@ CBoss::CBoss() : CEnemy(OBJ_BOSS)
 //=============================================================================
 CBoss::~CBoss()
 {
+
 }
 
 //=============================================================================
@@ -62,6 +63,7 @@ CBoss::~CBoss()
 //=============================================================================
 CBoss * CBoss::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const int nLife)
 {
+	// クラスのポインタ変数
 	CBoss *pBoss = new CBoss;
 
 	// NULLチェック
@@ -95,18 +97,30 @@ HRESULT CBoss::Init(void)
 	// ライフの生成
 	for (int nCntLife = 0; nCntLife < BOSS_LIFE_STOCK; nCntLife++)
 	{
-		D3DXVECTOR3 pos = LIFE_POS;						 // 位置
-		D3DXVECTOR3 size = LIFE_SIZE;					 // サイズ
-		m_pLife[nCntLife] = CScene2D::Create(pos, size); // 生成
-		m_pLife[nCntLife]->CreateTexture(LIFE_TEXTURE);	 // テクスチャの設定
+		// 位置
+		D3DXVECTOR3 pos = LIFE_POS;						
+
+		// サイズ
+		D3DXVECTOR3 size = LIFE_SIZE;					
+
+		// 生成
+		m_pLife[nCntLife] = CScene2D::Create(pos, size); 
+
+		// テクスチャの設定
+		m_pLife[nCntLife]->CreateTexture(LIFE_TEXTURE);	
 	}
 
 	// ダメージ用エフェクトの生成
-	m_pDamage = CEffect::Create(m_pos, m_size);	   // 生成
-	m_pDamage->CreateTexture(DAMAGE_TEXTUER);	   // テクスチャの設定
-	m_pDamage->SetColor(EFFECT_COLOR);			   // 色の設定
-	m_StateCol = m_pDamage->GetColor();			   // 色の取得
+	m_pDamage = CEffect::Create(m_pos, m_size);
 
+	// ダメージ用エフェクトのテクスチャ設定
+	m_pDamage->CreateTexture(DAMAGE_TEXTUER);	  
+
+	// ダメージ用エフェクトの色の設定
+	m_pDamage->SetColor(EFFECT_COLOR);			   
+
+	// ダメージ用エフェクトの色の取得
+	m_StateCol = m_pDamage->GetColor();			  
 
 	// コアの生成
 	m_pCore[0] = CCore::Create(m_pos, D3DXVECTOR3(25.0f, 25.0f, 0.0f), 0, OBJ_CORE);
@@ -115,7 +129,9 @@ HRESULT CBoss::Init(void)
 
 	// シールドの生成
 	m_pShiled = CScene2D::Create(m_pos, m_size * 1.5f);
-	m_pShiled->CreateTexture("data/TEXTURE/t0003.png");
+
+	// シールドのテクスチャ設定
+	m_pShiled->CreateTexture(SHILED_TEXTUER);
 
 	return S_OK;
 }
@@ -157,41 +173,29 @@ void CBoss::Uninit(void)
 //=============================================================================
 void CBoss::Update(void)
 {
-	// メッシュポリゴンの情報取得
-	switch (CManager::GetMode())
-	{
-		// ゲームモード
-	case CManager::MODE_GAME:
+	// 更新
+	CEnemy::Update();
 
-		// 更新
-		CEnemy::Update();
+	// ダメージ状態更新
+	DamageBoss();
 
-		// ダメージ状態更新
-		DamageBoss();
+	// 状態の更新
+	StateUpdate();
 
-		// 状態の更新
-		StateUpdate();
+	// 移動処理
+	MoveBoss();
 
-		// 移動処理
-		MoveBoss();
-
-		// 敵召喚処理
-		SummonsEnemy();
-
-		break;
-
-	default:
-		break;
-	}
+	// 敵召喚処理
+	SummonsEnemy();
 
 	// 位置の更新
-	m_pShiled->SetPos(m_pos); 	
+	m_pShiled->SetPos(m_pos);
 
 	// 位置の更新
 	CScene2D::SetPos(m_pos);
 
 	// サイズの更新
-	CScene2D::SetSize(m_size);	
+	CScene2D::SetSize(m_size);
 
 	// ライフがゼロ
 	if (m_fLife <= 0)
@@ -200,7 +204,7 @@ void CBoss::Update(void)
 		m_bBoss_Alive = false;
 
 		// 自身の開放
-		CEnemy::Uninit();	
+		CEnemy::Uninit();
 	}
 }
 
