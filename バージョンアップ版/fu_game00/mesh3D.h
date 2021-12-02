@@ -30,8 +30,6 @@ public:
 	static CMesh3D *Create(const int nVertical, const int nSide, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, Priority nPriority);
 	HRESULT CreateTexture(const LPCSTR pSrcFile);
 
-	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size);
-
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -54,18 +52,10 @@ public:
 	int GetVtxNum() { return m_nVtx; }
 	VERTEX_3D *GetVERTEX() { return m_pVtx; }
 
-	void MoveMesh(D3DXVECTOR3 move);
-
-
 	void MeshWave(const D3DXVECTOR3& center, int ntime, float fHeight, int nCycle);
-	void MeshWave(int nID, int ntime, float fHeight);
-	void VtxPos(int nID, float fHeight);
-
-
-
-	void MeshMove(D3DXVECTOR3& move, int ntime, const D3DXVECTOR3& center);
-	void MeshMove(D3DXVECTOR3& move, int ntime, int nID);
-	void MeshCycleMove(void);
+	void XSideWave(const D3DXVECTOR3& center, int ntime, float fHeight, int nCycle);
+	void ZSideWave(const D3DXVECTOR3& center, int ntime, float fHeight, int nCycle);
+	void MeshCycleMove(int nLimit);
 
 private:
 	HRESULT MeshCreate(int nVertical, int nSide, WORD *pIdx);

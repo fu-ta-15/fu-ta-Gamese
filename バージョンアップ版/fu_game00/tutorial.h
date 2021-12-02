@@ -22,7 +22,7 @@ class CScene2D;
 class CMesh;
 class CEnemy;
 class CBoss;
-
+class CMesh3D;
 
 
 //-----------------------------------------------------------------------------
@@ -68,6 +68,10 @@ private:
 	static CMesh		*m_pOperation[OPERA_MAX];
 	static CScene2D		*m_pOperationPolygon;
 	static CBoss		*m_pBoss;
+	static CMesh3D		*m_pTutorialMesh3D;
+
+	int					 m_nCntCycleLimit;
+	bool				 m_bNextPage;
 
 	static bool			 m_OperationStop;
 	bool				 m_bButton[OPERA_MAX];

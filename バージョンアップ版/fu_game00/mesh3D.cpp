@@ -31,7 +31,7 @@ CMesh3D::CMesh3D(Priority type) : CScene(type)
 	m_pTexture = NULL;
 	m_pIdxBuff = NULL;
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_moveRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_moveRot = D3DXVECTOR3(180.0f, 180.0f, 0.0f);
 }
 
 //=============================================================================
@@ -219,8 +219,6 @@ void CMesh3D::Update(void)
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
-	// 法線ベクトルの計算と反映
-	MeshNor();
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
@@ -277,6 +275,9 @@ void CMesh3D::MeshWave(const D3DXVECTOR3& center, int ntime, float fHeight, int 
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
 
+	// 法線ベクトルの計算と反映
+	MeshNor();
+
 	// 各頂点の座標
 	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
 	{
@@ -284,11 +285,115 @@ void CMesh3D::MeshWave(const D3DXVECTOR3& center, int ntime, float fHeight, int 
 		float Dicetan = getDistance(center.x, center.z, m_pVtx[nCnt].pos.x, m_pVtx[nCnt].pos.z);
 
 		// 滑らかになるように高さをそれぞれ更新
-		m_pVtx[nCnt].pos.y += (fHeight) * sinf(((2.0f * D3DX_PI) / nCycle) * (ntime - Dicetan));
+		m_pVtx[nCnt].pos.y = (fHeight) * sinf(((2.0f * D3DX_PI) / nCycle) * (ntime - Dicetan));
 	}
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
+}
+
+//=============================================================================
+// メッシュを揺らす処理-X方向
+//=============================================================================
+void CMesh3D::XSideWave(const D3DXVECTOR3 & center, int ntime, float fHeight, int nCycle)
+{
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	// 各頂点の座標
+	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
+	{
+		// 二つの点の距離を計算
+		float Dicetan = getDistance(center.x, 0, m_pVtx[nCnt].pos.x, 0);
+
+		// 滑らかになるように高さをそれぞれ更新
+		m_pVtx[nCnt].pos.y = (fHeight)* sinf(((2.0f * D3DX_PI) / nCycle) * (ntime - Dicetan));
+	}
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
+}
+
+//=============================================================================
+// メッシュを揺らす処理-Z方向
+//=============================================================================
+void CMesh3D::ZSideWave(const D3DXVECTOR3 & center, int ntime, float fHeight, int nCycle)
+{
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	// 各頂点の座標
+	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
+	{
+		// 二つの点の距離を計算
+		float Dicetan = getDistance(0.0f, center.z, 0.0f, m_pVtx[nCnt].pos.z);
+
+		// 滑らかになるように高さをそれぞれ更新
+		m_pVtx[nCnt].pos.y = (fHeight)* sinf(((2.0f * D3DX_PI) / nCycle) * (ntime - Dicetan));
+	}
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
+}
+
+//=============================================================================
+// メッシュの回転
+//=============================================================================
+void CMesh3D::MeshCycleMove(int nLimit)
+{
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&m_pVtx, 0);
+
+	// 半径の保存変数
+	float fRadiusX = 0.0f, fRadiusY = 0.0f;
+
+	// 加算される値を保存する変数
+	float fAddX = 0.0f, fAddY = 0.0f;
+
+	// カウント用変数
+	int nCntVertical = 0, nCntSide = 0;
+
+	// 一列の最後の頂点の番号
+	int nNumVertical = (1 + m_nVertical), nNumSide = (1 + m_nSide);
+
+	// 各頂点の位置の更新
+	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
+	{
+		// 半径の計算
+		fRadiusX = m_moveRot.x * D3DX_PI / 360;
+		fRadiusY = m_moveRot.y * D3DX_PI / 360;
+
+		// 回転させるためのSIN・COSの計算
+		fAddX = sinf(fRadiusX) * ((m_size.x / (nNumVertical)) * nCntVertical);
+		fAddY = cosf(fRadiusY) * ((m_size.x / (nNumVertical)) * nCntVertical);
+
+		// 位置の更新
+		m_pVtx[nCnt].pos = D3DXVECTOR3(m_pos.x + fAddX, fAddY, (m_pos.z - ((m_size.z / nNumSide) * nCntSide)));
+
+		// 端っこまで来たら
+		if (nCntVertical == nNumVertical)
+		{
+			// 下に一つ進む
+			nCntSide += 1;
+
+			// ０からのスタート
+			nCntVertical = 0;
+		}
+		else
+		{
+			// 横に進める
+			nCntVertical += 1;
+		}
+	}
+
+	// 頂点バッファをアンロック
+	m_pVtxBuff->Unlock();
+
+	if (nLimit >= 0)
+	{
+		// 角度を加算
+		m_moveRot.x--, m_moveRot.y--;
+	}
 }
 
 //=============================================================================

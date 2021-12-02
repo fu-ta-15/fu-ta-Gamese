@@ -28,7 +28,7 @@ CRenderer		*CManager::m_pRenderer = NULL;				// レンダラーポインタ
 CKey			*CManager::m_pKey = NULL;					// キーボード入力ポインタ
 CFade			*CManager::m_pFade = NULL;					// フェードポインタ
 CTitle			*CManager::m_pTitle = NULL;					// タイトルポインタ
-CTutorial		*CManager::m_pTutorial = NULL;				// チュートリアルポインタ
+CTutorial		*CManager::m_pTutorialMesh3D = NULL;				// チュートリアルポインタ
 CGame			*CManager::m_pGame = NULL;					// ゲームポインタ
 CResult			*CManager::m_pResult = NULL;				// リザルトポインタ
 CSound			*CManager::m_pSound = NULL;					// サウンドポインタ
@@ -250,10 +250,10 @@ void CManager::UninitMode(MODE mode)
 
 		// チュートリアルモード
 	case MODE_TUTORIAL:
-		if (m_pTutorial != NULL)
+		if (m_pTutorialMesh3D != NULL)
 		{// NULLチェック
-			m_pTutorial->Uninit();
-			m_pTutorial = NULL;
+			m_pTutorialMesh3D->Uninit();
+			m_pTutorialMesh3D = NULL;
 		}
 		break;
 
@@ -298,9 +298,9 @@ void CManager::CreateMode(MODE mode)
 
 		// チュートリアルモード
 	case MODE_TUTORIAL:
-		if (m_pTutorial == NULL)
+		if (m_pTutorialMesh3D == NULL)
 		{// NULLチェック
-			m_pTutorial = CTutorial::Create();
+			m_pTutorialMesh3D = CTutorial::Create();
 		}
 		break;
 

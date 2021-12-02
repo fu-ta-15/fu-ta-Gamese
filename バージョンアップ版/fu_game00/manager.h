@@ -90,7 +90,7 @@ private:
 	static CKey				*m_pKey;				// キーポインタ
 	static CFade			*m_pFade;				// フェードクラスのポインタ
 	static CTitle			*m_pTitle;				// タイトルクラスのポインタ
-	static CTutorial		*m_pTutorial;			// チュートリアルのポインタ
+	static CTutorial		*m_pTutorialMesh3D;			// チュートリアルのポインタ
 	static CGame			*m_pGame;				// ゲームのポインタ
 	static CResult			*m_pResult;				// リザルトのポインタ
 	static CSound			*m_pSound;				// サウンドのポインタ
