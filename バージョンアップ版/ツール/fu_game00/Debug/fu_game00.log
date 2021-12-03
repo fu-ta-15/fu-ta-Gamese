@@ -1,2 +1,0 @@
-﻿  imguimanager.cpp
-c:\users\student\desktop\re-game\バージョンアップ版\ツール\fu_game00\imguimanager.cpp : fatal error C1041: プログラム データベース 'C:\Users\student\Desktop\re-game\バージョンアップ版\ツール\fu_game00\Debug\vc140.idb' を開けません。複数の CL.EXE が同じ .PDB ファイルに書き込む場合、/FS を使用してください。
