@@ -61,11 +61,8 @@ public:
 private:
 	EnemyMove m_MoveType;
 	bool m_bCollision;
-	bool m_bHomingTime;
 	float m_fSinWaveCnt = 0.0f;
 	float m_fCosWaveCnt = 0.0f;
-	int m_nMoveChangeCnt = 0;
-	int m_nHomingTime;
 };
 
 

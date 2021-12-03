@@ -33,9 +33,7 @@
 //=============================================================================
 CNormalEnemy::CNormalEnemy() : CEnemy(OBJ_ENEMY)
 {
-	this->m_nMoveChangeCnt = 0;
-	this->m_bHomingTime = false;
-	this->m_nHomingTime = HOMING_TIME1;
+
 }
 
 //=============================================================================
@@ -43,6 +41,7 @@ CNormalEnemy::CNormalEnemy() : CEnemy(OBJ_ENEMY)
 //=============================================================================
 CNormalEnemy::~CNormalEnemy()
 {
+
 }
 
 //=============================================================================
@@ -117,7 +116,6 @@ void CNormalEnemy::Update(void)
 	{
 		// 黒い敵
 	case ENEMY_BLACK:
-		UpdateBlack();	// 更新
 		BlackMove();	// 移動処理
 		break;
 		// 白い敵
@@ -146,42 +144,6 @@ void CNormalEnemy::Update(void)
 void CNormalEnemy::Draw(void)
 {
 	CEnemy::Draw();	// 描画
-}
-
-//=============================================================================
-// タイプBLACKの更新
-//=============================================================================
-void CNormalEnemy::UpdateBlack(void)
-{
-	// カウントアップ
-	m_nMoveChangeCnt++;
-
-	// ホーミングの開始と終了
-	if ((m_nMoveChangeCnt % m_nHomingTime) == 0)
-	{// 指定の値で割って余りが０の場合
-		if (m_bHomingTime == false)
-		{// ホーミングタイムではなかったら
-			m_bHomingTime = true;
-			m_nHomingTime = Rand(100, 400);
-		}
-		else
-		{// ホーミングタイムだったら
-			m_bHomingTime = false;
-			m_nHomingTime = HOMING_TIME1;
-		}
-		m_nMoveChangeCnt = 0;	// カウント初期化
-	}
-
-	if (m_bHomingTime == true)
-	{// ホーミングタイム
-		if ((m_nMoveChangeCnt % Rand(60, 20)) == 0)
-		{// 指定の値で割って余りがゼロの場合
-			float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-			m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-			m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
-			m_MoveType = MOVE1;												// 移動方法
-		}
-	}
 }
 
 //=============================================================================
