@@ -4,11 +4,16 @@
 // Author : SUZUKI FUUTA
 //
 //*****************************************************************************
-#include "main.h"
-
 #ifndef _TEXTURESCENE_H_
 #define _TEXTURESCENE_H_
+//-----------------------------------------------------------------------------
+// インクルードファイル
+//-----------------------------------------------------------------------------
+#include "main.h"
 
+//-----------------------------------------------------------------------------
+// クラス
+//-----------------------------------------------------------------------------
 class CTextureScene
 {
 public:
@@ -18,8 +23,6 @@ public:
 	void LoadTexture(void);
 	void UnLoadTexture(void);
 	void CreateTexture(const char *sTexName);
-
-
 
 private:
 	static CTextureScene	*m_pTexScene;

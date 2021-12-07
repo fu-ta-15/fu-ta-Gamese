@@ -500,11 +500,19 @@ void LightOption::LightMove(void)
 //=============================================================================
 void Option::OperationExplanation(void)
 {
+	CCamera *pCamera = CManager::GetCamera();
+
 	// カメラ操作説明用ノード生成
 	if (ImGui::TreeNode(u8"カメラ操作"))
 	{
 		// 操作説明テキストの表示
 		ImGui::Text(u8"移動方法");
+		
+		if (ImGui::Button(u8"W / 前")) { pCamera->MoveCamera(DIK_W); }
+		if (ImGui::Button(u8"S / 後")) { pCamera->MoveCamera(DIK_S); }
+		if (ImGui::Button(u8"A / 右")) { pCamera->MoveCamera(DIK_A); }
+		if (ImGui::Button(u8"D / 左")) { pCamera->MoveCamera(DIK_D); }
+
 		ImGui::Text(u8"W/前 : S/後 : A/右 : D/左");
 		ImGui::Text(u8"T/注視点の上移動：B/注視点の下移動：Y/視点の上移動：N/視点の下移動");
 
@@ -537,6 +545,7 @@ void MeshOptionMenu::MeshOption(void)
 			// ワイヤーフレームでの表示
 			MeshList::m_fillmode = D3DFILL_WIREFRAME;
 			break;
+
 		case D3DFILL_WIREFRAME:
 		
 			// ポリゴンとして描画

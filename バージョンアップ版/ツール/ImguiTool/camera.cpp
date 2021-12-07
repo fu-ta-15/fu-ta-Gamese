@@ -28,7 +28,7 @@ CCamera::CCamera()
 	m_posR = ZeroVector3;						// 注視点(現在)
 	m_rot = ZeroVector3;						// カメラの向き
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);		// 上方向ベクトル
-	m_fPosSpeed = 1.5f;
+	m_fPosSpeed = 2.0f;							// 移動速度
 }
 
 //=============================================================================
@@ -215,4 +215,132 @@ void CCamera::SetCamera(void)
 
 	// ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &m_mtxView);
+}
+
+//=============================================================================
+// カメラの移動
+//=============================================================================
+void CCamera::MoveCamera(const int nDIK)
+{
+	// キー入力によるカメラの移動（キーの種類）
+	if (nDIK == (int)DIK_Z)
+	{
+		// Y軸の角度
+		m_rot.y -= 0.005f;
+
+		// 3.14fより大きくなったとき値を-3.14fにする
+		if (m_rot.y < -D3DX_PI)
+		{
+			m_rot.y += D3DX_PI * 2.0f;
+		}
+
+		// 注視点の更新
+		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
+		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
+	}
+	if (nDIK == (int)DIK_C)
+	{
+		// Y軸の角度
+		m_rot.y += 0.005f;
+
+		// 3.14fより大きくなったとき値を-3.14fにする
+		if (m_rot.y > D3DX_PI)
+		{
+			m_rot.y += D3DX_PI * 2.0f;
+		}
+
+		// 注視点の更新
+		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
+		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
+	}
+	if (nDIK == (int)DIK_Q)
+	{
+		// Y軸の角度
+		m_rot.y -= 0.05f;
+
+		// 3.14fより大きくなったとき値を-3.14fにする
+		if (m_rot.y < -D3DX_PI)
+		{
+			m_rot.y += D3DX_PI * 2.0f;
+		}
+
+		// 視点の更新
+		m_posV.x = m_posR.x - sinf(m_rot.y) * 200;
+		m_posV.z = m_posR.z - cosf(m_rot.y) * 200;
+	}
+	if (nDIK == (int)DIK_E)
+	{
+		// Y軸の角度
+		m_rot.y += 0.05f;
+
+		// -3.14fより小さくなったとき値を3.14fにする
+		if (m_rot.y > D3DX_PI)
+		{
+			m_rot.y -= D3DX_PI * 2.0f;
+		}
+		// 視点の更新
+		m_posV.x = m_posR.x - sinf(m_rot.y) * 200;
+		m_posV.z = m_posR.z - cosf(m_rot.y) * 200;
+	}
+	if (nDIK == (int)DIK_W)
+	{
+		// 視点の前移動
+		m_posV.x += m_fPosSpeed * sinf(m_rot.y);
+		m_posV.z += m_fPosSpeed * cosf(m_rot.y);
+
+		// 視点の更新
+		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
+		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
+	}
+	if (nDIK == (int)DIK_S)
+	{
+		// 視点の後ろ移動
+		m_posV.x -= m_fPosSpeed * sinf(m_rot.y);
+		m_posV.z -= m_fPosSpeed * cosf(m_rot.y);
+
+		// 視点の更新
+		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
+		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
+	}
+	if (nDIK == (int)DIK_A)
+	{
+		// 視点の左移動
+		m_posV.x -= m_fPosSpeed * cosf(m_rot.y);
+		m_posV.z += m_fPosSpeed * sinf(m_rot.y);
+
+		// 視点の更新
+		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
+		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
+	}
+	if (nDIK == (int)DIK_D)
+	{
+		// 視点の右移動
+		m_posV.x += m_fPosSpeed * cosf(m_rot.y);
+		m_posV.z -= m_fPosSpeed * sinf(m_rot.y);
+
+		// 視点の更新
+		m_posR.x = m_posV.x + sinf(m_rot.y) * 200;
+		m_posR.z = m_posV.z + cosf(m_rot.y) * 200;
+	}
+	if (nDIK == (int)DIK_T)
+	{
+		// 注視点の上移動
+		m_posR.y += m_fPosSpeed;
+	}
+	if (nDIK == (int)DIK_B)
+	{
+		// 注視点の下移動
+		m_posR.y -= m_fPosSpeed;
+	}
+	if (nDIK == (int)DIK_Y)
+	{
+		// 視点の上移動
+		m_posV.y += m_fPosSpeed;
+
+	}
+	if (nDIK == (int)DIK_N)
+	{
+		// 視点の下移動
+		m_posV.y -= m_fPosSpeed;
+	}
 }
