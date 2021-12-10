@@ -1,23 +1,5 @@
-﻿  sound.cpp
-  コードを生成中...
-  コンパイル中...
-  scene2D.cpp
-  scene.cpp
-  renderer.cpp
-  particle.cpp
-  mesh3D.cpp
-  mesh2D.cpp
-  manager.cpp
-  main.cpp
-  light.cpp
-  keyinput.cpp
-  input.cpp
+﻿  main.cpp
   imguimanager.cpp
-  game.cpp
-  fade.cpp
-  effect.cpp
-  camera.cpp
-  TextureScene.cpp
   コードを生成中...
   ImguiTool.vcxproj -> C:\Users\student\Desktop\Git\fu-ta-Gamese\バージョンアップ版\ツール\ImguiTool\Debug\ImguiTool.exe
   ImguiTool.vcxproj -> C:\Users\student\Desktop\Git\fu-ta-Gamese\バージョンアップ版\ツール\ImguiTool\Debug\ImguiTool.pdb (Full PDB)

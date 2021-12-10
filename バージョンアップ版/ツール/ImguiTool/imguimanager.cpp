@@ -521,6 +521,12 @@ void Option::OperationExplanation(void)
 
 		// 操作説明テキストの表示
 		ImGui::Text(u8"旋回");
+
+		if (ImGui::Button(u8"Q / 視点の左旋回")) { pCamera->MoveCamera(DIK_Q); };
+		if (ImGui::Button(u8"E / 視点の右旋回")) { pCamera->MoveCamera(DIK_E); };
+		if (ImGui::Button(u8"Z / 注視点の左旋回")) { pCamera->MoveCamera(DIK_Z); };
+		if (ImGui::Button(u8"C / 注視点の右旋回")) { pCamera->MoveCamera(DIK_C); };
+
 		ImGui::Text(u8"Q/視点の左旋回 : E/視点の右旋回");
 		ImGui::Text(u8"Z/注視点の左旋回 : C/注視点の右旋回");
 

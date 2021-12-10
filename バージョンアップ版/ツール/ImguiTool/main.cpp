@@ -14,6 +14,7 @@
 #include "scene2D.h"
 #include "manager.h"
 #include "imguimanager.h"
+
 //-----------------------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------------------
@@ -25,15 +26,18 @@
 //-----------------------------------------------------------------------------
 // Win32 message handler
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 //-----------------------------------------------------------------------------
 // グローバル変数:
 //-----------------------------------------------------------------------------
 #ifdef _DEBUG
-int	g_nCountFPS;			// FPSカウンタ
+int	g_nCountFPS;	// FPSカウンタ
 #endif
+
+// ファイルのドラッグ＆ドロップのグローバル変数
+/*char szStr[200] = "please drag file";
+POINT g_Droppde_Point;*/
 
 //=============================================================================
 // メイン関数
@@ -93,6 +97,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		NULL,
 		hInstance,
 		NULL);
+
+	// ファイルのドラッグ＆ドロップの有効
+	/*DragAcceptFiles(hWnd, TRUE);*/
 
 	// managerのインスタンスを作成
 	CManager *pManager = NULL;
@@ -200,10 +207,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
 		return true;
 
+	// ファイルのドラッグ＆ドロップの変数
+	/*int nNum, ni;
+	WINDOWINFO windowinfo;
+	HDROP hdrop;
+	TCHAR filename[100];*/
+
 	switch(uMsg)
 	{
 	case WM_CREATE:
 		break;
+
+		// ファイルのドラッグ＆ドロップ
+	/*case WM_DROPFILES:
+		GetCursorPos(&g_Droppde_Point);
+		windowinfo.cbSize = sizeof(WINDOWINFO);
+		GetWindowInfo(hWnd, &windowinfo);
+		g_Droppde_Point.x = windowinfo.rcWindow.left;
+		g_Droppde_Point.y = windowinfo.rcWindow.top;
+		hdrop = (HDROP)wParam;
+		nNum = DragQueryFile(hdrop, -1, NULL, 0);
+		for (ni = 0; ni < nNum; ni++)
+		{
+			DragQueryFile(hdrop, ni, filename, sizeof(filename) / sizeof(TCHAR));
+		}
+		DragFinish(hdrop);
+		printf("number = %d , name = %s", nNum, filename);
+		InvalidateRect(hWnd, NULL, FALSE);
+		break;*/
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
