@@ -120,6 +120,8 @@ void CTutorial::Update(void)
 		// 右に回転させるためにマイナスの加算
 		m_nCntCycleLimit--;
 	}
+
+	// リミットの時間が過ぎたら次のページの許可待ち
 	if (m_nCntCycleLimit < 0)
 	{
 		m_bNextPage = false;
