@@ -24,8 +24,7 @@ public:
 	// ƒ^ƒCƒgƒ‹UI
 	typedef enum TitleUI
 	{
-		UI_BG = 0,
-		UI_BUTTON,
+		UI_BUTTON = 0,
 		UI_MAX
 	}TitleUI;
 

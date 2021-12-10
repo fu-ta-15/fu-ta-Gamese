@@ -73,28 +73,26 @@ CNormalEnemy * CNormalEnemy::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 siz
 //=============================================================================
 HRESULT CNormalEnemy::Init(void)
 {
-	CEnemy::Init();	// 初期化
+	// 初期化
+	CEnemy::Init();	
 	
+	// テクスチャの設定
 	CScene2D::CreateTexture(ENEMY_TEXTURE0);
 
-	if (m_MoveType == MOVE2)
-	{
-		float fAngle = (float)(rand() % 314) / 100.f;
-		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
-		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
-	}
+	// 移動のタイプ別に移動方向の設定
 	if (m_MoveType == MOVE0)
 	{
 		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);
 		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
 		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
 	}
-	if (m_MoveType == MOVE4)
+	else if (m_MoveType == MOVE2)
 	{
-		float fAngle = Move::AnglePoint(ANGLE_POINT_X, ANGLE_POINT_Y);	// プレイヤーとの角度
-		m_move.x = Move::HomingMove(ANGLE_SIN, HOMING_SPEED);			// 追従
-		m_move.y = Move::HomingMove(ANGLE_COS, HOMING_SPEED);			// 追従
+		float fAngle = (float)(rand() % 314) / 100.f;
+		m_move.x = sinf(fAngle - D3DX_PI) * 2.5f;
+		m_move.y = cosf(fAngle + D3DX_PI) * 2.5f;
 	}
+
 	return S_OK;
 }
 
@@ -103,7 +101,8 @@ HRESULT CNormalEnemy::Init(void)
 //=============================================================================
 void CNormalEnemy::Uninit(void)
 {
-	CEnemy::Uninit();	// 終了処理
+	// 終了処理
+	CEnemy::Uninit();	
 }
 
 //=============================================================================
@@ -179,15 +178,12 @@ void CNormalEnemy::BlackMove(void)
 		m_pos.y = Move::CosWave(pBoss->GetPos().y, 140.0f, 14.0f, m_fCosWaveCnt);
 		break;
 
-	case MOVE4:
-		m_pos += m_move;	// 位置に移動量を加算
-		break;
-
 	default:
 		break;
 	}
 
-	CScene2D::SetPos(m_pos);	// 移動量の更新
+	// 移動量の更新
+	CScene2D::SetPos(m_pos);	
 }
 
 //=============================================================================

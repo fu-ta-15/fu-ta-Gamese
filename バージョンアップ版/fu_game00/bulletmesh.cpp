@@ -268,10 +268,6 @@ bool CBulletMesh::CollisionCore(void)
 	// メッシュポリゴンの情報取得
 	switch (CManager::GetMode())
 	{
-	case CManager::MODE_TUTORIAL:
-		pCore = CTutorial::GetBoss()->GetCore();
-		break;
-
 	case CManager::MODE_GAME:
 		// ボスの情報
 		pCore = CGame::GetBoss()->GetCore();

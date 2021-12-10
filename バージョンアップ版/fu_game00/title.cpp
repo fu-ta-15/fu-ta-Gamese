@@ -75,9 +75,6 @@ CTitle * CTitle::Create(void)
 HRESULT CTitle::Init(void)
 {
 	// ”wŒi‚Ì¶¬
-	//m_paTitleUI[UI_BG] = CScene2D::Create(CENTER_POS, TITLE_BG_SIZE);
-	//m_paTitleUI[UI_BG]->CreateTexture("data/TEXTURE/BG.jpg");
-
 	m_pBg3D = CMesh3D::Create(40, 40, D3DXVECTOR3(-40.0f, 0.0f, 0.0f), D3DXVECTOR3(400.0f, 0.0f, 200.0f));
 	m_pBg3D->CreateTexture("data/TEXTURE/BG.jpg");
 

@@ -76,10 +76,6 @@ void CCore::Update(void)
 	// メッシュポリゴンの情報取得
 	switch (CManager::GetMode())
 	{
-	case CManager::MODE_TUTORIAL:
-		pBoss = CTutorial::GetBoss();
-		break;
-
 	case CManager::MODE_GAME:
 		// ボスの情報
 		pBoss = CGame::GetBoss();

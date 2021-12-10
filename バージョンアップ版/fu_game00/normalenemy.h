@@ -19,7 +19,6 @@
 #define MOVE1		(CNormalEnemy::MOVE_1)
 #define MOVE2		(CNormalEnemy::MOVE_2)
 #define MOVE3		(CNormalEnemy::MOVE_3)
-#define MOVE4		(CNormalEnemy::MOVE_4)
 
 //-----------------------------------------------------------------------------
 // ƒNƒ‰ƒX
@@ -34,9 +33,6 @@ public:
 		MOVE_1,
 		MOVE_2,
 		MOVE_3,
-		MOVE_4,
-		MOVE_5,
-		MOVE_6,
 		MOVE_MAX
 	};
 
