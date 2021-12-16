@@ -14,6 +14,7 @@
 #include "scene2D.h"
 #include "manager.h"
 #include "imguimanager.h"
+#include "TextureScene.h"
 
 //-----------------------------------------------------------------------------
 // マクロ定義
@@ -34,10 +35,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 #ifdef _DEBUG
 int	g_nCountFPS;	// FPSカウンタ
 #endif
-
-// ファイルのドラッグ＆ドロップのグローバル変数
-/*char szStr[200] = "please drag file";
-POINT g_Droppde_Point;*/
 
 //=============================================================================
 // メイン関数
@@ -99,7 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		NULL);
 
 	// ファイルのドラッグ＆ドロップの有効
-	/*DragAcceptFiles(hWnd, TRUE);*/
+	DragAcceptFiles(hWnd, TRUE);
 
 	// managerのインスタンスを作成
 	CManager *pManager = NULL;
@@ -207,34 +204,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
 		return true;
 
-	// ファイルのドラッグ＆ドロップの変数
-	/*int nNum, ni;
-	WINDOWINFO windowinfo;
-	HDROP hdrop;
-	TCHAR filename[100];*/
-
 	switch(uMsg)
 	{
 	case WM_CREATE:
 		break;
 
 		// ファイルのドラッグ＆ドロップ
-	/*case WM_DROPFILES:
-		GetCursorPos(&g_Droppde_Point);
-		windowinfo.cbSize = sizeof(WINDOWINFO);
-		GetWindowInfo(hWnd, &windowinfo);
-		g_Droppde_Point.x = windowinfo.rcWindow.left;
-		g_Droppde_Point.y = windowinfo.rcWindow.top;
-		hdrop = (HDROP)wParam;
-		nNum = DragQueryFile(hdrop, -1, NULL, 0);
-		for (ni = 0; ni < nNum; ni++)
-		{
-			DragQueryFile(hdrop, ni, filename, sizeof(filename) / sizeof(TCHAR));
-		}
-		DragFinish(hdrop);
-		printf("number = %d , name = %s", nNum, filename);
-		InvalidateRect(hWnd, NULL, FALSE);
-		break;*/
+	case WM_DROPFILES:
+		DropFileLoad(hWnd, wParam);
+		break;
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -254,6 +232,58 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+}
+
+//=============================================================================
+// ドラッグ＆ドロップされたファイルの読み込み
+//=============================================================================
+void DropFileLoad(HWND hWnd, WPARAM wParam)
+{
+	// ファイルのドラッグ＆ドロップのグローバル変数
+	POINT Droppde_Point;
+
+	// ファイルのドラッグ＆ドロップの変数
+	int nNum, ni;
+	WINDOWINFO windowinfo;
+	HDROP hdrop;
+	TCHAR filename[256];
+
+	// カーソルの位置取得
+	GetCursorPos(&Droppde_Point);
+
+	// Windowsの情報のサイズ分確保
+	windowinfo.cbSize = sizeof(WINDOWINFO);
+
+	// 情報を拡張した変数に保存
+	GetWindowInfo(hWnd, &windowinfo);
+
+	// ドロップの位置の確認
+	Droppde_Point.x = windowinfo.rcWindow.left;
+	Droppde_Point.y = windowinfo.rcWindow.top;
+
+	// パラメータ取得
+	hdrop = (HDROP)wParam;
+
+	// ドロップされたファイルを確認
+	nNum = DragQueryFile(hdrop, -1, NULL, 0);
+
+	// ファイルの確認
+	for (ni = 0; ni < nNum; ni++)
+	{
+		DragQueryFile(hdrop, ni, filename, sizeof(filename) / sizeof(TCHAR));
+	}
+
+	// 終了合図
+	DragFinish(hdrop);
+
+	// テクスチャ生成
+	CTextureScene::FileDrop(filename);
+
+	// ドロップされたリンク先とファイル名を表示
+	printf("number = %d , \n name = %s \n", nNum, filename);
+
+	// 再度描画
+	InvalidateRect(hWnd, NULL, FALSE);
 }
 
 //=============================================================================

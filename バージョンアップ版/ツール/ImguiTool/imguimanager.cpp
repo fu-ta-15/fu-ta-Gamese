@@ -17,7 +17,6 @@
 #include "keyinput.h"
 #include "TextureScene.h"
 
-
 //=============================================================================
 // ImGuiの初期化処理
 //=============================================================================
@@ -198,30 +197,30 @@ void MeshList::MeshInfo(void)
 
 	// メニュー欄の生成
 	if (ImGui::CollapsingHeader(u8"メッシュポリゴンリスト"))
+	{
+		// メッシュの生成
+		CreateMeshMenu();
+
+		// メニュー欄の生成
+		if (ImGui::CollapsingHeader(u8"表現方法"))
 		{
-			// メッシュの生成
-			CreateMeshMenu();
+			// 波の表現
+			MeshList::MeshWave();
 
-			// メニュー欄の生成
-			if (ImGui::CollapsingHeader(u8"表現方法"))
-			{
-				// 波の表現
-				MeshList::MeshWave();
+			// 空白の行を生成
+			ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
 
-				// 空白の行を生成
-				ImGui::Spacing(), ImGui::Spacing(), ImGui::Spacing();
-
-				// 回転表現
-				MeshList::MeshCycle();
-			}
-
-			// メニュー欄の生成
-			if (ImGui::CollapsingHeader(u8"その他詳細"))
-			{
-				// メッシュの説明文
-				MeshOptionMenu::MeshOption();
-			}
+			// 回転表現
+			MeshList::MeshCycle();
 		}
+
+		// メニュー欄の生成
+		if (ImGui::CollapsingHeader(u8"その他詳細"))
+		{
+			// メッシュの説明文
+			MeshOptionMenu::MeshOption();
+		}
+	}
 }
 
 //=============================================================================
@@ -388,7 +387,7 @@ void MeshList::CreateMeshMenu(void)
 			// NULL代入
 			m_pMesh = NULL;
 
-			// （｛四角の中に入る｝縦の本数・横の本数・位置・サイズ）
+			//（｛四角の中に入る｝縦の本数・横の本数・位置・サイズ）
 			m_pMesh = CMesh3D::Create(m_nVertical, m_nSide, m_pos, m_size);
 		}
 	}
@@ -458,22 +457,27 @@ void MeshList::CreateMeshMenu(void)
 //=============================================================================
 void TextureMake::TextureLoad(void)
 {
-	// キー入力クラスのポインタ
-	CKey *pKey = CManager::GetKey();
-
+	// テクスチャ生成のノード
 	if (ImGui::TreeNode(u8"テクスチャ生成"))
 	{
+		// テクスチャの名前を入れる
 		if (ImGui::InputText(u8"テクスチャ名", cName, IM_ARRAYSIZE(cName)))
 		{
-
 		}
-		else if (pKey->GetState(CKey::STATE_TRIGGER,DIK_RETURN))
+
+		// テクスチャの生成開始ボタン
+		if (ImGui::Button(u8"生成Button"))
 		{
-			MeshList::m_pTextureList->CreateTexture(&cName[0]);
+			// 入力したテクスチャの名前をTEXTUREのフォルダ内から探し生成
+			MeshList::m_pTextureList->ListInTexture(&cName[0]);
 		}
 
-		ImGui::Text(u8"リンク先：%s", cLink);
-
+		// テクスチャの貼り付け
+		if (ImGui::Button(u8"テクスチャ貼り付け"))
+		{
+			// メッシュにテクスチャを貼り付ける
+			TextureMake::TextureBind();
+		}
 		// ノードの終了
 		ImGui::TreePop();
 	}
@@ -484,6 +488,12 @@ void TextureMake::TextureLoad(void)
 //=============================================================================
 void TextureMake::TextureBind(void)
 {
+	// テクスチャシーンの先頭要素の取得
+	CTextureScene* pTex = CTextureScene::GetTextureScene();
+
+	// テクスチャの情報を渡す
+	MeshList::m_pMesh->SetTexture(pTex->GetTexture());
+	
 }
 
 //=============================================================================

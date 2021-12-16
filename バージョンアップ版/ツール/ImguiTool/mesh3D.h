@@ -43,6 +43,7 @@ public:
 	void SetCol(const D3DXCOLOR col)			{ m_col = col; }
 	void SetVtx(LPDIRECT3DVERTEXBUFFER9 Vtx)	{ m_pVtxBuff = Vtx; }
 	void SetingbNor(bool bNor)					{ m_bNor = bNor; }
+	void SetTexture(LPDIRECT3DTEXTURE9 pTex)	{ m_pTexture = pTex; }
 
 	// ÉQÉbÉgä÷êî 
 	LPDIRECT3DVERTEXBUFFER9 GetVtx()	{ return m_pVtxBuff; }

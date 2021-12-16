@@ -10,6 +10,13 @@
 // インクルードファイル
 //-----------------------------------------------------------------------------
 #include "main.h"
+#include <vector>
+#include <list>
+
+//-----------------------------------------------------------------------------
+// 名前空間による宣言省略
+//-----------------------------------------------------------------------------
+using namespace std;
 
 //-----------------------------------------------------------------------------
 // クラス
@@ -22,17 +29,21 @@ public:
 
 	void LoadTexture(void);
 	void UnLoadTexture(void);
-	void CreateTexture(const char *sTexName);
+	void ListInTexture(const char *sTexName);
+	CTextureScene *TextureListIn(const char *sTexName);
+
+	static void FileDrop(const char *sTexName);
+
+	static int GetListSize(void) { return m_nListSize; }
+	static CTextureScene *GetTextureScene(void) { return m_TextureScene.front(); }
+	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_pTexture; }
+	char *GetLinkName(void) { return m_sLink; }
 
 private:
-	static CTextureScene	*m_pTexScene;
-	CTextureScene			*m_pNext;
-	CTextureScene			*m_pPrev;
-
+	static list<CTextureScene*> m_TextureScene;
+	static int				m_nListSize;
 	char					*m_sLink;
-	int						m_nID;
 	LPDIRECT3DTEXTURE9		m_pTexture;
-
 };
 
 

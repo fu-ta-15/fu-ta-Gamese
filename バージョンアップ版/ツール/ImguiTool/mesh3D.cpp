@@ -261,7 +261,7 @@ void CMesh3D::Draw(void)
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	// テクスチャの設定
-	pDevice->SetTexture(0, NULL);
+	pDevice->SetTexture(0, m_pTexture);
 
 	// ポリゴンの描画
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP,
