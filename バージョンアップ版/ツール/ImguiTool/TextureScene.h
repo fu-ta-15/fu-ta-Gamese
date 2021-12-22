@@ -36,6 +36,7 @@ public:
 
 	static int GetListSize(void) { return m_nListSize; }
 	static CTextureScene *GetTextureScene(void) { return m_TextureScene.front(); }
+	static CTextureScene *GetTexScene(int nID);
 	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_pTexture; }
 	char *GetLinkName(void) { return m_sLink; }
 

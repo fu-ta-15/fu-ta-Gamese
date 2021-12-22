@@ -472,6 +472,36 @@ void TextureMake::TextureLoad(void)
 			MeshList::m_pTextureList->ListInTexture(&cName[0]);
 		}
 
+		// テクスチャリストの表示
+		if (CTextureScene::GetListSize() > 0)
+		{
+			// テクスチャの欄表示
+			ImGui::Begin(u8"テクスチャ欄");
+
+			// サイズ分の配列を確保
+			bTexList = new bool[CTextureScene::GetListSize()];
+
+			// サイズ分falseを埋める
+			memset(bTexList, false, CTextureScene::GetListSize());
+
+				// サイズ分のセレクトボタンを生成
+			for (int nSize = 0; nSize < CTextureScene::GetListSize(); nSize++/*, pTex++*/)
+			{
+				// 指定の要素を取得
+				CTextureScene *pTexture = CTextureScene::GetTexScene(nSize);
+
+				// セレクト欄にリンク先とButton設置
+				if (ImGui::Selectable(pTexture->GetLinkName(), &bTexList[nSize]))
+				{
+					// 確認用
+					printf("押しました");
+				}
+			}
+
+			// ImGuiウィンドウ生成終了
+			ImGui::End();
+		}
+
 		// テクスチャの貼り付け
 		if (ImGui::Button(u8"テクスチャ貼り付け"))
 		{

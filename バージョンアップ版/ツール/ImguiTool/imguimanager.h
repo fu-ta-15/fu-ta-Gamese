@@ -80,12 +80,13 @@ namespace MeshOptionMenu
 //-----------------------------------------------------------------------------
 namespace TextureMake
 {
-	void TextureLoad(void);		// 
-	void TextureBind(void);		// 
+	void TextureLoad(void);		// テクスチャのロード
+	void TextureBind(void);		// テクスチャの貼り付け
 
 	static char cName[MAX_CAHR_SIZE] = "";
 	static char cLink[MAX_CAHR_SIZE] = "TEXTURE/";
 
+	static bool *bTexList = {};
 }
 
 //-----------------------------------------------------------------------------

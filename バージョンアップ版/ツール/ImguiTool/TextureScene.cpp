@@ -16,6 +16,7 @@
 // 静的メンバ変数
 //-----------------------------------------------------------------------------
 list<CTextureScene*> CTextureScene::m_TextureScene;
+int CTextureScene::m_nListSize = 0;
 
 //=============================================================================
 // コンストラクタ
@@ -85,8 +86,13 @@ void CTextureScene::FileDrop(const char * sTexName)
 	// リターン用のクラス変数
 	CTextureScene *pTexScene = new CTextureScene;
 
+	// 文字数を確認しchar型の変数を動的に確保
+	size_t Length = strlen(sTexName);
+	pTexScene->m_sLink = new char[Length];
+
 	// 名前のコピー
-	pTexScene->m_sLink = (char*)sTexName;
+	strcpy(pTexScene->m_sLink, sTexName);
+	//pTexScene->m_sLink = (char*)sTexName;
 
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
@@ -103,6 +109,18 @@ void CTextureScene::FileDrop(const char * sTexName)
 
 	// 中身のサイズを確認
 	m_nListSize = m_TextureScene.size();
+}
+
+CTextureScene * CTextureScene::GetTexScene(int nID)
+{
+	list<CTextureScene*>::iterator it = m_TextureScene.begin();
+
+	for (int nCnt = 0; nCnt < nID; nCnt++)
+	{
+		it++;
+	}
+
+	return *it;
 }
 
 //=============================================================================
