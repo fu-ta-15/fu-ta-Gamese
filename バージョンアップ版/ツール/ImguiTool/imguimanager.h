@@ -82,6 +82,7 @@ namespace TextureMake
 {
 	void TextureLoad(void);		// テクスチャのロード
 	void TextureBind(void);		// テクスチャの貼り付け
+	void TextureBind(LPDIRECT3DTEXTURE9 pTex);		// テクスチャの貼り付け
 
 	static char cName[MAX_CAHR_SIZE] = "";
 	static char cLink[MAX_CAHR_SIZE] = "TEXTURE/";

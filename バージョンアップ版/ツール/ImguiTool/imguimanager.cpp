@@ -495,6 +495,9 @@ void TextureMake::TextureLoad(void)
 				{
 					// 確認用
 					printf("押しました");
+
+					// メッシュにテクスチャを貼り付ける
+					TextureMake::TextureBind(pTexture->GetTexture());
 				}
 			}
 
@@ -523,7 +526,19 @@ void TextureMake::TextureBind(void)
 
 	// テクスチャの情報を渡す
 	MeshList::m_pMesh->SetTexture(pTex->GetTexture());
-	
+}
+
+//=============================================================================
+// リストからテクスチャの情報をポリゴンに与える
+//=============================================================================
+void TextureMake::TextureBind(LPDIRECT3DTEXTURE9 pTex)
+{
+	// NULLチェック
+	if (MeshList::m_pMesh)
+	{
+		// テクスチャの情報を渡す
+		MeshList::m_pMesh->SetTexture(pTex);
+	}
 }
 
 //=============================================================================

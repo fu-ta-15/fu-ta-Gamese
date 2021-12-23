@@ -1,0 +1,38 @@
+﻿  boss.cpp
+  bulletmesh.cpp
+  camera.cpp
+  collision.cpp
+  core.cpp
+  effect.cpp
+  enemy.cpp
+  fade.cpp
+  game.cpp
+  input.cpp
+  keyinput.cpp
+  light.cpp
+  main.cpp
+  manager.cpp
+  mesh.cpp
+  mesh3D.cpp
+  move.cpp
+  normalenemy.cpp
+  number.cpp
+  particle.cpp
+  コンパイル中...
+  pause.cpp
+  player.cpp
+  renderer.cpp
+  result.cpp
+  scene.cpp
+  scene2D.cpp
+  sound.cpp
+  time.cpp
+  title.cpp
+  tutorial.cpp
+  コード生成しています。
+  377 of 377 functions (100.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  fu_game00.vcxproj -> C:\Users\student\Desktop\Git\fu-ta-Gamese\バージョンアップ版\fu_game00\fu_game00.exe
+  fu_game00.vcxproj -> C:\Users\student\Desktop\Git\fu-ta-Gamese\バージョンアップ版\fu_game00\fu_game00.pdb (Full PDB)
