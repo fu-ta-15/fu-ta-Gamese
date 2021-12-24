@@ -17,7 +17,6 @@
 #include "mesh3D.h"
 #include "TextureScene.h"
 
-
 //-----------------------------------------------------------------------------
 // マクロ変数
 //-----------------------------------------------------------------------------
@@ -80,12 +79,9 @@ namespace MeshOptionMenu
 //-----------------------------------------------------------------------------
 namespace TextureMake
 {
-	void TextureLoad(void);		// テクスチャのロード
-	void TextureBind(void);		// テクスチャの貼り付け
-	void TextureBind(LPDIRECT3DTEXTURE9 pTex);		// テクスチャの貼り付け
-
-	static char cName[MAX_CAHR_SIZE] = "";
-	static char cLink[MAX_CAHR_SIZE] = "TEXTURE/";
+	void TextureLoad(void);						// テクスチャのロード
+	void TextureBind(void);						// テクスチャの貼り付け
+	void TextureBind(LPDIRECT3DTEXTURE9 pTex);	// テクスチャの貼り付け
 
 	static bool *bTexList = {};
 }

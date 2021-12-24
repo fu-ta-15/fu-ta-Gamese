@@ -460,18 +460,6 @@ void TextureMake::TextureLoad(void)
 	// テクスチャ生成のノード
 	if (ImGui::TreeNode(u8"テクスチャ生成"))
 	{
-		// テクスチャの名前を入れる
-		if (ImGui::InputText(u8"テクスチャ名", cName, IM_ARRAYSIZE(cName)))
-		{
-		}
-
-		// テクスチャの生成開始ボタン
-		if (ImGui::Button(u8"生成Button"))
-		{
-			// 入力したテクスチャの名前をTEXTUREのフォルダ内から探し生成
-			MeshList::m_pTextureList->ListInTexture(&cName[0]);
-		}
-
 		// テクスチャリストの表示
 		if (CTextureScene::GetListSize() > 0)
 		{
@@ -503,13 +491,6 @@ void TextureMake::TextureLoad(void)
 
 			// ImGuiウィンドウ生成終了
 			ImGui::End();
-		}
-
-		// テクスチャの貼り付け
-		if (ImGui::Button(u8"テクスチャ貼り付け"))
-		{
-			// メッシュにテクスチャを貼り付ける
-			TextureMake::TextureBind();
 		}
 		// ノードの終了
 		ImGui::TreePop();

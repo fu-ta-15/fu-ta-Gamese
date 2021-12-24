@@ -29,22 +29,21 @@ public:
 
 	void LoadTexture(void);
 	void UnLoadTexture(void);
-	void ListInTexture(const char *sTexName);
 	CTextureScene *TextureListIn(const char *sTexName);
 
 	static void FileDrop(const char *sTexName);
 
-	static int GetListSize(void) { return m_nListSize; }
-	static CTextureScene *GetTextureScene(void) { return m_TextureScene.front(); }
 	static CTextureScene *GetTexScene(int nID);
-	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_pTexture; }
-	char *GetLinkName(void) { return m_sLink; }
+	static CTextureScene *GetTextureScene(void) { return m_TextureScene.front(); }
+	static int GetListSize(void)				{ return m_nListSize; }
+	LPDIRECT3DTEXTURE9 GetTexture(void)			{ return m_pTexture; }
+	char *GetLinkName(void)						{ return m_sLink; }
 
 private:
 	static list<CTextureScene*> m_TextureScene;
-	static int				m_nListSize;
-	char					*m_sLink;
-	LPDIRECT3DTEXTURE9		m_pTexture;
+	static int					m_nListSize;
+	char						*m_sLink;
+	LPDIRECT3DTEXTURE9			m_pTexture;
 };
 
 

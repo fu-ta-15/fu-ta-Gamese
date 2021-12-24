@@ -52,33 +52,6 @@ void CTextureScene::UnLoadTexture(void)
 }
 
 //=============================================================================
-// テクスチャの生成
-//=============================================================================
-void CTextureScene::ListInTexture(const char * sTexName)
-{
-	// 文字数を確認しchar型の変数を動的に確保
-	size_t Length = strlen("TEXTURE/") + strlen(sTexName);
-	char *sLink = new char[Length];
-
-	// 文字列の合体
-	strcpy(sLink, "TEXTURE/");
-	strcat(sLink, sTexName);
-
-	// リストへプッシュバックするための変数に情報代入
-	CTextureScene *pTexScene = TextureListIn(sLink);
-
-	if (pTexScene->m_pTexture)
-	{
-		printf("\n生成完了");
-		// リストへプッシュバックする
-		m_TextureScene.push_back(pTexScene);
-	}
-
-	// 中身のサイズを確認
-	m_nListSize = m_TextureScene.size();
-}
-
-//=============================================================================
 // ドロップされたテクスチャファイルの生成
 //=============================================================================
 void CTextureScene::FileDrop(const char * sTexName)
@@ -92,7 +65,6 @@ void CTextureScene::FileDrop(const char * sTexName)
 
 	// 名前のコピー
 	strcpy(pTexScene->m_sLink, sTexName);
-	//pTexScene->m_sLink = (char*)sTexName;
 
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GET_DEVICE;
@@ -100,9 +72,12 @@ void CTextureScene::FileDrop(const char * sTexName)
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, pTexScene->m_sLink, &pTexScene->m_pTexture);
 
+	// NULLチェック
 	if (pTexScene->m_pTexture)
 	{
+		// 確認用
 		printf("\n生成完了");
+
 		// リストへプッシュバックする
 		m_TextureScene.push_back(pTexScene);
 	}
@@ -111,15 +86,22 @@ void CTextureScene::FileDrop(const char * sTexName)
 	m_nListSize = m_TextureScene.size();
 }
 
+//=============================================================================
+// ドロップされたテクスチャファイルの生成
+//=============================================================================
 CTextureScene * CTextureScene::GetTexScene(int nID)
 {
+	// 先頭の要素のイテレーターの取得
 	list<CTextureScene*>::iterator it = m_TextureScene.begin();
 
+	// 指定された番地の要素まで進める
 	for (int nCnt = 0; nCnt < nID; nCnt++)
 	{
+		// 進める
 		it++;
 	}
 
+	// 指定された要素を返す
 	return *it;
 }
 
