@@ -473,7 +473,7 @@ void TextureMake::TextureLoad(void)
 			memset(bTexList, false, CTextureScene::GetListSize());
 
 				// サイズ分のセレクトボタンを生成
-			for (int nSize = 0; nSize < CTextureScene::GetListSize(); nSize++/*, pTex++*/)
+			for (int nSize = 0; nSize < CTextureScene::GetListSize(); nSize++)
 			{
 				// 指定の要素を取得
 				CTextureScene *pTexture = CTextureScene::GetTexScene(nSize);
@@ -505,8 +505,11 @@ void TextureMake::TextureBind(void)
 	// テクスチャシーンの先頭要素の取得
 	CTextureScene* pTex = CTextureScene::GetTextureScene();
 
-	// テクスチャの情報を渡す
-	MeshList::m_pMesh->SetTexture(pTex->GetTexture());
+	if (MeshList::m_pMesh != NULL)
+	{
+		// テクスチャの情報を渡す
+		MeshList::m_pMesh->SetTexture(pTex->GetTexture());
+	}
 }
 
 //=============================================================================

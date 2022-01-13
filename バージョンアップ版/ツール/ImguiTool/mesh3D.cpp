@@ -180,12 +180,6 @@ HRESULT CMesh3D::Init(void)
 //=============================================================================
 void CMesh3D::Uninit(void)
 {
-	// テクスチャの開放
-	if (m_pTexture != NULL)
-	{
-		m_pTexture->Release();
-		m_pTexture = NULL;
-	}
 	// 頂点バッファの開放
 	if (m_pVtxBuff != NULL)
 	{
@@ -266,7 +260,7 @@ void CMesh3D::Draw(void)
 	// ポリゴンの描画
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP,
 		0, 0,
-		m_nVtx, 0, (m_nIdx - 4));
+		m_nVtx, 0, (m_nIdx - (m_nSide * 2)));
 }
 
 //=============================================================================

@@ -40,10 +40,10 @@ public:
 	char *GetLinkName(void)						{ return m_sLink; }
 
 private:
-	static list<CTextureScene*> m_TextureScene;
-	static int					m_nListSize;
-	char						*m_sLink;
-	LPDIRECT3DTEXTURE9			m_pTexture;
+	static list<CTextureScene*> m_TextureScene;		// テクスチャシーンのリスト
+	static int					m_nListSize;		// リストのサイズ
+	char						*m_sLink;			// テクスチャのリンク
+	LPDIRECT3DTEXTURE9			m_pTexture;			// テクスチャ
 };
 
 
