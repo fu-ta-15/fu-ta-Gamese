@@ -33,6 +33,7 @@ namespace ImGuiMana
 	void DeviState(void);																	  // デバイスの状態
 	void Draw(void);																		  // 描画
 	void DrawEnd(HRESULT result,LPDIRECT3DDEVICE9 pD3DDevice, D3DPRESENT_PARAMETERS d3dpp);	  // 描画終了
+	static HWND L_hWnd = NULL;
 }
 
 //-----------------------------------------------------------------------------

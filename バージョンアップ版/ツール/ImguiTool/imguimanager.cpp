@@ -41,6 +41,8 @@ HRESULT ImGuiMana::Init(HWND hWnd, D3DPRESENT_PARAMETERS d3dpp, LPDIRECT3DDEVICE
 	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX9_Init(pD3DDevice);
 
+	L_hWnd = hWnd;
+
 	return S_OK;
 }
 
@@ -190,6 +192,15 @@ void MeshList::MeshInfo(void)
 
 		// Imguiウィンドウ生成完了
 		ImGui::End();
+	}
+
+	// 同じラインに間隔をあける
+	ImGui::SameLine(0.0f, 20.0f);
+
+	// C:をエクスプローラで開く
+	if (ImGui::Button(u8"開く"))
+	{
+		ShellExecute(ImGuiMana::L_hWnd, "open", "C:", NULL, NULL, SW_SHOW);
 	}
 
 	// 空白の行を生成
