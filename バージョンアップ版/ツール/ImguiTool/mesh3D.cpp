@@ -153,7 +153,7 @@ HRESULT CMesh3D::Init(void)
 	m_pVtxBuff->Unlock();
 
 	// インデックスバッファの生成
-	pDevice->CreateIndexBuffer(sizeof(WORD) * (m_nIdx-2)*3,
+	pDevice->CreateIndexBuffer(sizeof(WORD) * (m_nIdx-2),
 		D3DUSAGE_WRITEONLY,
 		D3DFMT_INDEX16,
 		D3DPOOL_MANAGED,
