@@ -1,0 +1,48 @@
+#==============================================================================
+#
+# ラクガキ配置 [graffiti_info.txt]
+# Author : Itsuki Takaiwa
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# モデル配置情報
+#------------------------------------------------------------------------------
+GRAFFITISET
+	TYPE = 0
+	POS = 160.0 0.0 90.0
+	SIZE = 5.5
+END_GRAFFITISET
+
+GRAFFITISET
+	TYPE = 0 
+	POS = 160.0 0.0 -80.0
+	SIZE = 5.5
+END_GRAFFITISET
+
+GRAFFITISET
+	TYPE = 0
+	POS = -160.0 0.0 90.0
+	SIZE = 5.5
+END_GRAFFITISET
+
+GRAFFITISET
+	TYPE = 0 
+	POS = -160.0 0.0 -80.0
+	SIZE = 5.5
+END_GRAFFITISET
+
+GRAFFITISET
+	TYPE = 0
+	POS = 0.0 0.0 90.0
+	SIZE = 5.5
+END_GRAFFITISET
+
+GRAFFITISET
+	TYPE = 0 
+	POS = 0.0 0.0 -80.0
+	SIZE = 5.5
+END_GRAFFITISET
+
+END_SCRIPT		# この行は絶対消さないこと！

@@ -5,6 +5,8 @@
 
 開発環境：VisualStudio 2015
 
-言語/期間：C言語/1年半　C++/半年
+言語/期間：C言語/1年半　C++/半年～勉強中　C#/勉強中
 
-エンジン/期間：Unity/半年　Unreal Engine4/約半年
+ライブラリ：Microsoft DirectX SDK (June 2010)
+
+エンジン/期間：Unity/半年～勉強中　Unreal Engine4/約半年～勉強中

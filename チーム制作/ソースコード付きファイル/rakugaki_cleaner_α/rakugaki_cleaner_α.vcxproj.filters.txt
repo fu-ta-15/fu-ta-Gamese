@@ -1,0 +1,711 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\00_system">
+      <UniqueIdentifier>{a9f6e686-7ed9-4e73-8bf3-47a916e7ddcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\00_system\input">
+      <UniqueIdentifier>{66ac465f-fd7e-4498-99f6-e07fe33642c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene">
+      <UniqueIdentifier>{8a372421-a995-4840-8cbd-b96c4fdb799a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\0_title">
+      <UniqueIdentifier>{699810c2-455a-420c-83fe-b4e151ce2ddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\1_mode_select">
+      <UniqueIdentifier>{5805fbc2-9c88-48a6-a3e0-01ddf3bc563d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object">
+      <UniqueIdentifier>{4c542884-9a66-45aa-8922-9105d5ea0a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\0_title\LoadData">
+      <UniqueIdentifier>{b9eadb1a-e700-467f-a2b7-9eb152213ab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\00_system">
+      <UniqueIdentifier>{bf4d9e31-ce11-4303-8af7-a80f2d1155ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene">
+      <UniqueIdentifier>{0484f6b2-05e5-455d-8bc9-4e636c4b0da6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object">
+      <UniqueIdentifier>{984d7211-7ced-4adf-ac26-2ae536c572dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\00_system\input">
+      <UniqueIdentifier>{d48db731-fb6f-408e-989a-1ee319935fd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\0_title">
+      <UniqueIdentifier>{e76a92ee-12a2-417e-a124-b380e69f75ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\1_mode_select">
+      <UniqueIdentifier>{aa55aeda-722e-42d3-abbb-11abf9c854af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\0_title\LoadData">
+      <UniqueIdentifier>{14139e4a-c9a3-44aa-9357-1018c6f5782b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\1_mode_select\LoadData">
+      <UniqueIdentifier>{5c4aab6f-32da-449d-b68e-152555d11f0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class">
+      <UniqueIdentifier>{68b3b375-2af6-49e5-9946-b5d02f195272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class\2D">
+      <UniqueIdentifier>{3b98d97d-9e27-472f-aa14-cc22938287eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class\3D">
+      <UniqueIdentifier>{12799923-4e6d-4208-8aff-ddf63ec3b5a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class">
+      <UniqueIdentifier>{7d4e701e-8283-4a39-8283-74c0a5a752cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\2D">
+      <UniqueIdentifier>{81f3bfc0-2d02-43b2-a74c-0c45cb3854a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class">
+      <UniqueIdentifier>{2e0b9b65-55cc-45d1-b680-3731fa9928d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class">
+      <UniqueIdentifier>{f27acae0-f036-46f5-86f7-cf5a275727fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class\2D">
+      <UniqueIdentifier>{d5326b89-ea54-4e66-9fd8-cda30d0281c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class\3D">
+      <UniqueIdentifier>{fcea38d5-0f30-4b22-ad4a-8ebeb911c5d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\2D">
+      <UniqueIdentifier>{5686c0e8-33c7-49f5-9af8-d1ef58e2fbf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\3D">
+      <UniqueIdentifier>{8964b850-cf17-43c2-8ea7-472d9ef52201}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\2D\gauge">
+      <UniqueIdentifier>{efcb79cf-77b5-48e3-b5e2-afdfc31d44a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\2D\number">
+      <UniqueIdentifier>{d876bc8d-d738-4a06-b058-3a9b5c8fc8ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\2D\logo">
+      <UniqueIdentifier>{e60daeb6-cab1-41f8-bf84-c335f7f4cd80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\3D\model">
+      <UniqueIdentifier>{3d37c236-cb03-4580-8a3a-806880de6f59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\3D\mesh">
+      <UniqueIdentifier>{578df434-f61b-4d10-a030-1f4e790aee36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\3D\image">
+      <UniqueIdentifier>{47fbfb38-abe4-4f08-ab29-40f8b51b1c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\3D\billboard">
+      <UniqueIdentifier>{82ae0aa7-3d6a-4fbc-859f-0fb8bd7a4b28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class\2D\number">
+      <UniqueIdentifier>{81e997ef-1d5f-40ea-bdc6-8aad37ec4c3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class\2D\gauge">
+      <UniqueIdentifier>{1af11a9c-aaba-49fa-936f-689f65f3a067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class\3D\model">
+      <UniqueIdentifier>{2e184a35-4be0-469c-8962-3777d2ec8630}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class\3D\mesh">
+      <UniqueIdentifier>{d0d1b245-601a-4872-8258-38c0f4576b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class\3D\image">
+      <UniqueIdentifier>{63b5c8aa-f29f-4c63-8e9c-71485962cb2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\0_base_class\3D\billboard">
+      <UniqueIdentifier>{c765cc6d-f9d4-43c8-a61c-0cbec65cc1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class\2D\number">
+      <UniqueIdentifier>{171db9a0-69a9-49c8-93f1-986a90d44a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class\2D\gauge">
+      <UniqueIdentifier>{585c108a-3389-41e9-bbf1-7209c5b95708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\2D\guage">
+      <UniqueIdentifier>{770e5817-42f9-42f3-84e1-d5b885e25cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\2D\number">
+      <UniqueIdentifier>{0782b0f9-95ad-41cc-9ef9-314642cfed90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\2D\logo">
+      <UniqueIdentifier>{4b60ac78-d37d-4a90-ab40-60bc66137828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class\3D\model">
+      <UniqueIdentifier>{a31241c2-c726-4b1e-8131-9808219be3f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class\3D\mesh">
+      <UniqueIdentifier>{cd9f750c-4587-4435-9fdc-e490ebe5d256}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class\3D\image">
+      <UniqueIdentifier>{21f940fd-dbd0-44ac-9794-cd6d64c58302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\0_base_class\3D\billboard">
+      <UniqueIdentifier>{4b2eefab-061a-45bc-8dc3-9e2aef1f766e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\1_mode_select\LoadData">
+      <UniqueIdentifier>{5cb4fbff-5e9d-40bd-8dcd-b4804a2d6ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\3_tutorial">
+      <UniqueIdentifier>{86ce2119-f3a2-4de3-9d29-37f4e3e55893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\3_tutorial\LoadData">
+      <UniqueIdentifier>{76bd6f14-4f38-4548-adb1-f5ebe0b55352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\4_game">
+      <UniqueIdentifier>{8bb3f1df-5910-4421-b554-907822270dd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\4_game\LoadData">
+      <UniqueIdentifier>{332cf211-aeab-4fcb-9697-99dcf5b1b2a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\6_ranking">
+      <UniqueIdentifier>{68b64fc1-cd76-41c7-866a-5a1b3ddbb890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\6_ranking\LoadData">
+      <UniqueIdentifier>{7af78ae9-8a97-4840-b43d-32c8923e1630}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\3_tutorial">
+      <UniqueIdentifier>{afe291b2-c0a0-46fb-95d3-65d3797021f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\3_tutorial\LoadData">
+      <UniqueIdentifier>{e67339f7-f1e0-4206-be56-f99f03f4912b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\4_game">
+      <UniqueIdentifier>{c2ef3e59-83b2-44a4-be0d-56dee1211dc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\4_game\LoadData">
+      <UniqueIdentifier>{9932651f-6d43-4b0a-bab7-a972b7e2a1f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\5_result">
+      <UniqueIdentifier>{1dc7e30c-9e58-4d24-b36b-8992b010874c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\5_result\LoadData">
+      <UniqueIdentifier>{0adf7e77-0811-4e88-a15e-1e66b1c14a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\6_ranking">
+      <UniqueIdentifier>{88c57077-f54d-4b00-8da0-b8a678babce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\6_ranking\LoadData">
+      <UniqueIdentifier>{1c7085cd-12ff-47dc-bc5a-fa5a2a44ee37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\2-0_stage_select">
+      <UniqueIdentifier>{57d07dcc-fa0e-4b22-b35c-72af4eccba56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\2-0_stage_select\LoadData">
+      <UniqueIdentifier>{081441fc-d208-40b9-9519-fc971b6ac395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\2-0_stage_select">
+      <UniqueIdentifier>{5f509ce8-6656-4982-87ad-4d51cfbcb168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\2-0_stage_select\LoadData">
+      <UniqueIdentifier>{2c9f1755-c316-4852-be67-fe542c216e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\2-1_preparation_player[">
+      <UniqueIdentifier>{06e8997f-e26b-4cd9-acf3-7a07fa262aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\2-1_preparation_player">
+      <UniqueIdentifier>{b3a31d4b-9b57-4108-96cc-35a00dfd57e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\2-1_preparation_player\LoadData">
+      <UniqueIdentifier>{103353f0-3052-4f4f-9c46-ea1a7ac09f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_scene\2-1_preparation_player[\LoadData">
+      <UniqueIdentifier>{438239f8-5560-40b7-a897-7ba1f44f9228}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_namespace">
+      <UniqueIdentifier>{3eedace3-19ca-447c-a98e-4ef92bc00528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_namespace">
+      <UniqueIdentifier>{8fb25398-0c3b-462c-acc2-85df368d91ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_object\1_derived_class\3D\model\player">
+      <UniqueIdentifier>{c1c950fb-e20d-429c-8cd6-c89062a6b1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\5_result">
+      <UniqueIdentifier>{ff4a42d9-4845-4246-9fdd-b04807bf58ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_scene\5_result\LoadData">
+      <UniqueIdentifier>{0e8e2d41-4caa-4ba9-b932-ef7c82c8f3fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\3D">
+      <UniqueIdentifier>{05d36211-3ca5-4a0e-ae9a-a84aace6b21a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\3D\model">
+      <UniqueIdentifier>{e826a228-c1b6-46f1-a3a9-43c5acb8494f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\3D\model\player">
+      <UniqueIdentifier>{6415cbe9-328b-4732-b902-f8b8630ea36e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\3D\image">
+      <UniqueIdentifier>{348cc561-504c-49ac-a949-26bf7a600683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\3D\billboard">
+      <UniqueIdentifier>{4dfefe53-1940-4fad-8cc5-5d58b6c95253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_object\1_derived_class\3D\mesh">
+      <UniqueIdentifier>{3a130c2b-9d21-465a-b652-906584e3abb0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="input_joypad.cpp">
+      <Filter>ソース ファイル\00_system\input</Filter>
+    </ClCompile>
+    <ClCompile Include="input_keyboard.cpp">
+      <Filter>ソース ファイル\00_system\input</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\00_system\input</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース ファイル\01_scene\4_game</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>ソース ファイル\01_scene\4_game</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソース ファイル\01_scene\5_result</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene2D.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class</Filter>
+    </ClCompile>
+    <ClCompile Include="bg.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="debugproc.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\01_scene\0_title</Filter>
+    </ClCompile>
+    <ClCompile Include="set_title.cpp">
+      <Filter>ソース ファイル\01_scene\0_title\LoadData</Filter>
+    </ClCompile>
+    <ClCompile Include="set_graffiti.cpp">
+      <Filter>ソース ファイル\01_scene\4_game\LoadData</Filter>
+    </ClCompile>
+    <ClCompile Include="set_model.cpp">
+      <Filter>ソース ファイル\01_scene\4_game\LoadData</Filter>
+    </ClCompile>
+    <ClCompile Include="set_game.cpp">
+      <Filter>ソース ファイル\01_scene\4_game\LoadData</Filter>
+    </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\2D\gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="countdown.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D\number</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D\number</Filter>
+    </ClCompile>
+    <ClCompile Include="scoregauge.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D\guage</Filter>
+    </ClCompile>
+    <ClCompile Include="skillgauge.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D\guage</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D\number</Filter>
+    </ClCompile>
+    <ClCompile Include="eraser.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\model</Filter>
+    </ClCompile>
+    <ClCompile Include="eraserdust.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\model</Filter>
+    </ClCompile>
+    <ClCompile Include="floor.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="graffiti.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\image</Filter>
+    </ClCompile>
+    <ClCompile Include="shadowS.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\model</Filter>
+    </ClCompile>
+    <ClCompile Include="stage.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\model</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneX.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\3D\model</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\3D\model</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\3D\model</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneBillboard.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\3D\billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="scene3D.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\3D\image</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneMeshfield.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\3D\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="number.cpp">
+      <Filter>ソース ファイル\02_object\0_base_class\2D\number</Filter>
+    </ClCompile>
+    <ClCompile Include="mode_select.cpp">
+      <Filter>ソース ファイル\01_scene\1_mode_select</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>ソース ファイル\01_scene\3_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking.cpp">
+      <Filter>ソース ファイル\01_scene\6_ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="set_mode_select.cpp">
+      <Filter>ソース ファイル\01_scene\1_mode_select\LoadData</Filter>
+    </ClCompile>
+    <ClCompile Include="base.cpp">
+      <Filter>ソース ファイル\01_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="press_logo.cpp">
+      <Filter>ソース ファイル\01_scene\0_title</Filter>
+    </ClCompile>
+    <ClCompile Include="title_logo.cpp">
+      <Filter>ソース ファイル\01_scene\0_title</Filter>
+    </ClCompile>
+    <ClCompile Include="mode_select_logo.cpp">
+      <Filter>ソース ファイル\01_scene\1_mode_select</Filter>
+    </ClCompile>
+    <ClCompile Include="mode_logo.cpp">
+      <Filter>ソース ファイル\01_scene\1_mode_select</Filter>
+    </ClCompile>
+    <ClCompile Include="stage_select.cpp">
+      <Filter>ソース ファイル\01_scene\2-0_stage_select</Filter>
+    </ClCompile>
+    <ClCompile Include="set_stage_select.cpp">
+      <Filter>ソース ファイル\01_scene\2-0_stage_select\LoadData</Filter>
+    </ClCompile>
+    <ClCompile Include="preparation_player.cpp">
+      <Filter>ソース ファイル\01_scene\2-1_preparation_player</Filter>
+    </ClCompile>
+    <ClCompile Include="set_preparation_player.cpp">
+      <Filter>ソース ファイル\01_scene\2-1_preparation_player\LoadData</Filter>
+    </ClCompile>
+    <ClCompile Include="graffiti_manager.cpp">
+      <Filter>ソース ファイル\01_scene\4_game</Filter>
+    </ClCompile>
+    <ClCompile Include="gauge_manager.cpp">
+      <Filter>ソース ファイル\01_scene\4_game</Filter>
+    </ClCompile>
+    <ClCompile Include="load_player_data.cpp">
+      <Filter>ソース ファイル\01_scene\4_game\LoadData</Filter>
+    </ClCompile>
+    <ClCompile Include="keep_object.cpp">
+      <Filter>ソース ファイル\00_system</Filter>
+    </ClCompile>
+    <ClCompile Include="player_marker.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="result_multi.cpp">
+      <Filter>ソース ファイル\01_scene\5_result</Filter>
+    </ClCompile>
+    <ClCompile Include="rank.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking_namespace.cpp">
+      <Filter>ソース ファイル\03_namespace</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\model\player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_game.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\model\player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_result.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\model\player</Filter>
+    </ClCompile>
+    <ClCompile Include="skill.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\image</Filter>
+    </ClCompile>
+    <ClCompile Include="graffiti_gauge.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D\guage</Filter>
+    </ClCompile>
+    <ClCompile Include="shadow.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\3D\image</Filter>
+    </ClCompile>
+    <ClCompile Include="input_mouse.cpp">
+      <Filter>ソース ファイル\00_system\input</Filter>
+    </ClCompile>
+    <ClCompile Include="preparation_player_manager.cpp">
+      <Filter>ソース ファイル\01_scene\2-1_preparation_player</Filter>
+    </ClCompile>
+    <ClCompile Include="title_manager.cpp">
+      <Filter>ソース ファイル\01_scene\0_title</Filter>
+    </ClCompile>
+    <ClCompile Include="result_manager.cpp">
+      <Filter>ソース ファイル\01_scene\5_result</Filter>
+    </ClCompile>
+    <ClCompile Include="crown.cpp">
+      <Filter>ソース ファイル\02_object\1_derived_class\2D</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="camera.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ヘッダー ファイル\00_system\input</Filter>
+    </ClInclude>
+    <ClInclude Include="input_joypad.h">
+      <Filter>ヘッダー ファイル\00_system\input</Filter>
+    </ClInclude>
+    <ClInclude Include="input_keyboard.h">
+      <Filter>ヘッダー ファイル\00_system\input</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="manager.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="debugproc.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="bg.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene2D.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="set_title.h">
+      <Filter>ヘッダー ファイル\01_scene\0_title\LoadData</Filter>
+    </ClInclude>
+    <ClInclude Include="set_game.h">
+      <Filter>ヘッダー ファイル\01_scene\4_game\LoadData</Filter>
+    </ClInclude>
+    <ClInclude Include="set_graffiti.h">
+      <Filter>ヘッダー ファイル\01_scene\4_game\LoadData</Filter>
+    </ClInclude>
+    <ClInclude Include="set_model.h">
+      <Filter>ヘッダー ファイル\01_scene\4_game\LoadData</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ヘッダー ファイル\01_scene\5_result</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ヘッダー ファイル\01_scene\0_title</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ヘッダー ファイル\01_scene\4_game</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>ヘッダー ファイル\01_scene\4_game</Filter>
+    </ClInclude>
+    <ClInclude Include="skillgauge.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D\gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="scoregauge.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D\gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D\number</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D\number</Filter>
+    </ClInclude>
+    <ClInclude Include="countdown.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D\number</Filter>
+    </ClInclude>
+    <ClInclude Include="eraser.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\model</Filter>
+    </ClInclude>
+    <ClInclude Include="eraserdust.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\model</Filter>
+    </ClInclude>
+    <ClInclude Include="floor.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="graffiti.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\image</Filter>
+    </ClInclude>
+    <ClInclude Include="shadowS.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\model</Filter>
+    </ClInclude>
+    <ClInclude Include="stage.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\model</Filter>
+    </ClInclude>
+    <ClInclude Include="number.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\2D\number</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\2D\gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\3D\model</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\3D\model</Filter>
+    </ClInclude>
+    <ClInclude Include="scene3D.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\3D\image</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneBillboard.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\3D\billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneMeshfield.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\3D\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneX.h">
+      <Filter>ヘッダー ファイル\02_object\0_base_class\3D\model</Filter>
+    </ClInclude>
+    <ClInclude Include="mode_select.h">
+      <Filter>ヘッダー ファイル\01_scene\1_mode_select</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>ヘッダー ファイル\01_scene\3_tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking.h">
+      <Filter>ヘッダー ファイル\01_scene\6_ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="set_mode_select.h">
+      <Filter>ヘッダー ファイル\01_scene\1_mode_select\LoadData</Filter>
+    </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>ヘッダー ファイル\01_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="press_logo.h">
+      <Filter>ヘッダー ファイル\01_scene\0_title</Filter>
+    </ClInclude>
+    <ClInclude Include="mode_select_logo.h">
+      <Filter>ヘッダー ファイル\01_scene\1_mode_select</Filter>
+    </ClInclude>
+    <ClInclude Include="title_logo.h">
+      <Filter>ヘッダー ファイル\01_scene\0_title</Filter>
+    </ClInclude>
+    <ClInclude Include="mode_logo.h">
+      <Filter>ヘッダー ファイル\01_scene\1_mode_select</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_select.h">
+      <Filter>ヘッダー ファイル\01_scene\2-0_stage_select</Filter>
+    </ClInclude>
+    <ClInclude Include="set_stage_select.h">
+      <Filter>ヘッダー ファイル\01_scene\2-0_stage_select\LoadData</Filter>
+    </ClInclude>
+    <ClInclude Include="preparation_player.h">
+      <Filter>ヘッダー ファイル\01_scene\2-1_preparation_player[</Filter>
+    </ClInclude>
+    <ClInclude Include="set_preparation_player.h">
+      <Filter>ヘッダー ファイル\01_scene\2-1_preparation_player[\LoadData</Filter>
+    </ClInclude>
+    <ClInclude Include="graffiti_manager.h">
+      <Filter>ヘッダー ファイル\01_scene\4_game</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge_manager.h">
+      <Filter>ヘッダー ファイル\01_scene\4_game</Filter>
+    </ClInclude>
+    <ClInclude Include="load_player_data.h">
+      <Filter>ヘッダー ファイル\01_scene\4_game\LoadData</Filter>
+    </ClInclude>
+    <ClInclude Include="keep_object.h">
+      <Filter>ヘッダー ファイル\00_system</Filter>
+    </ClInclude>
+    <ClInclude Include="result_multi.h">
+      <Filter>ヘッダー ファイル\01_scene\5_result</Filter>
+    </ClInclude>
+    <ClInclude Include="player_marker.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="rank.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking_namespace.h">
+      <Filter>ヘッダー ファイル\03_namespace</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\model\player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_game.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\model\player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_result.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\model\player</Filter>
+    </ClInclude>
+    <ClInclude Include="skill.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\image</Filter>
+    </ClInclude>
+    <ClInclude Include="graffiti_gauge.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D\gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="shadow.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\3D\image</Filter>
+    </ClInclude>
+    <ClInclude Include="input_mouse.h">
+      <Filter>ヘッダー ファイル\00_system\input</Filter>
+    </ClInclude>
+    <ClInclude Include="preparation_player_manager.h">
+      <Filter>ヘッダー ファイル\01_scene\2-1_preparation_player[</Filter>
+    </ClInclude>
+    <ClInclude Include="title_manager.h">
+      <Filter>ヘッダー ファイル\01_scene\0_title</Filter>
+    </ClInclude>
+    <ClInclude Include="result_manager.h">
+      <Filter>ヘッダー ファイル\01_scene\5_result</Filter>
+    </ClInclude>
+    <ClInclude Include="crown.h">
+      <Filter>ヘッダー ファイル\02_object\1_derived_class\2D</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
