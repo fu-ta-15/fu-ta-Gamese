@@ -260,7 +260,7 @@ void CMesh3D::Draw(void)
 	// ƒ|ƒŠƒSƒ“‚Ì•`‰æ
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP,
 		0, 0,
-		m_nVtx, 0, (m_nIdx - (m_nSide * 2)));
+		m_nVtx, 0, (m_nIdx - 2));
 }
 
 //=============================================================================
