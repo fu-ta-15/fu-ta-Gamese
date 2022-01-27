@@ -1,0 +1,98 @@
+#==============================================================================
+#
+# チュートリアル配置 [tutorial.txt]
+# Author : Itsuki Takaiwa
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# テクスチャ数
+#------------------------------------------------------------------------------
+NUM_TEXTURE = 8
+
+#------------------------------------------------------------------------------
+# テクスチャファイル名
+#------------------------------------------------------------------------------
+TEXTURE_FILENAME = data/TEXTURE/rulu_logo00.png				# [0] 空
+TEXTURE_FILENAME = data/TEXTURE/arrow_left.png										# [1] 色鉛筆
+TEXTURE_FILENAME = data/TEXTURE/arrow_right.png										# [2] 色鉛筆
+TEXTURE_FILENAME = data/TEXTURE/BG033.jpg								# [3] タイトルロゴ
+TEXTURE_FILENAME = data/TEXTURE/BG035.jpg
+TEXTURE_FILENAME = data/TEXTURE/BG032.jpg	
+TEXTURE_FILENAME = data/TEXTURE/BG038.jpg									# [4] スタートロゴ
+TEXTURE_FILENAME = data/TEXTURE/return00.png									# [4] スタートロゴ
+
+#------------------------------------------------------------------------------
+# チュートリアル配置情報
+#------------------------------------------------------------------------------
+#-------------------------------
+# ロゴ[遊び方説明]
+#-------------------------------
+LOGOSET
+	NUM_LOGO = 2
+
+	LOGO
+		TYPE = 0
+		POS = 640 100 0
+		SIZE = 300 100
+	END_LOGO
+	
+	LOGO
+		TYPE = 7
+		POS = 1100 650 0
+		SIZE = 300 75
+	END_LOGO
+END_LOGOSET
+
+#-------------------------------
+# 左矢印
+#-------------------------------
+LEFTARROWSET
+	TYPE = 1
+	POS = 100 360 0
+	SIZE = 100 100
+END_LEFTARROWSET
+
+#-------------------------------
+# 右矢印
+#-------------------------------
+RIGHTARROWSET
+	TYPE = 2
+	POS = 1180 360 0
+	SIZE = 100 100
+END_RIGHTARROWSET
+
+#-------------------------------
+# チュートリアル
+#-------------------------------
+TUTORIALSET
+	NUM_TUTORIAL = 4
+	
+	TUTORIALSHEET
+		TYPE = 3
+		POS = 640 360 0
+		SIZE = 960 540
+	END_TUTORIALSHEET
+	
+	TUTORIALSHEET
+		TYPE = 4
+		POS = 640 360 0
+		SIZE = 960 540
+	END_TUTORIALSHEET
+	
+	TUTORIALSHEET
+		TYPE = 5
+		POS = 640 360 0
+		SIZE = 960 540
+	END_TUTORIALSHEET
+	
+	TUTORIALSHEET
+		TYPE = 6
+		POS = 640 360 0
+		SIZE = 960 540
+	END_TUTORIALSHEET
+		
+END_TUTORIALSET
+
+END_SCRIPT		# この行は絶対消さないこと！

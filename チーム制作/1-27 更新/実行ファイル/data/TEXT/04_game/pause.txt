@@ -1,0 +1,141 @@
+#==============================================================================
+#
+# ポーズ画面配置 [set_pause.txt]
+# Author : Itsuki Takaiwa
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# テクスチャ数
+#------------------------------------------------------------------------------
+NUM_TEXTURE = 8
+
+#------------------------------------------------------------------------------
+# テクスチャファイル名
+#------------------------------------------------------------------------------
+TEXTURE_FILENAME = data/TEXTURE/011.png				# [0] メニュー背景
+TEXTURE_FILENAME = data/TEXTURE/010.png				# [1] メニューロゴ背景
+TEXTURE_FILENAME = data/TEXTURE/CONTINUE03.png		# [2] コンティニューロゴ
+TEXTURE_FILENAME = data/TEXTURE/RETRY03.png			# [3] リトライロゴ
+TEXTURE_FILENAME = data/TEXTURE/QUIT03.png			# [4] 終了ロゴ
+TEXTURE_FILENAME = data/TEXTURE/Pose_Menu00.png		# [5] ポーズメニュロゴ
+TEXTURE_FILENAME = data/TEXTURE/00.png				# [6] ポーズメニュロゴ背景
+TEXTURE_FILENAME = data/TEXTURE/player_Logo00.png	# [7] プレイヤーマーカー
+
+#------------------------------------------------------------------------------
+# プレイヤーUI配置情報
+#------------------------------------------------------------------------------
+#--------------------------------
+# プレイヤーマーカー配置情報
+#--------------------------------
+PLAYERMARKERSERT
+	TYPE = 7
+	POS = 640 120 0
+	SIZE = 80 60
+	COLOR = 1.0 1.0 1.0 1.0
+	TEXSHEET = 4 1
+END_PLAYERMARKERSERT
+
+#--------------------------------
+# ロゴ配置情報
+#--------------------------------
+LOGOSET
+	NUM_LOGO = 2
+	
+	LOGO
+		TYPE = 6		
+		POS = 640 170 0
+		SIZE = 300 70
+		COLOR = 1.0 1.0 1.0 1.0
+	END_LOGO
+	
+	LOGO
+		TYPE = 5		
+		POS = 640 170 0
+		SIZE = 200 50
+		COLOR = 1.0 1.0 1.0 1.0
+	END_LOGO
+
+END_LOGOSET
+
+#--------------------------------
+# 背景配置情報
+#--------------------------------
+BGSET
+	NUM_BG = 1
+	
+	BG
+		TYPE = -1		// 適用しない
+		POS = 640 360 0
+		SIZE = 1280 720
+		COLOR = 0.0 0.0 0.0 0.5
+	END_BG
+END_BGSET
+
+#--------------------------------
+# ポーズメニュー配置情報
+#--------------------------------
+PAUSEMENUSET
+	NUM_MENUBG = 1		// メニュー背景
+	NUM_MENULOGO = 3	// メニューロゴ
+	
+	// メニュー背景
+	MENUBG
+		TYPE = 0		
+		POS = 640 360 0
+		SIZE = 400 400
+		COLOR = 1.0 1.0 1.0 1.0
+	END_MENUBG
+	
+	// メニューロゴ
+	MENULOGO
+		TYPE = 2		
+		POS = 640 270 0
+		SIZE = 200 50
+		COLOR = 1.0 1.0 1.0 1.0
+	END_MENULOGO
+	
+	MENULOGO
+		TYPE = 3		
+		POS = 640 365 0
+		SIZE = 200 50
+		COLOR = 1.0 1.0 1.0 1.0
+	END_MENULOGO
+	
+	MENULOGO
+		TYPE = 4		
+		POS = 640 465 0
+		SIZE = 200 50
+		COLOR = 1.0 1.0 1.0 1.0
+	END_MENULOGO
+	
+	// メニューロゴ背景(ロゴの数だけ生成)
+	
+	MENULOGOBG
+		TYPE = 1		
+		POS = 640 270 0
+		SIZE = 260 70
+		COLOR = 1.0 1.0 1.0 1.0
+		TEX = 1 2
+	END_MENULOGOBG
+	
+	MENULOGOBG
+		TYPE = 1	
+		POS = 640 370 0
+		SIZE = 260 70
+		COLOR = 1.0 1.0 1.0 1.0
+		TEX = 1 2
+	END_MENULOGOBG
+	
+	MENULOGOBG
+		TYPE = 1		
+		POS = 640 470 0
+		SIZE = 260 70
+		COLOR = 1.0 1.0 1.0 1.0
+		TEX = 1 2
+	END_MENULOGOBG
+	
+END_PAUSEMENUSET
+
+END_SCRIPT		# この行は絶対消さないこと！

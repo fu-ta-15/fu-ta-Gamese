@@ -1,0 +1,321 @@
+#==============================================================================
+#
+# UI配置 [set_ui.txt]
+# Author : Itsuki Takaiwa
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# テクスチャ数
+#------------------------------------------------------------------------------
+NUM_TEXTURE = 12
+
+#------------------------------------------------------------------------------
+# テクスチャファイル名
+#------------------------------------------------------------------------------
+TEXTURE_FILENAME = data/TEXTURE/graffiti.png				# [0] スキルゲージ_中
+TEXTURE_FILENAME = data/TEXTURE/SkillGauge.png				# [1] スキルゲージ_枠
+TEXTURE_FILENAME = data/TEXTURE/SkillGauge_BG.png			# [2] スキルゲージ_背景
+TEXTURE_FILENAME = data/TEXTURE/ScoreGauge_Inside.png		# [3] スコアゲージ_中
+TEXTURE_FILENAME = data/TEXTURE/ScoreGauge.png				# [4] スコアゲージ_枠
+TEXTURE_FILENAME = data/TEXTURE/ScoreGauge_BG.png			# [5] スコアゲージ_背景
+TEXTURE_FILENAME = data/TEXTURE/ui.png						# [6] UI枠
+
+TEXTURE_FILENAME = data/TEXTURE/SCORE_LOGO04.png			# [7] 数字
+TEXTURE_FILENAME = data/TEXTURE/timer_bg.png				# [8] 数字
+
+TEXTURE_FILENAME = data/TEXTURE/Doodle_Graffiti.png			# [9] ラクガキゲージ
+TEXTURE_FILENAME = data/TEXTURE/Doodle_Graffiti_BG.png		# [10] ラクガキゲージ背景
+TEXTURE_FILENAME = data/TEXTURE/ui_Eraser.png		# [10] ラクガキゲージ背景
+
+#------------------------------------------------------------------------------
+# プレイヤーUI配置情報
+#------------------------------------------------------------------------------
+#-----------------
+# ラクガキゲージ配置情報
+#-----------------
+GRAFFITIGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 640 650 0
+		SIZE = 599 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 10
+			POS = 640 650 0
+			SIZE = 600 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 9
+		POS = 640 650 0
+		SIZE = 600 24
+	END_FRAME
+END_GRAFFITIGAUGESET
+
+#-----------------
+# プレイヤー1のゲージ配置情報
+#-----------------
+SKILLGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 150 88.5 0
+		SIZE = 117 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 2
+			POS = 150 88.5 0
+			SIZE = 117 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 1
+		POS = 150 88 0
+		SIZE = 117 24
+	END_FRAME
+END_SKILLGAUGESET
+
+SCOREGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 192 62 0
+		SIZE = 187 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 5
+			POS = 192 62 0
+			SIZE = 187 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 4
+		POS = 192 62 0
+		SIZE = 187 24
+	END_FRAME
+END_SCOREGAUGESET
+
+#-----------------
+# UI配置情報
+#-----------------
+ERASERSTATEUISET
+	TYPE = 11
+	POS = 68 78 0
+	SIZE = 60 60
+	TEXSHEET = 2 1 
+	
+	BGSET
+		TYPE = 6
+		POS = 70 70 0
+		SIZE = 115 117
+	END_BGSET
+END_ERASERSTATEUISET
+
+#-----------------
+# プレイヤー2のゲージ配置情報
+#-----------------
+SKILLGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 1120 88 0
+		SIZE = 117 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 2
+			POS = 1120 88 0
+			SIZE = 117 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 1
+		POS = 1120 88 0
+		SIZE = 117 24
+	END_FRAME
+END_SKILLGAUGESET
+
+SCOREGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 1162 62 0
+		SIZE = 187 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 5
+			POS = 1162 62 0
+			SIZE = 187 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 4
+		POS = 1162 62 0
+		SIZE = 187 24
+	END_FRAME
+END_SCOREGAUGESET
+
+#-----------------
+# UI配置情報
+#-----------------
+ERASERSTATEUISET
+	TYPE = 11
+	POS = 1038 78 0
+	SIZE = 60 60
+	TEXSHEET = 2 1 
+	
+	BGSET
+		TYPE = 6
+		POS = 1040 70 0
+		SIZE = 115 117
+	END_BGSET
+END_ERASERSTATEUISET
+
+#-----------------
+# プレイヤー3のゲージ配置情報
+#-----------------
+SKILLGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 150 668 0
+		SIZE = 117 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 2
+			POS = 150 668 0
+			SIZE = 117 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 1
+		POS = 150 668 0
+		SIZE = 117 24
+	END_FRAME
+END_SKILLGAUGESET
+
+SCOREGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 192 642 0
+		SIZE = 187 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 5
+			POS = 192 642 0
+			SIZE = 187 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 4
+		POS = 192 642 0
+		SIZE = 187 24
+	END_FRAME
+END_SCOREGAUGESET
+
+#-----------------
+# UI配置情報
+#-----------------
+ERASERSTATEUISET
+	TYPE = 11
+	POS = 68 658 0
+	SIZE = 60 60
+	TEXSHEET = 2 1 
+	
+	BGSET
+		TYPE = 6
+		POS = 70 650 0
+		SIZE = 115 117
+	END_BGSET
+END_ERASERSTATEUISET
+
+#-----------------
+# プレイヤー4のゲージ配置情報
+#-----------------
+SKILLGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 1120 668 0
+		SIZE = 117 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 2
+			POS = 1120 668 0
+			SIZE = 117 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 1
+		POS = 1120 668 0
+		SIZE = 117 24
+	END_FRAME
+END_SKILLGAUGESET
+
+SCOREGAUGESET
+	GAUGE
+		TYPE = 0
+		POS = 1162 642 0
+		SIZE = 187 21
+		COLOR = 1.0 0.55 0.15 1.0
+		
+		BGSET
+			TYPE = 5
+			POS = 1162 642 0
+			SIZE = 187 21
+		END_BGSET
+	END_GAUGE
+	
+	FRAME
+		TYPE = 4
+		POS = 1162 642 0
+		SIZE = 187 24
+	END_FRAME
+END_SCOREGAUGESET
+
+#-----------------
+# UI配置情報
+#-----------------
+ERASERSTATEUISET
+	TYPE = 11
+	POS = 1038 658 0
+	SIZE = 60 60
+	TEXSHEET = 2 1 
+	
+	BGSET
+		TYPE = 6
+		POS = 1040 650 0
+		SIZE = 115 117
+	END_BGSET
+END_ERASERSTATEUISET
+
+#----------------------------------------------
+# タイマー情報
+#----------------------------------------------
+TIMERSET
+	TYPE = 7
+	POS = 625 60 0
+	SIZE = 30 60
+	DIGIT = 2
+	SPACE = 30.0
+	TIME = 90
+	
+	BGSET
+		TYPE = 8
+		POS = 640 60 0
+		SIZE = 150 90
+	END_BGSET
+END_TIMERSET
+
+END_SCRIPT		# この行は絶対消さないこと！
